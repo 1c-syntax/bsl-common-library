@@ -25,9 +25,10 @@ repositories {
     mavenCentral()
 }
 
-
 val junitVersion = "5.6.1"
 dependencies {
+
+    implementation("org.apache.commons", "commons-collections4", "4.4")
 
     // логирование
     implementation("org.slf4j", "slf4j-api", "1.7.30")
@@ -100,7 +101,7 @@ artifacts {
 
 license {
     header = rootProject.file("license/HEADER.txt")
-    ext["year"] = "2019 - " + Calendar.getInstance().get(Calendar.YEAR)
+    ext["year"] = "2021 - " + Calendar.getInstance().get(Calendar.YEAR)
     ext["name"] = "Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com>"
     ext["project"] = "BSL Common library"
     exclude("**/*.properties")
