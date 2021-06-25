@@ -1,0 +1,10 @@
+build/
+.gradle/
+
+/.idea/sonarlint/
+*.orig
+/.idea/vcs.xml
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/misc.xml
+/.idea/modules/bsl-common-library.iml
