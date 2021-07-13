@@ -19,13 +19,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-package com.github._1c_syntax.bsl_common_library.types;
-
 /**
- * Возможные виды конфигураций по формату данных
+ * Пакет содержит общие типы данных
  */
-public enum ConfigurationSource {
-  DESIGNER, // Формат конфигуратора
-  EDT, // Формат EDT
-  EMPTY // Неопределенный / пустой
-}
+package com.github._1c_syntax.bsl.types;

@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-package com.github._1c_syntax.bsl_common_library.types;
+package com.github._1c_syntax.bsl.types;
 
 import org.junit.jupiter.api.Test;
 

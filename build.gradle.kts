@@ -156,3 +156,8 @@ tasks.register("precommit") {
     dependsOn(":test")
     dependsOn(":licenseFormat")
 }
+
+tasks.withType<Javadoc> {
+    (options as StandardJavadocDocletOptions)
+            .addStringOption("Xdoclint:none", "-quiet")
+}
