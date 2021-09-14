@@ -89,10 +89,10 @@ public class CompatibilityMode {
     if (versionA.minor == versionB.minor) {
       if (versionA.version == versionB.version) {
         result = 0;
-      } else if (versionA.version >= versionB.version) {
+      } else if (versionA.version > versionB.version) {
         result = -1;
       }
-    } else if (versionA.minor >= versionB.minor) {
+    } else if (versionA.minor > versionB.minor) {
       result = -1;
     }
     return result;

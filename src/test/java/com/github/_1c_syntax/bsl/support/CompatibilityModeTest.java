@@ -65,11 +65,14 @@ class CompatibilityModeTest {
 
     var versionA = new CompatibilityMode(3, 10);
     var versionB = new CompatibilityMode(3, 11);
+    var versionC = new CompatibilityMode(2, 19);
 
     assertThat(CompatibilityMode.compareTo(versionA, versionB)).isEqualTo(1);
     assertThat(CompatibilityMode.compareTo(versionB, versionA)).isEqualTo(-1);
     assertThat(CompatibilityMode.compareTo(versionA, new CompatibilityMode(3, 10))).isZero();
     assertThat(CompatibilityMode.compareTo(versionA, "Version_8_3_10")).isZero();
+    assertThat(CompatibilityMode.compareTo(versionB, versionC)).isEqualTo(-1);
+    assertThat(CompatibilityMode.compareTo(versionA, versionC)).isEqualTo(-1);
 
   }
 
