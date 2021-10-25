@@ -63,6 +63,7 @@ public enum MDOType {
   ENUM("Enum", "Enums", "Перечисление", "Перечисления"),
   EVENT_SUBSCRIPTION("EventSubscription", "EventSubscriptions", "ПодпискаНаСобытие", "ПодпискиНаСобытия"),
   EXCHANGE_PLAN("ExchangePlan", "ExchangePlans", "ПланОбмена", "ПланыОбмена"),
+  EXTERNAL_DATA_SOURCE("ExternalDataSource", "ExternalDataSources", "ВнешнийИсточникДанных", "ВнешниеИсточникиДанных"),
   FILTER_CRITERION("FilterCriterion", "FilterCriteria", "КритерийОтбора", "КритерииОтбора"),
   FUNCTIONAL_OPTION("FunctionalOption", "FunctionalOptions", "ФункциональнаяОпция", "ФункциональныеОпции"),
   FUNCTIONAL_OPTIONS_PARAMETER("FunctionalOptionsParameter", "FunctionalOptionsParameters",
