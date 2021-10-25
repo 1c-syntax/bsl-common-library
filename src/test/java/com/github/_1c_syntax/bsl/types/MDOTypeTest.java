@@ -30,7 +30,7 @@ class MDOTypeTest {
   @Test
   void valuesWithoutChildren() {
     var values = MDOType.valuesWithoutChildren();
-    assertThat(values).hasSize(47)
+    assertThat(values).hasSize(48)
       .doesNotContain(MDOType.FORM)
       .doesNotContain(MDOType.COMMAND)
       .doesNotContain(MDOType.TEMPLATE)
