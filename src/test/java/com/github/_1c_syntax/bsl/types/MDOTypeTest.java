@@ -41,6 +41,7 @@ class MDOTypeTest {
       .doesNotContain(MDOType.HTTP_SERVICE_URL_TEMPLATE)
       .doesNotContain(MDOType.HTTP_SERVICE_METHOD)
       .doesNotContain(MDOType.INTEGRATION_SERVICE_CHANNEL)
+      .doesNotContain(MDOType.TASK_ADDRESSING_ATTRIBUTE)
       .doesNotContain(MDOType.UNKNOWN);
   }
 

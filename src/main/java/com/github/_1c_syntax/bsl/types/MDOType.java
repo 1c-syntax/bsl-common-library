@@ -97,6 +97,7 @@ public enum MDOType {
   HTTP_SERVICE_URL_TEMPLATE("URLTemplate", "URLTemplates", "ШаблонURL", "ШаблоныURL"),
   HTTP_SERVICE_METHOD("Method", "Methods", "Метод", "Методы"),
   INTEGRATION_SERVICE_CHANNEL("IntegrationServiceChannel", "IntegrationServiceChannels", "КаналСервисаИнтеграции", "Каналы"),
+  TASK_ADDRESSING_ATTRIBUTE("AddressingAttribute", "AddressingAttributes", "РеквизитАдресации", "Реквизиты адресации"),
   UNKNOWN("", "", "", "");
 
   private static final Map<String, MDOType> MAP_TYPES = computeMapTypes();
@@ -168,6 +169,6 @@ public enum MDOType {
 
   private static Set<MDOType> computeChildTypes() {
     return Set.of(FORM, COMMAND, TEMPLATE, ATTRIBUTE, RECALCULATION, WS_OPERATION, WS_OPERATION_PARAMETER, HTTP_SERVICE_URL_TEMPLATE,
-      HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL);
+      HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL, TASK_ADDRESSING_ATTRIBUTE);
   }
 }
