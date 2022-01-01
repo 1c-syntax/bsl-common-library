@@ -93,7 +93,7 @@ public enum MDOType {
   ATTRIBUTE("Attribute", "Attributes", "Реквизит", "Реквизиты"),
   RECALCULATION("Recalculation", "Recalculations", "Перерасчет", "Перерасчеты"),
   WS_OPERATION("Operation", "Operations", "Операция", "Операции"),
-  WS_OPERATION_PARAMETER("OperationParameter", "OperationParameters", "Параметры операции", "Параметр операции"),
+  WS_OPERATION_PARAMETER("Parameter", "Parameters", "Параметр", "Параметры"),
   HTTP_SERVICE_URL_TEMPLATE("URLTemplate", "URLTemplates", "ШаблонURL", "ШаблоныURL"),
   HTTP_SERVICE_METHOD("Method", "Methods", "Метод", "Методы"),
   INTEGRATION_SERVICE_CHANNEL("IntegrationServiceChannel", "IntegrationServiceChannels", "КаналСервисаИнтеграции", "Каналы"),
