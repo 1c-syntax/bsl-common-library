@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright © 2021 - 2021
+ * Copyright © 2021 - 2022
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -37,6 +37,7 @@ class MDOTypeTest {
       .doesNotContain(MDOType.ATTRIBUTE)
       .doesNotContain(MDOType.RECALCULATION)
       .doesNotContain(MDOType.WS_OPERATION)
+      .doesNotContain(MDOType.WS_OPERATION_PARAMETER)
       .doesNotContain(MDOType.HTTP_SERVICE_URL_TEMPLATE)
       .doesNotContain(MDOType.HTTP_SERVICE_METHOD)
       .doesNotContain(MDOType.INTEGRATION_SERVICE_CHANNEL)

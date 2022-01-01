@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright © 2021 - 2021
+ * Copyright © 2021 - 2022
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -93,6 +93,7 @@ public enum MDOType {
   ATTRIBUTE("Attribute", "Attributes", "Реквизит", "Реквизиты"),
   RECALCULATION("Recalculation", "Recalculations", "Перерасчет", "Перерасчеты"),
   WS_OPERATION("Operation", "Operations", "Операция", "Операции"),
+  WS_OPERATION_PARAMETER("OperationParameter", "OperationParameters", "Параметры операции", "Параметр операции"),
   HTTP_SERVICE_URL_TEMPLATE("URLTemplate", "URLTemplates", "ШаблонURL", "ШаблоныURL"),
   HTTP_SERVICE_METHOD("Method", "Methods", "Метод", "Методы"),
   INTEGRATION_SERVICE_CHANNEL("IntegrationServiceChannel", "IntegrationServiceChannels", "КаналСервисаИнтеграции", "Каналы"),
@@ -166,8 +167,7 @@ public enum MDOType {
   }
 
   private static Set<MDOType> computeChildTypes() {
-    return Set.of(FORM, COMMAND, TEMPLATE, ATTRIBUTE, RECALCULATION, WS_OPERATION, HTTP_SERVICE_URL_TEMPLATE,
+    return Set.of(FORM, COMMAND, TEMPLATE, ATTRIBUTE, RECALCULATION, WS_OPERATION, WS_OPERATION_PARAMETER, HTTP_SERVICE_URL_TEMPLATE,
       HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL);
   }
-
 }
