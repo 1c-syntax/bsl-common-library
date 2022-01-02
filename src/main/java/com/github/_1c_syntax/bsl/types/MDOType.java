@@ -91,6 +91,7 @@ public enum MDOType {
   COMMAND("Command", "Commands", "Команда", "Команды"),
   TEMPLATE("Template", "Templates", "Макет", "Макеты"),
   ATTRIBUTE("Attribute", "Attributes", "Реквизит", "Реквизиты"),
+  TABULAR_SECTION("TabularSection", "TabularSections", "ТабличнаяЧасть", "ТабличныеЧасти"),
   RECALCULATION("Recalculation", "Recalculations", "Перерасчет", "Перерасчеты"),
   WS_OPERATION("Operation", "Operations", "Операция", "Операции"),
   WS_OPERATION_PARAMETER("Parameter", "Parameters", "Параметр", "Параметры"),
@@ -168,7 +169,8 @@ public enum MDOType {
   }
 
   private static Set<MDOType> computeChildTypes() {
-    return Set.of(FORM, COMMAND, TEMPLATE, ATTRIBUTE, RECALCULATION, WS_OPERATION, WS_OPERATION_PARAMETER, HTTP_SERVICE_URL_TEMPLATE,
+    return Set.of(FORM, COMMAND, TEMPLATE, ATTRIBUTE, TABULAR_SECTION, RECALCULATION, WS_OPERATION,
+      WS_OPERATION_PARAMETER, HTTP_SERVICE_URL_TEMPLATE,
       HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL, TASK_ADDRESSING_ATTRIBUTE);
   }
 }

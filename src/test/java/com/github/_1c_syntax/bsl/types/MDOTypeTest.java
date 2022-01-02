@@ -35,6 +35,7 @@ class MDOTypeTest {
       .doesNotContain(MDOType.COMMAND)
       .doesNotContain(MDOType.TEMPLATE)
       .doesNotContain(MDOType.ATTRIBUTE)
+      .doesNotContain(MDOType.TABULAR_SECTION)
       .doesNotContain(MDOType.RECALCULATION)
       .doesNotContain(MDOType.WS_OPERATION)
       .doesNotContain(MDOType.WS_OPERATION_PARAMETER)
