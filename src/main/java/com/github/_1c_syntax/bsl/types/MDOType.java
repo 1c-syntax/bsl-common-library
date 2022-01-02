@@ -101,7 +101,8 @@ public enum MDOType {
   TASK_ADDRESSING_ATTRIBUTE("AddressingAttribute", "AddressingAttributes", "РеквизитАдресации", "Реквизиты адресации"),
   REGISTER_DIMENSION("Dimension", "Dimensions", "Измерение", "Измерения"),
   SEQUENCE_DIMENSION("Dimension", "Dimensions", "ИзмерениеПоследовательности", "ИзмеренияПоследовательности"),
-  RESOURCE("Resource", "Resources", "Ресурс", "Ресусры"),
+  RESOURCE("Resource", "Resources", "Ресурс", "Ресурсы"),
+  ENUM_VALUE("EnumValue", "EnumValues", "ЗначениеПеречисления", "ЗначенияПеречисления"),
   UNKNOWN("", "", "", "");
 
   private static final Map<String, MDOType> MAP_TYPES = computeMapTypes();
@@ -174,6 +175,6 @@ public enum MDOType {
   private static Set<MDOType> computeChildTypes() {
     return Set.of(FORM, COMMAND, TEMPLATE, ATTRIBUTE, TABULAR_SECTION, RECALCULATION, WS_OPERATION,
       WS_OPERATION_PARAMETER, HTTP_SERVICE_URL_TEMPLATE, HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL,
-      TASK_ADDRESSING_ATTRIBUTE, SEQUENCE_DIMENSION, REGISTER_DIMENSION, RESOURCE);
+      TASK_ADDRESSING_ATTRIBUTE, SEQUENCE_DIMENSION, REGISTER_DIMENSION, RESOURCE, ENUM_VALUE);
   }
 }
