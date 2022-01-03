@@ -48,6 +48,8 @@ class MDOTypeTest {
       .doesNotContain(MDOType.RESOURCE)
       .doesNotContain(MDOType.ENUM_VALUE)
       .doesNotContain(MDOType.COLUMN)
+      .doesNotContain(MDOType.ACCOUNTING_FLAG)
+      .doesNotContain(MDOType.EXT_DIMENSION_ACCOUNTING_FLAG)
       .doesNotContain(MDOType.UNKNOWN);
   }
 
