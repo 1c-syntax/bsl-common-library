@@ -47,6 +47,7 @@ class MDOTypeTest {
       .doesNotContain(MDOType.REGISTER_DIMENSION)
       .doesNotContain(MDOType.RESOURCE)
       .doesNotContain(MDOType.ENUM_VALUE)
+      .doesNotContain(MDOType.COLUMN)
       .doesNotContain(MDOType.UNKNOWN);
   }
 
