@@ -1,31 +1,26 @@
-import java.net.URI
 import java.util.*
 
 plugins {
     `java-library`
     `maven-publish`
     jacoco
-    id("net.kyori.indra.license-header") version "1.3.1"
-    id("com.github.gradle-git-version-calculator") version "1.1.0"
-    id("io.freefair.lombok") version "6.0.0-m2"
-    id("io.freefair.javadoc-links") version "6.0.0-m2"
-    id("io.freefair.javadoc-utf-8") version "6.0.0-m2"
     id("org.sonarqube") version "3.3"
+    id("org.cadixdev.licenser") version "0.6.1"
+    id("com.github.gradle-git-version-calculator") version "1.1.0"
+    id("io.freefair.lombok") version "6.4.1"
+    id("io.freefair.javadoc-links") version "6.4.1"
+    id("io.freefair.javadoc-utf-8") version "6.4.1"
 }
 
-group = "com.github.1c-syntax"
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven(url = "https://jitpack.io")
+}
+
+group = "io.github.1c-syntax"
 version = gitVersionCalculator.calculateVersion("v")
 
-repositories {
-    mavenCentral()
-    maven { url = URI("https://jitpack.io") }
-}
-
-repositories {
-    mavenCentral()
-}
-
-val junitVersion = "5.6.1"
 dependencies {
 
     implementation("org.apache.commons", "commons-collections4", "4.4")
@@ -33,19 +28,18 @@ dependencies {
     // логирование
     implementation("org.slf4j", "slf4j-api", "1.7.30")
 
+    // stat analysis
+    compileOnly("com.google.code.findbugs", "jsr305", "3.0.2")
+
     // тестирование
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.6.1")
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.6.1")
     testImplementation("org.assertj", "assertj-core", "3.18.1")
     testImplementation("com.ginsberg", "junit5-system-exit", "1.0.0")
 
     // логирование
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
     testImplementation("org.slf4j", "slf4j-log4j12", "1.7.30")
-}
-
-configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_11
 }
 
 java {
@@ -57,11 +51,13 @@ java {
 
 tasks.test {
     useJUnitPlatform()
+
     testLogging {
-        events("passed", "skipped", "failed")
+        events("passed", "skipped", "failed", "standard_error")
     }
+
     reports {
-        html.isEnabled = true
+        html.required.set(true)
     }
 }
 
@@ -71,8 +67,8 @@ tasks.check {
 
 tasks.jacocoTestReport {
     reports {
-        xml.isEnabled = true
-        xml.destination = File("$buildDir/reports/jacoco/test/jacoco.xml")
+        xml.required.set(true)
+        xml.outputLocation.set(File("$buildDir/reports/jacoco/test/jacoco.xml"))
     }
 }
 
@@ -100,7 +96,8 @@ artifacts {
 }
 
 license {
-    header = rootProject.file("license/HEADER.txt")
+    header(rootProject.file("license/HEADER.txt"))
+    newLine(false)
     ext["year"] = "2021 - " + Calendar.getInstance().get(Calendar.YEAR)
     ext["name"] = "Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com>"
     ext["project"] = "BSL Common library"
@@ -154,7 +151,7 @@ tasks.register("precommit") {
     description = "Run all precommit tasks"
     group = "Developer tools"
     dependsOn(":test")
-    dependsOn(":licenseFormat")
+    dependsOn(":updateLicenses")
 }
 
 tasks.withType<Javadoc> {
