@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright © 2021 - 2021
+ * Copyright (c) 2021 - 2022
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-package com.github._1c_syntax.bsl_common_library;
+package com.github._1c_syntax.bsl.support;
 
 import org.junit.jupiter.api.Test;
 
@@ -65,11 +65,14 @@ class CompatibilityModeTest {
 
     var versionA = new CompatibilityMode(3, 10);
     var versionB = new CompatibilityMode(3, 11);
+    var versionC = new CompatibilityMode(2, 19);
 
     assertThat(CompatibilityMode.compareTo(versionA, versionB)).isEqualTo(1);
     assertThat(CompatibilityMode.compareTo(versionB, versionA)).isEqualTo(-1);
     assertThat(CompatibilityMode.compareTo(versionA, new CompatibilityMode(3, 10))).isZero();
     assertThat(CompatibilityMode.compareTo(versionA, "Version_8_3_10")).isZero();
+    assertThat(CompatibilityMode.compareTo(versionB, versionC)).isEqualTo(-1);
+    assertThat(CompatibilityMode.compareTo(versionA, versionC)).isEqualTo(-1);
 
   }
 

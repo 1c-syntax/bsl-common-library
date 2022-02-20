@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright © 2021 - 2021
+ * Copyright (c) 2021 - 2022
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-package com.github._1c_syntax.bsl_common_library.types;
+package com.github._1c_syntax.bsl.types;
 
 import lombok.Getter;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
@@ -63,6 +63,7 @@ public enum MDOType {
   ENUM("Enum", "Enums", "Перечисление", "Перечисления"),
   EVENT_SUBSCRIPTION("EventSubscription", "EventSubscriptions", "ПодпискаНаСобытие", "ПодпискиНаСобытия"),
   EXCHANGE_PLAN("ExchangePlan", "ExchangePlans", "ПланОбмена", "ПланыОбмена"),
+  EXTERNAL_DATA_SOURCE("ExternalDataSource", "ExternalDataSources", "ВнешнийИсточникДанных", "ВнешниеИсточникиДанных"),
   FILTER_CRITERION("FilterCriterion", "FilterCriteria", "КритерийОтбора", "КритерииОтбора"),
   FUNCTIONAL_OPTION("FunctionalOption", "FunctionalOptions", "ФункциональнаяОпция", "ФункциональныеОпции"),
   FUNCTIONAL_OPTIONS_PARAMETER("FunctionalOptionsParameter", "FunctionalOptionsParameters",
@@ -90,11 +91,21 @@ public enum MDOType {
   COMMAND("Command", "Commands", "Команда", "Команды"),
   TEMPLATE("Template", "Templates", "Макет", "Макеты"),
   ATTRIBUTE("Attribute", "Attributes", "Реквизит", "Реквизиты"),
+  TABULAR_SECTION("TabularSection", "TabularSections", "ТабличнаяЧасть", "ТабличныеЧасти"),
   RECALCULATION("Recalculation", "Recalculations", "Перерасчет", "Перерасчеты"),
   WS_OPERATION("Operation", "Operations", "Операция", "Операции"),
+  WS_OPERATION_PARAMETER("Parameter", "Parameters", "Параметр", "Параметры"),
   HTTP_SERVICE_URL_TEMPLATE("URLTemplate", "URLTemplates", "ШаблонURL", "ШаблоныURL"),
   HTTP_SERVICE_METHOD("Method", "Methods", "Метод", "Методы"),
   INTEGRATION_SERVICE_CHANNEL("IntegrationServiceChannel", "IntegrationServiceChannels", "КаналСервисаИнтеграции", "Каналы"),
+  TASK_ADDRESSING_ATTRIBUTE("AddressingAttribute", "AddressingAttributes", "РеквизитАдресации", "Реквизиты адресации"),
+  REGISTER_DIMENSION("Dimension", "Dimensions", "Измерение", "Измерения"),
+  SEQUENCE_DIMENSION("Dimension", "Dimensions", "ИзмерениеПоследовательности", "ИзмеренияПоследовательности"),
+  RESOURCE("Resource", "Resources", "Ресурс", "Ресурсы"),
+  ENUM_VALUE("EnumValue", "EnumValues", "ЗначениеПеречисления", "ЗначенияПеречисления"),
+  COLUMN("Column", "Columns", "Колонка", "Колонки"),
+  ACCOUNTING_FLAG("AccountingFlag", "AccountingFlags", "ПризнакУчета", "ПризнакиУчета"),
+  EXT_DIMENSION_ACCOUNTING_FLAG("ExtDimensionAccountingFlag", "ExtDimensionAccountingFlags", "ПризнакУчетаСубконто", "ПризнакиУчетаСубконто"),
   UNKNOWN("", "", "", "");
 
   private static final Map<String, MDOType> MAP_TYPES = computeMapTypes();
@@ -165,8 +176,9 @@ public enum MDOType {
   }
 
   private static Set<MDOType> computeChildTypes() {
-    return Set.of(FORM, COMMAND, TEMPLATE, ATTRIBUTE, RECALCULATION, WS_OPERATION, HTTP_SERVICE_URL_TEMPLATE,
-      HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL);
+    return Set.of(FORM, COMMAND, TEMPLATE, ATTRIBUTE, TABULAR_SECTION, RECALCULATION, WS_OPERATION,
+      WS_OPERATION_PARAMETER, HTTP_SERVICE_URL_TEMPLATE, HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL,
+      TASK_ADDRESSING_ATTRIBUTE, SEQUENCE_DIMENSION, REGISTER_DIMENSION, RESOURCE, ENUM_VALUE, COLUMN,
+      ACCOUNTING_FLAG, EXT_DIMENSION_ACCOUNTING_FLAG);
   }
-
 }

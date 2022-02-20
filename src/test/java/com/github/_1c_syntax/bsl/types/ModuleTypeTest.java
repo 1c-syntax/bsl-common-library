@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright © 2021 - 2021
+ * Copyright (c) 2021 - 2022
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -19,34 +19,37 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-package com.github._1c_syntax.bsl_common_library.types;
+package com.github._1c_syntax.bsl.types;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-class MDOTypeTest {
-
-  @Test
-  void valuesWithoutChildren() {
-    var values = MDOType.valuesWithoutChildren();
-    assertThat(values).hasSize(47)
-      .doesNotContain(MDOType.FORM)
-      .doesNotContain(MDOType.COMMAND)
-      .doesNotContain(MDOType.TEMPLATE)
-      .doesNotContain(MDOType.ATTRIBUTE)
-      .doesNotContain(MDOType.RECALCULATION)
-      .doesNotContain(MDOType.WS_OPERATION)
-      .doesNotContain(MDOType.HTTP_SERVICE_URL_TEMPLATE)
-      .doesNotContain(MDOType.HTTP_SERVICE_METHOD)
-      .doesNotContain(MDOType.INTEGRATION_SERVICE_CHANNEL)
-      .doesNotContain(MDOType.UNKNOWN);
-  }
+class ModuleTypeTest {
 
   @Test
-  void fromValue() {
-    assertThat(MDOType.fromValue("FORM")).isPresent().contains(MDOType.FORM);
-    assertThat(MDOType.fromValue("attribute")).isPresent().contains(MDOType.ATTRIBUTE);
-    assertThat(MDOType.fromValue("string")).isNotPresent();
+  void byMDOType() {
+    var modules = ModuleType.byMDOType(MDOType.FORM);
+    assertThat(modules)
+      .hasSize(1)
+      .contains(ModuleType.FormModule);
+
+    modules = ModuleType.byMDOType(MDOType.RECALCULATION);
+    assertThat(modules)
+      .hasSize(1)
+      .contains(ModuleType.RecalculationModule);
+
+    modules = ModuleType.byMDOType(MDOType.ACCOUNTING_REGISTER);
+    assertThat(modules)
+      .hasSize(2)
+      .contains(ModuleType.RecordSetModule)
+      .contains(ModuleType.ManagerModule);
+
+    modules = ModuleType.byMDOType(MDOType.ATTRIBUTE);
+    assertThat(modules).isEmpty();
+
+    modules = ModuleType.byMDOType(MDOType.TEMPLATE);
+    assertThat(modules).isEmpty();
   }
 }
