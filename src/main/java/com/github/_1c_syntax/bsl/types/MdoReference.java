@@ -25,11 +25,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
 import lombok.Value;
-import org.apache.commons.collections4.map.CaseInsensitiveMap;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.regex.Pattern;
 
 /**
@@ -50,9 +49,8 @@ public class MdoReference {
   /**
    * Кэш всех ссылок
    */
-  private static final Map<String, MdoReference> REFERENCES = new CaseInsensitiveMap<>();
-
-  private static final ReentrantLock referenceLock = new ReentrantLock();
+  private static final Map<String, MdoReference> REFERENCES =
+    new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
 
   /**
    * Тип объекта метаданных
@@ -161,24 +159,19 @@ public class MdoReference {
    */
   public static Optional<MdoReference> find(@NonNull String mdoRef) {
     Optional<MdoReference> result = Optional.empty();
-    referenceLock.lock();
     if (REFERENCES.containsKey(mdoRef)) {
       result = Optional.of(REFERENCES.get(mdoRef));
     }
-    referenceLock.unlock();
     return result;
   }
 
   private static MdoReference getOrCompute(@NonNull MDOType mdoType, @NonNull String mdoRef, @NonNull String mdoRefRu) {
-    referenceLock.lock();
     if (REFERENCES.containsKey(mdoRef)) {
-      referenceLock.unlock();
       return REFERENCES.get(mdoRef);
     }
     var newMdoReference = new MdoReference(mdoType, mdoRef, mdoRefRu);
     REFERENCES.put(newMdoReference.getMdoRef(), newMdoReference);
     REFERENCES.put(newMdoReference.getMdoRefRu(), newMdoReference);
-    referenceLock.unlock();
     return newMdoReference;
   }
 }
