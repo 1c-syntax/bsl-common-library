@@ -94,8 +94,8 @@ public class MdoReference {
    * @return Ссылка на объект
    */
   public static MdoReference create(@NonNull MDOType mdoType, @NonNull String name) {
-    var mdoRef = mdoType.getName() + "." + name;
-    var mdoRefRu = mdoType.getNameRu() + "." + name;
+    var mdoRef = (mdoType.getName() + "." + name).intern();
+    var mdoRefRu = (mdoType.getNameRu() + "." + name).intern();
 
     return getOrCompute(mdoType, mdoRef, mdoRefRu);
   }
@@ -111,8 +111,8 @@ public class MdoReference {
   public static MdoReference create(@NonNull MdoReference mdoReferenceOwner,
                                     @NonNull MDOType mdoType,
                                     @NonNull String name) {
-    var mdoRef = mdoReferenceOwner.getMdoRef() + "." + mdoType.getName() + "." + name;
-    var mdoRefRu = mdoReferenceOwner.getMdoRefRu() + "." + mdoType.getNameRu() + "." + name;
+    var mdoRef = (mdoReferenceOwner.getMdoRef() + "." + mdoType.getName() + "." + name).intern();
+    var mdoRefRu = (mdoReferenceOwner.getMdoRefRu() + "." + mdoType.getNameRu() + "." + name).intern();
 
     return getOrCompute(mdoType, mdoRef, mdoRefRu);
   }
