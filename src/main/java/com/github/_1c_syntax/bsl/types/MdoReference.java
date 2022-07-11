@@ -21,6 +21,7 @@
  */
 package com.github._1c_syntax.bsl.types;
 
+import com.github._1c_syntax.utils.StringInterner;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
@@ -45,6 +46,8 @@ public class MdoReference {
 
   private static final String REF_SPLIT_REGEX = "\\.";
   private static final Pattern REF_SPLIT_PATTERN = Pattern.compile(REF_SPLIT_REGEX);
+
+  private static final StringInterner stringInterner = new StringInterner();
 
   /**
    * Кэш всех ссылок
@@ -94,8 +97,8 @@ public class MdoReference {
    * @return Ссылка на объект
    */
   public static MdoReference create(@NonNull MDOType mdoType, @NonNull String name) {
-    var mdoRef = (mdoType.getName() + "." + name).intern();
-    var mdoRefRu = (mdoType.getNameRu() + "." + name).intern();
+    var mdoRef = stringInterner.intern(mdoType.getName() + "." + name);
+    var mdoRefRu = stringInterner.intern(mdoType.getNameRu() + "." + name);
 
     return getOrCompute(mdoType, mdoRef, mdoRefRu);
   }
@@ -111,8 +114,8 @@ public class MdoReference {
   public static MdoReference create(@NonNull MdoReference mdoReferenceOwner,
                                     @NonNull MDOType mdoType,
                                     @NonNull String name) {
-    var mdoRef = (mdoReferenceOwner.getMdoRef() + "." + mdoType.getName() + "." + name).intern();
-    var mdoRefRu = (mdoReferenceOwner.getMdoRefRu() + "." + mdoType.getNameRu() + "." + name).intern();
+    var mdoRef = stringInterner.intern(mdoReferenceOwner.getMdoRef() + "." + mdoType.getName() + "." + name);
+    var mdoRefRu = stringInterner.intern(mdoReferenceOwner.getMdoRefRu() + "." + mdoType.getNameRu() + "." + name);
 
     return getOrCompute(mdoType, mdoRef, mdoRefRu);
   }
