@@ -24,6 +24,7 @@ version = gitVersionCalculator.calculateVersion("v")
 dependencies {
 
     implementation("org.apache.commons", "commons-collections4", "4.4")
+    implementation("com.github.1c-syntax", "utils", "0.4.0")
 
     // логирование
     implementation("org.slf4j", "slf4j-api", "1.7.30")
