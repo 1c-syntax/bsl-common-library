@@ -24,7 +24,7 @@ package com.github._1c_syntax.bsl.types;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MdoReferenceTest {
 
@@ -123,5 +123,31 @@ class MdoReferenceTest {
     assertThat(mdoRefParent0).isNotEmpty();
     assertThat(mdoRefParent0.get().getMdoRef()).isEqualTo("Catalog.test12");
     assertThat(mdoRefParent0.get().getType()).isEqualTo(MDOType.CATALOG);
+  }
+
+  @Test
+  void testEmpty() {
+    assertThat(MdoReference.EMPTY.isEmpty()).isTrue();
+
+    var mdoRef = MdoReference.create("catalogs.test");
+    assertThat(mdoRef).isNotNull();
+    assertThat(mdoRef.isEmpty()).isFalse();
+  }
+
+  @Test
+  void testCreateWithEmptyParent() {
+    var mdoRef = MdoReference.create(MDOType.CATALOG, "test10");
+    assertThat(mdoRef).isNotNull();
+    assertThat(mdoRef.isEmpty()).isFalse();
+
+    var mdoRef2 = MdoReference.create(MdoReference.EMPTY, MDOType.CATALOG, "test10");
+    assertThat(mdoRef2).isNotNull();
+    assertThat(mdoRef2.isEmpty()).isFalse();
+    assertThat(mdoRef2).isEqualTo(mdoRef);
+
+    var mdoRef3 = MdoReference.create(null, MDOType.CATALOG, "test10");
+    assertThat(mdoRef3).isNotNull();
+    assertThat(mdoRef3.isEmpty()).isFalse();
+    assertThat(mdoRef3).isEqualTo(mdoRef);
   }
 }
