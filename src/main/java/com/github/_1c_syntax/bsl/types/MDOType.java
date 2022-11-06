@@ -91,7 +91,9 @@ public enum MDOType {
   COMMAND("Command", "Commands", "Команда", "Команды"),
   TEMPLATE("Template", "Templates", "Макет", "Макеты"),
   ATTRIBUTE("Attribute", "Attributes", "Реквизит", "Реквизиты"),
+  STANDARD_ATTRIBUTE("StandardAttribute", "StandardAttributes", "СтандартныйРеквизит", "СтандартныеРеквизиты"),
   TABULAR_SECTION("TabularSection", "TabularSections", "ТабличнаяЧасть", "ТабличныеЧасти"),
+  STANDARD_TABULAR_SECTION("StandardTabularSection", "StandardTabularSections", "СтандартнаяТабличнаяЧасть", "СтандартныеТабличныеЧасти"),
   RECALCULATION("Recalculation", "Recalculations", "Перерасчет", "Перерасчеты"),
   WS_OPERATION("Operation", "Operations", "Операция", "Операции"),
   WS_OPERATION_PARAMETER("Parameter", "Parameters", "Параметр", "Параметры"),
@@ -148,7 +150,7 @@ public enum MDOType {
    */
   public static List<MDOType> valuesWithoutChildren() {
     return Arrays.stream(values()).filter(mdoType ->
-      !CHILD_TYPES.contains(mdoType) && mdoType != UNKNOWN)
+        !CHILD_TYPES.contains(mdoType) && mdoType != UNKNOWN)
       .collect(Collectors.toList());
   }
 
@@ -178,6 +180,6 @@ public enum MDOType {
     return Set.of(FORM, COMMAND, TEMPLATE, ATTRIBUTE, TABULAR_SECTION, RECALCULATION, WS_OPERATION,
       WS_OPERATION_PARAMETER, HTTP_SERVICE_URL_TEMPLATE, HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL,
       TASK_ADDRESSING_ATTRIBUTE, DIMENSION, RESOURCE, ENUM_VALUE, COLUMN,
-      ACCOUNTING_FLAG, EXT_DIMENSION_ACCOUNTING_FLAG);
+      ACCOUNTING_FLAG, EXT_DIMENSION_ACCOUNTING_FLAG, STANDARD_ATTRIBUTE, STANDARD_TABULAR_SECTION);
   }
 }
