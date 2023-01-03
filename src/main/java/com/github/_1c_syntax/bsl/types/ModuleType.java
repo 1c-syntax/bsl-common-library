@@ -89,6 +89,7 @@ public enum ModuleType {
         case ACCUMULATION_REGISTER:
         case CALCULATION_REGISTER:
         case INFORMATION_REGISTER:
+        case EXTERNAL_DATA_SOURCE_TABLE:
           types.add(ManagerModule);
           types.add(RecordSetModule);
           break;
