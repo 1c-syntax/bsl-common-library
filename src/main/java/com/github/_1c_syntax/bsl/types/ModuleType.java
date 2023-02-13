@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2022
+ * Copyright (c) 2021 - 2023
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -89,6 +89,7 @@ public enum ModuleType {
         case ACCUMULATION_REGISTER:
         case CALCULATION_REGISTER:
         case INFORMATION_REGISTER:
+        case EXTERNAL_DATA_SOURCE_TABLE:
           types.add(ManagerModule);
           types.add(RecordSetModule);
           break;

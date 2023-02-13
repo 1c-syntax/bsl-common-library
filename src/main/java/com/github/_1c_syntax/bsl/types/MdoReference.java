@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2022
+ * Copyright (c) 2021 - 2023
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -27,6 +27,7 @@ import lombok.NonNull;
 import lombok.ToString;
 import lombok.Value;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -77,6 +78,15 @@ public class MdoReference {
   }
 
   /**
+   * Возвращает признак пустоты текущей ссылки
+   *
+   * @return Признак пустоты
+   */
+  public boolean isEmpty() {
+    return this == EMPTY;
+  }
+
+  /**
    * Создает ссылку, сохраняя ее в кэш.
    * Ответственность за корректность сформированных представлений ссылки ложится на вызывающую сторону
    *
@@ -111,13 +121,17 @@ public class MdoReference {
    * @param name              Имя дочернего элемента
    * @return Ссылка на элемент
    */
-  public static MdoReference create(@NonNull MdoReference mdoReferenceOwner,
+  public static MdoReference create(@Nullable MdoReference mdoReferenceOwner,
                                     @NonNull MDOType mdoType,
                                     @NonNull String name) {
-    var mdoRef = stringInterner.intern(mdoReferenceOwner.getMdoRef() + "." + mdoType.getName() + "." + name);
-    var mdoRefRu = stringInterner.intern(mdoReferenceOwner.getMdoRefRu() + "." + mdoType.getNameRu() + "." + name);
+    if (mdoReferenceOwner == null || mdoReferenceOwner.isEmpty()) {
+      return create(mdoType, name);
+    } else {
+      var mdoRef = stringInterner.intern(mdoReferenceOwner.getMdoRef() + "." + mdoType.getName() + "." + name);
+      var mdoRefRu = stringInterner.intern(mdoReferenceOwner.getMdoRefRu() + "." + mdoType.getNameRu() + "." + name);
 
-    return getOrCompute(mdoType, mdoRef, mdoRefRu);
+      return getOrCompute(mdoType, mdoRef, mdoRefRu);
+    }
   }
 
   /**

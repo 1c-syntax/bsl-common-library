@@ -4,12 +4,12 @@ plugins {
     `java-library`
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "3.4.0.2513"
+    id("org.sonarqube") version "3.5.0.2730"
     id("org.cadixdev.licenser") version "0.6.1"
     id("com.github.gradle-git-version-calculator") version "1.1.0"
-    id("io.freefair.lombok") version "6.5.0.2"
-    id("io.freefair.javadoc-links") version "6.5.0.2"
-    id("io.freefair.javadoc-utf-8") version "6.5.0.2"
+    id("io.freefair.lombok") version "6.6.1"
+    id("io.freefair.javadoc-links") version "6.6.1"
+    id("io.freefair.javadoc-utf-8") version "6.6.1"
 }
 
 repositories {
