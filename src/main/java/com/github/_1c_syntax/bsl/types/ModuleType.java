@@ -162,6 +162,10 @@ public enum ModuleType {
         case RECALCULATION:
           types.add(RecalculationModule);
           break;
+        case EXTERNAL_DATA_PROCESSOR:
+        case EXTERNAL_REPORT:
+          types.add(ObjectModule);
+          break;
         default:
           // non
       }

@@ -24,7 +24,6 @@ package com.github._1c_syntax.bsl.types;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ModuleTypeTest {
 
@@ -51,5 +50,15 @@ class ModuleTypeTest {
 
     modules = ModuleType.byMDOType(MDOType.TEMPLATE);
     assertThat(modules).isEmpty();
+
+    modules = ModuleType.byMDOType(MDOType.EXTERNAL_DATA_PROCESSOR);
+    assertThat(modules)
+      .hasSize(1)
+      .contains(ModuleType.ObjectModule);
+
+    modules = ModuleType.byMDOType(MDOType.EXTERNAL_REPORT);
+    assertThat(modules)
+      .hasSize(1)
+      .contains(ModuleType.ObjectModule);
   }
 }
