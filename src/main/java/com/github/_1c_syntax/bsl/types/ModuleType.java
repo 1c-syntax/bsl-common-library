@@ -143,6 +143,7 @@ public enum ModuleType {
           break;
         case CONSTANT:
           types.add(ValueManagerModule);
+          types.add(ManagerModule);
           break;
         case DOCUMENT_JOURNAL:
         case ENUM:
