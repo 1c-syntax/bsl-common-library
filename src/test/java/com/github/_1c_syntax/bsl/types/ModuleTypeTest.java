@@ -61,4 +61,12 @@ class ModuleTypeTest {
       .hasSize(1)
       .contains(ModuleType.ObjectModule);
   }
+
+  @Test
+  void oscriptModuleTypes() {
+    assertThat(ModuleType.oScriptModuleTypes())
+      .hasSize(2)
+      .contains(ModuleType.OScriptModule)
+      .contains(ModuleType.OScriptClass);
+  }
 }

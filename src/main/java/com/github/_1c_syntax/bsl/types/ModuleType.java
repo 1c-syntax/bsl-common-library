@@ -27,6 +27,7 @@ import lombok.Getter;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,6 +36,10 @@ import java.util.Set;
  */
 @AllArgsConstructor
 public enum ModuleType {
+
+  /*
+   * for bsl
+   */
 
   BotModule("Module.bsl"),
   IntegrationServiceModule("Module.bsl"),
@@ -53,9 +58,23 @@ public enum ModuleType {
   HTTPServiceModule("Module.bsl"),
   WEBServiceModule("Module.bsl"),
   RecalculationModule("RecordSetModule.bsl"),
+
+  /*
+   * for oscript
+   */
+
+  OScriptClass("Class.os"),
+  OScriptModule("Module.os"),
+
+  /*
+   * common
+   */
+
   UNKNOWN(""); // для неизвестных типов модулей
 
   private static final Map<MDOType, Set<ModuleType>> MODULE_TYPES_FOR_MDO_TYPES = moduleTypesForMDOTypes();
+
+  private static final List<ModuleType> OSCRIPT_MODULE_TYPES = List.of(OScriptClass, OScriptModule);
 
   /**
    * Имя файла
@@ -71,6 +90,13 @@ public enum ModuleType {
    */
   public static Set<ModuleType> byMDOType(MDOType mdoType) {
     return MODULE_TYPES_FOR_MDO_TYPES.getOrDefault(mdoType, Collections.emptySet());
+  }
+
+  /**
+   * @return Список типов модулей для OScript
+   */
+  public static List<ModuleType> oScriptModuleTypes() {
+    return OSCRIPT_MODULE_TYPES;
   }
 
   private static Map<MDOType, Set<ModuleType>> moduleTypesForMDOTypes() {
