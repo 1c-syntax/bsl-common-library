@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2022
+ * Copyright (c) 2021 - 2023
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -30,7 +30,7 @@ class MDOTypeTest {
   @Test
   void valuesWithoutChildren() {
     var values = MDOType.valuesWithoutChildren();
-    assertThat(values).hasSize(48)
+    assertThat(values).hasSize(50)
       .doesNotContain(MDOType.FORM)
       .doesNotContain(MDOType.COMMAND)
       .doesNotContain(MDOType.TEMPLATE)

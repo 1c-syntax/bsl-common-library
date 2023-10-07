@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2022
+ * Copyright (c) 2021 - 2023
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -24,7 +24,6 @@ package com.github._1c_syntax.bsl.types;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ModuleTypeTest {
 
@@ -51,5 +50,23 @@ class ModuleTypeTest {
 
     modules = ModuleType.byMDOType(MDOType.TEMPLATE);
     assertThat(modules).isEmpty();
+
+    modules = ModuleType.byMDOType(MDOType.EXTERNAL_DATA_PROCESSOR);
+    assertThat(modules)
+      .hasSize(1)
+      .contains(ModuleType.ObjectModule);
+
+    modules = ModuleType.byMDOType(MDOType.EXTERNAL_REPORT);
+    assertThat(modules)
+      .hasSize(1)
+      .contains(ModuleType.ObjectModule);
+  }
+
+  @Test
+  void oscriptModuleTypes() {
+    assertThat(ModuleType.oScriptModuleTypes())
+      .hasSize(2)
+      .contains(ModuleType.OScriptModule)
+      .contains(ModuleType.OScriptClass);
   }
 }

@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2022
+ * Copyright (c) 2021 - 2023
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -27,6 +27,7 @@ import lombok.Getter;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,6 +36,10 @@ import java.util.Set;
  */
 @AllArgsConstructor
 public enum ModuleType {
+
+  /*
+   * for bsl
+   */
 
   BotModule("Module.bsl"),
   IntegrationServiceModule("Module.bsl"),
@@ -53,9 +58,23 @@ public enum ModuleType {
   HTTPServiceModule("Module.bsl"),
   WEBServiceModule("Module.bsl"),
   RecalculationModule("RecordSetModule.bsl"),
+
+  /*
+   * for oscript
+   */
+
+  OScriptClass("Class.os"),
+  OScriptModule("Module.os"),
+
+  /*
+   * common
+   */
+
   UNKNOWN(""); // для неизвестных типов модулей
 
   private static final Map<MDOType, Set<ModuleType>> MODULE_TYPES_FOR_MDO_TYPES = moduleTypesForMDOTypes();
+
+  private static final List<ModuleType> OSCRIPT_MODULE_TYPES = List.of(OScriptClass, OScriptModule);
 
   /**
    * Имя файла
@@ -71,6 +90,13 @@ public enum ModuleType {
    */
   public static Set<ModuleType> byMDOType(MDOType mdoType) {
     return MODULE_TYPES_FOR_MDO_TYPES.getOrDefault(mdoType, Collections.emptySet());
+  }
+
+  /**
+   * @return Список типов модулей для OScript
+   */
+  public static List<ModuleType> oScriptModuleTypes() {
+    return OSCRIPT_MODULE_TYPES;
   }
 
   private static Map<MDOType, Set<ModuleType>> moduleTypesForMDOTypes() {
@@ -89,6 +115,7 @@ public enum ModuleType {
         case ACCUMULATION_REGISTER:
         case CALCULATION_REGISTER:
         case INFORMATION_REGISTER:
+        case EXTERNAL_DATA_SOURCE_TABLE:
           types.add(ManagerModule);
           types.add(RecordSetModule);
           break;
@@ -142,6 +169,7 @@ public enum ModuleType {
           break;
         case CONSTANT:
           types.add(ValueManagerModule);
+          types.add(ManagerModule);
           break;
         case DOCUMENT_JOURNAL:
         case ENUM:
@@ -160,6 +188,10 @@ public enum ModuleType {
           break;
         case RECALCULATION:
           types.add(RecalculationModule);
+          break;
+        case EXTERNAL_DATA_PROCESSOR:
+        case EXTERNAL_REPORT:
+          types.add(ObjectModule);
           break;
         default:
           // non
