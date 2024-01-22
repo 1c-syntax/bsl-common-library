@@ -158,6 +158,9 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
+            if (isSnapshot && project.hasProperty("simplifyVersion")) {
+                version = findProperty("git.ref.slug") as String + "-SNAPSHOT"
+            }
             pom {
                 description.set("Common library for 1c-syntax projects")
                 url.set("https://github.com/1c-syntax/bsl-common-library")
