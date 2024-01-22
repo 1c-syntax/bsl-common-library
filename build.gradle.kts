@@ -1,15 +1,21 @@
+import me.qoomon.gitversioning.commons.GitRefType
 import java.util.*
 
 plugins {
     `java-library`
     `maven-publish`
     jacoco
+    signing
     id("org.cadixdev.licenser") version "0.6.1"
-    id("com.github.gradle-git-version-calculator") version "1.1.0"
-    id("io.freefair.lombok") version "8.3"
-    id("io.freefair.javadoc-links") version "8.3"
-    id("io.freefair.javadoc-utf-8") version "8.3"
+    id("me.qoomon.git-versioning") version "6.4.3"
+    id("io.freefair.lombok") version "8.4"
+    id("io.freefair.javadoc-links") version "8.4"
+    id("io.freefair.javadoc-utf-8") version "8.4"
     id("org.sonarqube") version "4.4.1.3373"
+    id("io.freefair.maven-central.validate-poms") version "8.4"
+    id("com.github.ben-manes.versions") version "0.50.0"
+    id("ru.vyarus.pom") version "2.2.2"
+    id("io.codearte.nexus-staging") version "0.30.0"
 }
 
 repositories {
@@ -19,7 +25,22 @@ repositories {
 }
 
 group = "io.github.1c-syntax"
-version = gitVersionCalculator.calculateVersion("v")
+gitVersioning.apply {
+    refs {
+        considerTagsOnBranches = true
+        tag("v(?<tagVersion>[0-9].*)") {
+            version = "\${ref.tagVersion}\${dirty}"
+        }
+        branch(".+") {
+            version = "\${ref}-\${commit.short}\${dirty}"
+        }
+    }
+
+    rev {
+        version = "\${commit.short}\${dirty}"
+    }
+}
+val isSnapshot = gitVersioning.gitVersionDetails.refType != GitRefType.TAG
 
 dependencies {
 
@@ -27,7 +48,7 @@ dependencies {
     implementation("com.github.1c-syntax", "utils", "0.5.1")
 
     // логирование
-    implementation("org.slf4j", "slf4j-api", "1.7.30")
+    implementation("org.slf4j", "slf4j-api", "2.0.11")
 
     // stat analysis
     compileOnly("com.google.code.findbugs", "jsr305", "3.0.2")
@@ -40,12 +61,12 @@ dependencies {
 
     // логирование
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
-    testImplementation("org.slf4j", "slf4j-log4j12", "1.7.30")
+    testImplementation("org.slf4j", "slf4j-log4j12", "2.0.11")
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     withSourcesJar()
     withJavadocJar()
 }
@@ -106,10 +127,40 @@ license {
     exclude("**/*.orig")
 }
 
+signing {
+    val signingInMemoryKey: String? by project      // env.ORG_GRADLE_PROJECT_signingInMemoryKey
+    val signingInMemoryPassword: String? by project // env.ORG_GRADLE_PROJECT_signingInMemoryPassword
+    if (signingInMemoryKey != null) {
+        useInMemoryPgpKeys(signingInMemoryKey, signingInMemoryPassword)
+        sign(publishing.publications)
+    }
+}
+
 publishing {
+    repositories {
+        maven {
+            name = "sonatype"
+            url = if (isSnapshot)
+                uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            else
+                uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+            val sonatypeUsername: String? by project
+            val sonatypePassword: String? by project
+
+            credentials {
+                username = sonatypeUsername // ORG_GRADLE_PROJECT_sonatypeUsername
+                password = sonatypePassword // ORG_GRADLE_PROJECT_sonatypePassword
+            }
+        }
+    }
+
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
+            if (isSnapshot && project.hasProperty("simplifyVersion")) {
+                version = findProperty("git.ref.slug") as String + "-SNAPSHOT"
+            }
             pom {
                 description.set("Common library for 1c-syntax projects")
                 url.set("https://github.com/1c-syntax/bsl-common-library")
@@ -158,4 +209,9 @@ tasks.register("precommit") {
 tasks.withType<Javadoc> {
     (options as StandardJavadocDocletOptions)
             .addStringOption("Xdoclint:none", "-quiet")
+}
+
+nexusStaging {
+    serverUrl = "https://s01.oss.sonatype.org/service/local/"
+    stagingProfileId = "15bd88b4d17915" // ./gradlew getStagingProfile
 }
