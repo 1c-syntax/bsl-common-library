@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2023
+ * Copyright (c) 2021 - 2024
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -31,11 +31,11 @@ import java.util.Comparator;
 /**
  * Варианты поддержки конфигурации поставщика
  */
+@Getter
 @AllArgsConstructor
 public enum SupportVariant {
   NOT_EDITABLE(0), EDITABLE_SUPPORT_ENABLED(1), NOT_SUPPORTED(2), NONE(99);
 
-  @Getter
   private final int priority;
 
   /**
@@ -58,9 +58,6 @@ public enum SupportVariant {
   public static SupportVariant valueOf(int priority) {
     var result = Arrays.stream(values())
       .filter(supportVariant -> supportVariant.priority == priority).findFirst();
-    if (result.isEmpty()) {
-      return NONE;
-    }
-    return result.get();
+    return result.orElse(NONE);
   }
 }

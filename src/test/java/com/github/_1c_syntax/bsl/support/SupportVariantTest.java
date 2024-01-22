@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2023
+ * Copyright (c) 2021 - 2024
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later

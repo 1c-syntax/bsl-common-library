@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2023
+ * Copyright (c) 2021 - 2024
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 /**
  * Типы объектов метаданных
  */
+@Getter
 public enum MDOType {
   ACCOUNTING_REGISTER("AccountingRegister", "AccountingRegisters",
     "РегистрБухгалтерии", "РегистрыБухгалтерии"),
@@ -145,25 +146,21 @@ public enum MDOType {
   /**
    * Англоязычное имя типа
    */
-  @Getter
   private final String name;
 
   /**
    * Англоязычное имя группы объектов типа
    */
-  @Getter
   private final String groupName;
 
   /**
    * Русскоязычное имя типа
    */
-  @Getter
   private final String nameRu;
 
   /**
    * Русскоязычное имя группы объектов типа
    */
-  @Getter
   private final String groupNameRu;
 
   MDOType(String nameEn, String groupNameEn, String nameRu, String groupNameRu) {
