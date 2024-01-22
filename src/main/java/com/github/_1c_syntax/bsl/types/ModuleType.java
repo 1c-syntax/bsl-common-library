@@ -34,6 +34,7 @@ import java.util.Set;
 /**
  * Возможные типы модулей объектов
  */
+@Getter
 @AllArgsConstructor
 public enum ModuleType {
 
@@ -79,7 +80,6 @@ public enum ModuleType {
   /**
    * Имя файла
    */
-  @Getter
   private final String fileName;
 
   /**
@@ -202,5 +202,4 @@ public enum ModuleType {
 
     return result;
   }
-
 }
