@@ -10,7 +10,7 @@ plugins {
     id("me.qoomon.git-versioning") version "6.4.3"
     id("io.freefair.lombok") version "8.4"
     id("io.freefair.javadoc-links") version "8.4"
-    id("io.freefair.javadoc-utf-8") version "8.4"
+    id("io.freefair.javadoc-utf-8") version "8.6"
     id("org.sonarqube") version "4.4.1.3373"
     id("io.freefair.maven-central.validate-poms") version "8.4"
     id("com.github.ben-manes.versions") version "0.51.0"
