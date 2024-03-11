@@ -14,7 +14,7 @@ plugins {
     id("org.sonarqube") version "4.4.1.3373"
     id("io.freefair.maven-central.validate-poms") version "8.6"
     id("com.github.ben-manes.versions") version "0.51.0"
-    id("ru.vyarus.pom") version "2.2.2"
+    id("ru.vyarus.pom") version "3.0.0"
     id("io.codearte.nexus-staging") version "0.30.0"
 }
 
