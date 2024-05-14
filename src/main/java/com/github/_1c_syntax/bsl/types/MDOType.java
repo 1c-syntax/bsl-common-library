@@ -68,7 +68,7 @@ public enum MDOType {
   DOCUMENT_JOURNAL("DocumentJournal", "DocumentJournals",
     "ЖурналДокументов", "ЖурналыДокументов"),
   DOCUMENT_NUMERATOR("DocumentNumerator", "DocumentNumerators",
-    "Нумератор", "Нумераторы"),
+    "НумераторДокументов", "НумераторыДокументов"),
   DOCUMENT("Document", "Documents", "Документ", "Документы"),
   ENUM("Enum", "Enums", "Перечисление", "Перечисления"),
   EVENT_SUBSCRIPTION("EventSubscription", "EventSubscriptions",

@@ -54,8 +54,8 @@ dependencies {
     compileOnly("com.google.code.findbugs", "jsr305", "3.0.2")
 
     // тестирование
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.6.1")
     testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.6.1")
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.6.1")
     testImplementation("org.assertj", "assertj-core", "3.18.1")
     testImplementation("com.ginsberg", "junit5-system-exit", "1.0.0")
 
