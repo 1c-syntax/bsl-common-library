@@ -12,3 +12,6 @@ build/
 /.idea/compiler.xml
 /.idea/jarRepositories.xml
 *.iml
+/.idea/material_theme_project_new.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/sonarlint.xml
