@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 @Value
 @EqualsAndHashCode(of = {"mdoRef"})
 @ToString(of = {"mdoRef"})
-public class MdoReference {
+public class MdoReference implements Comparable<MdoReference> {
   /**
    * Ссылка на пустую ссылку
    */
@@ -180,6 +180,27 @@ public class MdoReference {
       result = Optional.of(REFERENCES.get(mdoRef));
     }
     return result;
+  }
+
+  @Override
+  public int compareTo(@Nullable MdoReference mdoReference) {
+    if (mdoReference == null) {
+      return 1;
+    }
+
+    if (this.equals(mdoReference)) {
+      return 0;
+    }
+
+    if (this.type != mdoReference.getType()) {
+      return this.type.compareTo(mdoReference.getType());
+    } else if (this.mdoRef.equals(mdoReference.getMdoRef())) {
+      return this.mdoRef.compareTo(mdoReference.getMdoRef());
+    } else if (this.mdoRefRu.equals(mdoReference.getMdoRefRu())) {
+      return this.mdoRefRu.compareTo(mdoReference.getMdoRefRu());
+    } else {
+      return 0;
+    }
   }
 
   private static MdoReference getOrCompute(@NonNull MDOType mdoType, @NonNull String mdoRef, @NonNull String mdoRefRu) {
