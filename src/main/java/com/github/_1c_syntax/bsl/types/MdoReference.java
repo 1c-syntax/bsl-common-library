@@ -194,9 +194,9 @@ public class MdoReference implements Comparable<MdoReference> {
 
     if (this.type != mdoReference.getType()) {
       return this.type.compareTo(mdoReference.getType());
-    } else if (this.mdoRef.equals(mdoReference.getMdoRef())) {
+    } else if (!this.mdoRef.equals(mdoReference.getMdoRef())) {
       return this.mdoRef.compareTo(mdoReference.getMdoRef());
-    } else if (this.mdoRefRu.equals(mdoReference.getMdoRefRu())) {
+    } else if (!this.mdoRefRu.equals(mdoReference.getMdoRefRu())) {
       return this.mdoRefRu.compareTo(mdoReference.getMdoRefRu());
     } else {
       return 0;
