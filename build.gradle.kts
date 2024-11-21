@@ -11,7 +11,7 @@ plugins {
     id("io.freefair.lombok") version "8.10"
     id("io.freefair.javadoc-links") version "8.10"
     id("io.freefair.javadoc-utf-8") version "8.10"
-    id("org.sonarqube") version "5.1.0.4882"
+    id("org.sonarqube") version "6.0.0.5145"
     id("io.freefair.maven-central.validate-poms") version "8.10"
     id("com.github.ben-manes.versions") version "0.51.0"
     id("ru.vyarus.pom") version "3.0.0"
