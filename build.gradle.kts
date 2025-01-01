@@ -21,7 +21,6 @@ plugins {
 repositories {
     mavenLocal()
     mavenCentral()
-    maven(url = "https://jitpack.io")
 }
 
 group = "io.github.1c-syntax"
@@ -45,23 +44,22 @@ val isSnapshot = gitVersioning.gitVersionDetails.refType != GitRefType.TAG
 dependencies {
 
     implementation("org.apache.commons", "commons-collections4", "4.4")
-    implementation("com.github.1c-syntax", "utils", "0.5.1")
+    implementation("io.github.1c-syntax", "utils", "0.6.2")
 
     // логирование
-    implementation("org.slf4j", "slf4j-api", "2.0.11")
+    implementation("org.slf4j", "slf4j-api", "2.0.16")
 
     // stat analysis
-    compileOnly("com.google.code.findbugs", "jsr305", "3.0.2")
+    compileOnly("com.github.spotbugs", "spotbugs-annotations", "4.8.6")
 
     // тестирование
-    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.6.1")
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.6.1")
-    testImplementation("org.assertj", "assertj-core", "3.18.1")
-    testImplementation("com.ginsberg", "junit5-system-exit", "1.0.0")
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.11.4")
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.11.4")
+    testImplementation("org.assertj", "assertj-core", "3.27.0")
+    testImplementation("com.ginsberg", "junit5-system-exit", "2.0.2")
 
     // логирование
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
-    testImplementation("org.slf4j", "slf4j-log4j12", "2.0.11")
+    testImplementation("org.slf4j", "slf4j-reload4j", "2.0.16")
 }
 
 java {
@@ -90,7 +88,7 @@ tasks.check {
 tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
-        xml.outputLocation.set(File("$buildDir/reports/jacoco/test/jacoco.xml"))
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/test/jacoco.xml"))
     }
 }
 
@@ -107,7 +105,7 @@ sonarqube {
         property("sonar.organization", "1c-syntax")
         property("sonar.projectKey", "1c-syntax_bsl-common-library")
         property("sonar.projectName", "BSL Common library")
-        property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacoco.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", layout.buildDirectory.file("reports/jacoco/test/jacoco.xml"))
     }
 }
 
