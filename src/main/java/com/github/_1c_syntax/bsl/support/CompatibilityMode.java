@@ -36,6 +36,8 @@ public class CompatibilityMode {
   private static final String DONT_USE = "DontUse";
   private static final int MAX_VERSION = 99;
   private static final int THIRD_VERSION = 3;
+  private static final int SECOND_VERSION = 2;
+  private static final int FIFTH_VERSION = 5;
   private static final int VERSION_POSITION = 2;
   private static final Pattern VERSION_SPLITTER = Pattern.compile("([_.])");
 
@@ -72,6 +74,34 @@ public class CompatibilityMode {
 
   public CompatibilityMode(int minor, int version) {
     setVersionComponents(minor, version);
+  }
+
+  /**
+   * Возвращает признак отношения к семейству версий 8.1
+   */
+  public boolean its81() {
+    return minor == 1;
+  }
+
+  /**
+   * Возвращает признак отношения к семейству версий 8.2
+   */
+  public boolean its82() {
+    return minor == SECOND_VERSION;
+  }
+
+  /**
+   * Возвращает признак отношения к семейству версий 8.3
+   */
+  public boolean its83() {
+    return minor == THIRD_VERSION;
+  }
+
+  /**
+   * Возвращает признак отношения к семейству версий 8.5
+   */
+  public boolean its85() {
+    return minor == FIFTH_VERSION;
   }
 
   /**
