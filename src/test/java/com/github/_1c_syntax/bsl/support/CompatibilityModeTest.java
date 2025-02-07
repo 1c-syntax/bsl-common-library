@@ -76,4 +76,26 @@ class CompatibilityModeTest {
 
   }
 
+  @Test
+  void its8x() {
+    var versionA = new CompatibilityMode(3, 10);
+    var versionB = new CompatibilityMode(3, 11);
+    var versionC = new CompatibilityMode(2, 19);
+    var versionD = new CompatibilityMode(1, 18);
+    var versionE = new CompatibilityMode(5, 2);
+    var versionF = new CompatibilityMode(9, 2);
+    var versionUNK = new CompatibilityMode();
+
+    assertThat(versionA.its83()).isTrue();
+    assertThat(versionB.its83()).isTrue();
+    assertThat(versionC.its82()).isTrue();
+    assertThat(versionD.its81()).isTrue();
+    assertThat(versionE.its85()).isTrue();
+    assertThat(versionF.its81()).isFalse();
+    assertThat(versionF.its82()).isFalse();
+    assertThat(versionF.its83()).isFalse();
+    assertThat(versionF.its85()).isFalse();
+    assertThat(versionUNK.its83()).isTrue();
+  }
+
 }

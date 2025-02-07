@@ -8,12 +8,12 @@ plugins {
     signing
     id("org.cadixdev.licenser") version "0.6.1"
     id("me.qoomon.git-versioning") version "6.4.4"
-    id("io.freefair.lombok") version "8.11"
-    id("io.freefair.javadoc-links") version "8.11"
-    id("io.freefair.javadoc-utf-8") version "8.11"
+    id("io.freefair.lombok") version "8.12.1"
+    id("io.freefair.javadoc-links") version "8.12.1"
+    id("io.freefair.javadoc-utf-8") version "8.12.1"
     id("org.sonarqube") version "6.0.1.5171"
-    id("io.freefair.maven-central.validate-poms") version "8.11"
-    id("com.github.ben-manes.versions") version "0.51.0"
+    id("io.freefair.maven-central.validate-poms") version "8.12.1"
+    id("com.github.ben-manes.versions") version "0.52.0"
     id("ru.vyarus.pom") version "3.0.0"
     id("io.codearte.nexus-staging") version "0.30.0"
 }
@@ -88,7 +88,7 @@ tasks.check {
 tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
-        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/test/jacoco.xml"))
+        xml.outputLocation.set(File("${layout.buildDirectory.get()}/reports/jacoco/test/jacoco.xml"))
     }
 }
 
@@ -105,7 +105,10 @@ sonarqube {
         property("sonar.organization", "1c-syntax")
         property("sonar.projectKey", "1c-syntax_bsl-common-library")
         property("sonar.projectName", "BSL Common library")
-        property("sonar.coverage.jacoco.xmlReportPaths", layout.buildDirectory.file("reports/jacoco/test/jacoco.xml"))
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "${layout.buildDirectory.get()}/reports/jacoco/test/jacoco.xml"
+        )
     }
 }
 
@@ -206,7 +209,7 @@ tasks.register("precommit") {
 
 tasks.withType<Javadoc> {
     (options as StandardJavadocDocletOptions)
-            .addStringOption("Xdoclint:none", "-quiet")
+        .addStringOption("Xdoclint:none", "-quiet")
 }
 
 nexusStaging {
