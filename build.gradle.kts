@@ -88,7 +88,7 @@ tasks.check {
 tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
-        xml.outputLocation.set(File("$buildDir/reports/jacoco/test/jacoco.xml"))
+        xml.outputLocation.set(File("${layout.buildDirectory.get()}/reports/jacoco/test/jacoco.xml"))
     }
 }
 
@@ -105,7 +105,10 @@ sonarqube {
         property("sonar.organization", "1c-syntax")
         property("sonar.projectKey", "1c-syntax_bsl-common-library")
         property("sonar.projectName", "BSL Common library")
-        property("sonar.coverage.jacoco.xmlReportPaths", ("$buildDir/reports/jacoco/test/jacoco.xml"))
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "${layout.buildDirectory.get()}/reports/jacoco/test/jacoco.xml"
+        )
     }
 }
 
@@ -206,7 +209,7 @@ tasks.register("precommit") {
 
 tasks.withType<Javadoc> {
     (options as StandardJavadocDocletOptions)
-            .addStringOption("Xdoclint:none", "-quiet")
+        .addStringOption("Xdoclint:none", "-quiet")
 }
 
 nexusStaging {
