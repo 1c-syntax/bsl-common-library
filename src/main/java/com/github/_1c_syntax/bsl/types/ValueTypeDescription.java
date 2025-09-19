@@ -21,7 +21,7 @@
  */
 package com.github._1c_syntax.bsl.types;
 
-import lombok.NonNull;
+import com.github._1c_syntax.bsl.types.value.V8ValueType;
 import lombok.Value;
 
 import java.util.Collections;
@@ -44,13 +44,16 @@ public class ValueTypeDescription {
    */
   boolean composite;
 
+  List<Qualifier> qualifiers;
+
   private ValueTypeDescription() {
-    this(Collections.emptyList(), false);
+    this(Collections.emptyList(), Collections.emptyList(), false);
   }
 
-  private ValueTypeDescription(@NonNull List<ValueType> types, boolean composite) {
+  private ValueTypeDescription(List<ValueType> types, List<Qualifier> qualifiers, boolean composite) {
     this.types = types;
     this.composite = composite;
+    this.qualifiers = qualifiers;
   }
 
   /**
@@ -58,18 +61,18 @@ public class ValueTypeDescription {
    *
    * @return Признак Пустоты
    */
-  boolean isEmpty() {
+  public boolean isEmpty() {
     return this == EMPTY;
   }
 
   /**
-   * Конструктор описания типа по списку типов
+   * Проверяет описание типа на вхождение в состав требуемого
    *
-   * @param types Список типов
-   * @return Описание типа
+   * @param type Искомый тип значения
+   * @return Признак вхождения
    */
-  public static ValueTypeDescription create(@NonNull List<ValueType> types) {
-    return create(types, types.size() > 1);
+  public boolean contains(ValueType type) {
+    return types.contains(type);
   }
 
   /**
@@ -78,23 +81,19 @@ public class ValueTypeDescription {
    * @param type Тип
    * @return Описание типа
    */
-  public static ValueTypeDescription create(@NonNull ValueType type) {
+  public static ValueTypeDescription create(ValueType type) {
     return create(List.of(type), type == V8ValueType.ANY_REF);
   }
 
   /**
-   * Конструктор описания типа по списку типов и явным указанием признака составного типа.
-   * Рекомендуется использовать только если алгоритм автоматического определения не подходит
+   * Конструктор описания типа по одному типу и его квалификатору.
    *
-   * @param types     Список типов
-   * @param composite Признак составного типа
+   * @param type      Тип
+   * @param qualifier Квалификатор типа
    * @return Описание типа
    */
-  public static ValueTypeDescription create(@NonNull List<ValueType> types, boolean composite) {
-    if (types.isEmpty()) {
-      return EMPTY;
-    }
-    return new ValueTypeDescription(types, composite);
+  public static ValueTypeDescription create(ValueType type, Qualifier... qualifier) {
+    return create(List.of(type), type == V8ValueType.ANY_REF, qualifier);
   }
 
   /**
@@ -105,7 +104,67 @@ public class ValueTypeDescription {
    * @param composite Признак составного типа
    * @return Описание типа
    */
-  public static ValueTypeDescription create(@NonNull ValueType type, boolean composite) {
+  public static ValueTypeDescription create(ValueType type, boolean composite) {
     return create(List.of(type), composite);
+  }
+
+  /**
+   * Конструктор описания типа по одному типу, явным указанием признака составного типа и
+   * набором квалификаторов.
+   *
+   * @param type      Тип
+   * @param composite Признак составного типа
+   * @return Описание типа
+   */
+  public static ValueTypeDescription create(ValueType type, boolean composite, Qualifier... qualifiers) {
+    return create(List.of(type), composite, qualifiers);
+  }
+
+  /**
+   * Конструктор описания типа по списку типов
+   *
+   * @param types Список типов
+   * @return Описание типа
+   */
+  public static ValueTypeDescription create(List<ValueType> types) {
+    return create(types, types.size() > 1);
+  }
+
+  /**
+   * Конструктор описания типа по списку типов и явным указанием признака составного типа.
+   * Рекомендуется использовать только если алгоритм автоматического определения не подходит
+   *
+   * @param types     Список типов
+   * @param composite Признак составного типа
+   * @return Описание типа
+   */
+  public static ValueTypeDescription create(List<ValueType> types, boolean composite) {
+    return create(types, composite, new Qualifier[0]);
+  }
+
+  /**
+   * Конструктор описания типа по списку типов и квалификаторов
+   *
+   * @param types      Список типов
+   * @param qualifiers Список квалификаторов
+   * @return Описание типа
+   */
+  public static ValueTypeDescription create(List<ValueType> types, Qualifier... qualifiers) {
+    return create(types, types.size() > 1, qualifiers);
+  }
+
+  /**
+   * Конструктор описания типа
+   *
+   * @param types      Список типов
+   * @param composite  Признак составного типа
+   * @param qualifiers Список квалификаторов
+   * @return Описание типа
+   */
+  public static ValueTypeDescription create(List<ValueType> types, boolean composite, Qualifier... qualifiers) {
+    if (types.isEmpty()) {
+      return EMPTY;
+    }
+    return new ValueTypeDescription(types, List.of(qualifiers), composite);
   }
 }

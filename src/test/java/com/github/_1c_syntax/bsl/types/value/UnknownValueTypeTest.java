@@ -19,13 +19,20 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-/**
- * Пакет содержит общие типы данных
- */
-@ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
-package com.github._1c_syntax.bsl.types;
+package com.github._1c_syntax.bsl.types.value;
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
+import com.github._1c_syntax.bsl.types.ValueTypeVariant;
+import org.junit.jupiter.api.Test;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import static org.assertj.core.api.Assertions.assertThat;
+
+class UnknownValueTypeTest {
+
+  @Test
+  void test() {
+    var unknowType = new UnknownValueType("any words");
+    assertThat(unknowType.getName()).isEqualTo("any words");
+    assertThat(unknowType.getNameRu()).isEqualTo("any words");
+    assertThat(unknowType.getVariant()).isEqualTo(ValueTypeVariant.UNKNOWN);
+  }
+}

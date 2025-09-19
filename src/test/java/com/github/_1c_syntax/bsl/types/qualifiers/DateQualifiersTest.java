@@ -19,13 +19,21 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-/**
- * Пакет содержит общие типы данных
- */
-@ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
-package com.github._1c_syntax.bsl.types;
+package com.github._1c_syntax.bsl.types.qualifiers;
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
+import com.github._1c_syntax.bsl.types.DateFractions;
+import org.junit.jupiter.api.Test;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import static org.assertj.core.api.Assertions.assertThat;
+
+class DateQualifiersTest {
+  @Test
+  void create() {
+    var quaf = DateQualifiers.create();
+    assertThat(quaf.isEmpty()).isFalse();
+    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATETIME);
+    quaf = DateQualifiers.create(DateFractions.DATE);
+    assertThat(quaf.isEmpty()).isFalse();
+    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE);
+  }
+}

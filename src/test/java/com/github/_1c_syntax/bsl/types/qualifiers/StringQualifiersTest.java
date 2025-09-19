@@ -19,13 +19,24 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-/**
- * Пакет содержит общие типы данных
- */
-@ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
-package com.github._1c_syntax.bsl.types;
+package com.github._1c_syntax.bsl.types.qualifiers;
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
+import com.github._1c_syntax.bsl.types.AllowedLength;
+import org.junit.jupiter.api.Test;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import static org.assertj.core.api.Assertions.assertThat;
+
+class StringQualifiersTest {
+  @Test
+  void create() {
+    var quaf = StringQualifiers.create(1);
+    assertThat(quaf.isEmpty()).isFalse();
+    assertThat(quaf.getLength()).isEqualTo(1);
+    assertThat(quaf.getAllowedLength()).isEqualTo(AllowedLength.VARIABLE);
+
+    quaf = StringQualifiers.create(100, AllowedLength.FIXED);
+    assertThat(quaf.isEmpty()).isFalse();
+    assertThat(quaf.getLength()).isEqualTo(100);
+    assertThat(quaf.getAllowedLength()).isEqualTo(AllowedLength.FIXED);
+  }
+}
