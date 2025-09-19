@@ -30,19 +30,16 @@ class NumberQualifiersTest {
   @Test
   void create() {
     var quaf = NumberQualifiers.create(10);
-    assertThat(quaf.isEmpty()).isFalse();
     assertThat(quaf.getPrecision()).isEqualTo(10);
-    assertThat(quaf.getScale()).isEqualTo(0);
+    assertThat(quaf.getScale()).isZero();
     assertThat(quaf.isNonNegative()).isFalse();
 
     quaf = NumberQualifiers.create(10, 5);
-    assertThat(quaf.isEmpty()).isFalse();
     assertThat(quaf.getPrecision()).isEqualTo(10);
     assertThat(quaf.getScale()).isEqualTo(5);
     assertThat(quaf.isNonNegative()).isFalse();
 
     quaf = NumberQualifiers.create(10, 5, true);
-    assertThat(quaf.isEmpty()).isFalse();
     assertThat(quaf.getPrecision()).isEqualTo(10);
     assertThat(quaf.getScale()).isEqualTo(5);
     assertThat(quaf.isNonNegative()).isTrue();

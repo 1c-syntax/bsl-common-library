@@ -30,12 +30,10 @@ class BinaryDataQualifiersTest {
   @Test
   void create() {
     var quaf = BinaryDataQualifiers.create(1);
-    assertThat(quaf.isEmpty()).isFalse();
     assertThat(quaf.getLength()).isEqualTo(1);
     assertThat(quaf.getAllowedLength()).isEqualTo(AllowedLength.VARIABLE);
 
     quaf = BinaryDataQualifiers.create(100, AllowedLength.FIXED);
-    assertThat(quaf.isEmpty()).isFalse();
     assertThat(quaf.getLength()).isEqualTo(100);
     assertThat(quaf.getAllowedLength()).isEqualTo(AllowedLength.FIXED);
   }

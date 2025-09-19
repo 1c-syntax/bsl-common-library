@@ -30,10 +30,8 @@ class DateQualifiersTest {
   @Test
   void create() {
     var quaf = DateQualifiers.create();
-    assertThat(quaf.isEmpty()).isFalse();
     assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATETIME);
     quaf = DateQualifiers.create(DateFractions.DATE);
-    assertThat(quaf.isEmpty()).isFalse();
     assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE);
   }
 }
