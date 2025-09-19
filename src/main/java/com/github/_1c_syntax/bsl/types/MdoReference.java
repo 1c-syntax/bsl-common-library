@@ -23,7 +23,6 @@ package com.github._1c_syntax.bsl.types;
 
 import com.github._1c_syntax.utils.StringInterner;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
 import lombok.ToString;
 import lombok.Value;
 
@@ -95,7 +94,7 @@ public class MdoReference implements Comparable<MdoReference> {
    * @param mdoRefRu Строковая ссылка на русском языке
    * @return Ссылка на объект
    */
-  public static MdoReference create(@NonNull MDOType mdoType, @NonNull String mdoRef, @NonNull String mdoRefRu) {
+  public static MdoReference create(MDOType mdoType, String mdoRef, String mdoRefRu) {
     return getOrCompute(mdoType, mdoRef, mdoRefRu);
   }
 
@@ -106,7 +105,7 @@ public class MdoReference implements Comparable<MdoReference> {
    * @param name    Имя объекта метаданных
    * @return Ссылка на объект
    */
-  public static MdoReference create(@NonNull MDOType mdoType, @NonNull String name) {
+  public static MdoReference create(MDOType mdoType, String name) {
     var mdoRef = stringInterner.intern(mdoType.getName() + "." + name);
     var mdoRefRu = stringInterner.intern(mdoType.getNameRu() + "." + name);
 
@@ -122,8 +121,8 @@ public class MdoReference implements Comparable<MdoReference> {
    * @return Ссылка на элемент
    */
   public static MdoReference create(@Nullable MdoReference mdoReferenceOwner,
-                                    @NonNull MDOType mdoType,
-                                    @NonNull String name) {
+                                    MDOType mdoType,
+                                    String name) {
     if (mdoReferenceOwner == null || mdoReferenceOwner.isEmpty()) {
       return create(mdoType, name);
     } else {
@@ -140,7 +139,7 @@ public class MdoReference implements Comparable<MdoReference> {
    * @param fullName Строковая ссылка на объект метаданных
    * @return Ссылка на объект
    */
-  public static MdoReference create(@NonNull String fullName) {
+  public static MdoReference create(String fullName) {
     var nameParts = REF_SPLIT_PATTERN.split(fullName);
     if (nameParts.length <= 1) {
       throw new IllegalArgumentException("Incorrect full name " + fullName);
@@ -174,7 +173,7 @@ public class MdoReference implements Comparable<MdoReference> {
    * @param mdoRef Строковое представление ссылки
    * @return Optional-контейнер для ссылки
    */
-  public static Optional<MdoReference> find(@NonNull String mdoRef) {
+  public static Optional<MdoReference> find(String mdoRef) {
     Optional<MdoReference> result = Optional.empty();
     if (REFERENCES.containsKey(mdoRef)) {
       result = Optional.of(REFERENCES.get(mdoRef));
@@ -205,7 +204,7 @@ public class MdoReference implements Comparable<MdoReference> {
     return this.mdoRefRu.compareTo(mdoReference.getMdoRefRu());
   }
 
-  private static MdoReference getOrCompute(@NonNull MDOType mdoType, @NonNull String mdoRef, @NonNull String mdoRefRu) {
+  private static MdoReference getOrCompute(MDOType mdoType, String mdoRef, String mdoRefRu) {
     if (REFERENCES.containsKey(mdoRef)) {
       return REFERENCES.get(mdoRef);
     }

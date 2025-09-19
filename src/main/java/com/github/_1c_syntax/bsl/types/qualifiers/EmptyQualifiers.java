@@ -19,13 +19,16 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
+package com.github._1c_syntax.bsl.types.qualifiers;
+
+import com.github._1c_syntax.bsl.types.Qualifier;
+
 /**
- * Пакет содержит общие типы данных
+ * Квалификатор-пустышка, используется для типов данных, в которых он не предусмотрен
  */
-@ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
-package com.github._1c_syntax.bsl.types;
+public class EmptyQualifiers implements Qualifier {
+  public static final EmptyQualifiers EMPTY = new EmptyQualifiers();
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+  private EmptyQualifiers() {
+  }
+}

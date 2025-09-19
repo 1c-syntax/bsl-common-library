@@ -19,13 +19,11 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-/**
- * Пакет содержит общие типы данных
- */
-@ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
 package com.github._1c_syntax.bsl.types;
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
+/**
+ * Квалификатор типа данных значения
+ */
+public interface Qualifier {
 
-import javax.annotation.ParametersAreNonnullByDefault;
+}

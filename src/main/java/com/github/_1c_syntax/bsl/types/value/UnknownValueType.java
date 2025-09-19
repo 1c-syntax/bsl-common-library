@@ -19,13 +19,30 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
+package com.github._1c_syntax.bsl.types.value;
+
+import com.github._1c_syntax.bsl.types.ValueType;
+import com.github._1c_syntax.bsl.types.ValueTypeVariant;
+import lombok.Getter;
+
 /**
- * Пакет содержит общие типы данных
+ * Для записи неизвестного типа данных
  */
-@ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
-package com.github._1c_syntax.bsl.types;
+public class UnknownValueType implements ValueType {
+  @Getter
+  private final String name;
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
+  public UnknownValueType(String name) {
+    this.name = name;
+  }
 
-import javax.annotation.ParametersAreNonnullByDefault;
+  @Override
+  public String getNameRu() {
+    return getName();
+  }
+
+  @Override
+  public ValueTypeVariant getVariant() {
+    return ValueTypeVariant.UNKNOWN;
+  }
+}

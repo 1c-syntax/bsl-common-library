@@ -19,13 +19,29 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-/**
- * Пакет содержит общие типы данных
- */
-@ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
-package com.github._1c_syntax.bsl.types;
+package com.github._1c_syntax.bsl.types.qualifiers;
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
+import org.junit.jupiter.api.Test;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import static org.assertj.core.api.Assertions.assertThat;
+
+class NumberQualifiersTest {
+
+  @Test
+  void create() {
+    var quaf = NumberQualifiers.create(10);
+    assertThat(quaf.getPrecision()).isEqualTo(10);
+    assertThat(quaf.getScale()).isZero();
+    assertThat(quaf.isNonNegative()).isFalse();
+
+    quaf = NumberQualifiers.create(10, 5);
+    assertThat(quaf.getPrecision()).isEqualTo(10);
+    assertThat(quaf.getScale()).isEqualTo(5);
+    assertThat(quaf.isNonNegative()).isFalse();
+
+    quaf = NumberQualifiers.create(10, 5, true);
+    assertThat(quaf.getPrecision()).isEqualTo(10);
+    assertThat(quaf.getScale()).isEqualTo(5);
+    assertThat(quaf.isNonNegative()).isTrue();
+  }
+}
