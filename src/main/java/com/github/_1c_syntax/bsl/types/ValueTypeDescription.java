@@ -162,9 +162,21 @@ public class ValueTypeDescription {
    * @return Описание типа
    */
   public static ValueTypeDescription create(List<ValueType> types, boolean composite, Qualifier... qualifiers) {
+    return create(types, composite, List.of(qualifiers));
+  }
+
+  /**
+   * Конструктор описания типа
+   *
+   * @param types      Список типов
+   * @param composite  Признак составного типа
+   * @param qualifiers Список квалификаторов
+   * @return Описание типа
+   */
+  public static ValueTypeDescription create(List<ValueType> types, boolean composite, List<Qualifier> qualifiers) {
     if (types.isEmpty()) {
       return EMPTY;
     }
-    return new ValueTypeDescription(types, List.of(qualifiers), composite);
+    return new ValueTypeDescription(types, qualifiers, composite);
   }
 }
