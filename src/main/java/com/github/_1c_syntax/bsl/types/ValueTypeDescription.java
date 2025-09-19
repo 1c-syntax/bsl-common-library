@@ -51,9 +51,9 @@ public class ValueTypeDescription {
   }
 
   private ValueTypeDescription(List<ValueType> types, List<Qualifier> qualifiers, boolean composite) {
-    this.types = types;
+    this.types = List.copyOf(types);
     this.composite = composite;
-    this.qualifiers = qualifiers;
+    this.qualifiers = List.copyOf(qualifiers);
   }
 
   /**
@@ -127,7 +127,7 @@ public class ValueTypeDescription {
    * @return Описание типа
    */
   public static ValueTypeDescription create(List<ValueType> types) {
-    return create(types, types.size() > 1);
+    return create(types, types.size() > 1 || types.contains(V8ValueType.ANY_REF));
   }
 
   /**
@@ -150,7 +150,7 @@ public class ValueTypeDescription {
    * @return Описание типа
    */
   public static ValueTypeDescription create(List<ValueType> types, Qualifier... qualifiers) {
-    return create(types, types.size() > 1, qualifiers);
+    return create(types, types.size() > 1 || types.contains(V8ValueType.ANY_REF), qualifiers);
   }
 
   /**

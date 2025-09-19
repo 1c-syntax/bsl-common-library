@@ -21,18 +21,9 @@
  */
 package com.github._1c_syntax.bsl.types;
 
-import com.github._1c_syntax.bsl.types.qualifiers.EmptyQualifiers;
-
 /**
  * Квалификатор типа данных значения
  */
 public interface Qualifier {
-  /**
-   * Признак пустого квалификатора
-   *
-   * @return результат проверки на пустоту
-   */
-  default boolean isEmpty() {
-    return EmptyQualifiers.EMPTY.equals(this);
-  }
+
 }

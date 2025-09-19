@@ -101,6 +101,7 @@ class ValueTypeDescriptionTest {
     assertThat(vtd.getQualifiers()).isEmpty();
   }
 
+  @Test
   void testQualifiers() {
     var vtd = ValueTypeDescription.create(V8ValueType.ANY_REF, EmptyQualifiers.EMPTY);
     assertThat(vtd.isEmpty()).isFalse();
@@ -137,7 +138,7 @@ class ValueTypeDescriptionTest {
     assertThat(vtd.getTypes())
       .hasSize(1)
       .contains(V8ValueType.VALUE_STORAGE);
-    assertThat(vtd.isComposite()).isTrue();
+    assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers())
       .hasSize(1)
       .contains(EmptyQualifiers.EMPTY);
