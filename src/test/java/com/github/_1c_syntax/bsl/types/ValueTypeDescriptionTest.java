@@ -21,7 +21,9 @@
  */
 package com.github._1c_syntax.bsl.types;
 
+import com.github._1c_syntax.bsl.types.qualifiers.DateQualifiers;
 import com.github._1c_syntax.bsl.types.qualifiers.EmptyQualifiers;
+import com.github._1c_syntax.bsl.types.value.MetadataValueType;
 import com.github._1c_syntax.bsl.types.value.PrimitiveValueType;
 import com.github._1c_syntax.bsl.types.value.V8ValueType;
 import org.junit.jupiter.api.Test;
@@ -60,27 +62,17 @@ class ValueTypeDescriptionTest {
     assertThat(vtd.isComposite()).isTrue();
     assertThat(vtd.getQualifiers()).isEmpty();
 
-    vtd = ValueTypeDescription.create(types, false);
-    assertThat(vtd.isEmpty()).isFalse();
-    assertThat(vtd.getTypes())
-      .hasSize(3)
-      .contains(PrimitiveValueType.STRING)
-      .contains(PrimitiveValueType.NULL)
-      .contains(V8ValueType.VALUE_STORAGE);
-    assertThat(vtd.isComposite()).isFalse();
-    assertThat(vtd.getQualifiers()).isEmpty();
-
     assertThat(vtd.contains(V8ValueType.VALUE_STORAGE)).isTrue();
     assertThat(vtd.contains(PrimitiveValueType.DATE)).isFalse();
   }
 
   @Test
   void testType() {
-    var vtd = ValueTypeDescription.create(V8ValueType.ANY_REF);
+    var vtd = ValueTypeDescription.create(MetadataValueType.ANY_REF);
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes())
       .hasSize(1)
-      .contains(V8ValueType.ANY_REF);
+      .contains(MetadataValueType.ANY_REF);
     assertThat(vtd.isComposite()).isTrue();
     assertThat(vtd.getQualifiers()).isEmpty();
 
@@ -92,28 +84,27 @@ class ValueTypeDescriptionTest {
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers()).isEmpty();
 
-    vtd = ValueTypeDescription.create(V8ValueType.VALUE_STORAGE, true);
+    vtd = ValueTypeDescription.create(V8ValueType.VALUE_STORAGE, EmptyQualifiers.EMPTY);
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes())
       .hasSize(1)
       .contains(V8ValueType.VALUE_STORAGE);
-    assertThat(vtd.isComposite()).isTrue();
+    assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers()).isEmpty();
   }
 
   @Test
   void testQualifiers() {
-    var vtd = ValueTypeDescription.create(V8ValueType.ANY_REF, EmptyQualifiers.EMPTY);
+    var qf = DateQualifiers.create();
+    var vtd = ValueTypeDescription.create(MetadataValueType.ANY_REF, EmptyQualifiers.EMPTY);
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes())
       .hasSize(1)
-      .contains(V8ValueType.ANY_REF);
+      .contains(MetadataValueType.ANY_REF);
     assertThat(vtd.isComposite()).isTrue();
-    assertThat(vtd.getQualifiers())
-      .hasSize(1)
-      .contains(EmptyQualifiers.EMPTY);
+    assertThat(vtd.getQualifiers()).isEmpty();
 
-    vtd = ValueTypeDescription.create(V8ValueType.VALUE_STORAGE, EmptyQualifiers.EMPTY);
+    vtd = ValueTypeDescription.create(V8ValueType.VALUE_STORAGE, qf);
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes())
       .hasSize(1)
@@ -121,9 +112,9 @@ class ValueTypeDescriptionTest {
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers())
       .hasSize(1)
-      .contains(EmptyQualifiers.EMPTY);
+      .contains(qf);
 
-    vtd = ValueTypeDescription.create(List.of(V8ValueType.VALUE_STORAGE, V8ValueType.FIXED_ARRAY), EmptyQualifiers.EMPTY);
+    vtd = ValueTypeDescription.create(List.of(V8ValueType.VALUE_STORAGE, V8ValueType.FIXED_ARRAY), qf);
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes())
       .hasSize(2)
@@ -131,9 +122,9 @@ class ValueTypeDescriptionTest {
     assertThat(vtd.isComposite()).isTrue();
     assertThat(vtd.getQualifiers())
       .hasSize(1)
-      .contains(EmptyQualifiers.EMPTY);
+      .contains(qf);
 
-    vtd = ValueTypeDescription.create(List.of(V8ValueType.VALUE_STORAGE), EmptyQualifiers.EMPTY);
+    vtd = ValueTypeDescription.create(List.of(V8ValueType.VALUE_STORAGE), qf);
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes())
       .hasSize(1)
@@ -141,6 +132,42 @@ class ValueTypeDescriptionTest {
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers())
       .hasSize(1)
-      .contains(EmptyQualifiers.EMPTY);
+      .contains(qf);
+  }
+
+  @Test
+  void testString() {
+    var vtd = ValueTypeDescription.createString(1);
+    assertThat(vtd.isEmpty()).isFalse();
+    assertThat(vtd.getTypes())
+      .hasSize(1)
+      .contains(PrimitiveValueType.STRING);
+    assertThat(vtd.isComposite()).isFalse();
+    assertThat(vtd.getQualifiers()).hasSize(1);
+    assertThat(vtd.getQualifiers().get(0).description().toString())
+      .isEqualTo("MultiName (ru: КвалификаторыСтроки (1, Переменная), en: StringQualifiers (1, Variable))");
+
+    vtd = ValueTypeDescription.createString(1, AllowedLength.FIXED);
+    assertThat(vtd.isEmpty()).isFalse();
+    assertThat(vtd.getTypes())
+      .hasSize(1)
+      .contains(PrimitiveValueType.STRING);
+    assertThat(vtd.isComposite()).isFalse();
+    assertThat(vtd.getQualifiers()).hasSize(1);
+    assertThat(vtd.getQualifiers().get(0).description().toString())
+      .isEqualTo("MultiName (ru: КвалификаторыСтроки (1, Фиксированная), en: StringQualifiers (1, Fixed))");
+  }
+
+  @Test
+  void testNumber() {
+    var vtd = ValueTypeDescription.createNumber(1);
+    assertThat(vtd.isEmpty()).isFalse();
+    assertThat(vtd.getTypes())
+      .hasSize(1)
+      .contains(PrimitiveValueType.NUMBER);
+    assertThat(vtd.isComposite()).isFalse();
+    assertThat(vtd.getQualifiers()).hasSize(1);
+    assertThat(vtd.getQualifiers().get(0).description().toString())
+      .isEqualTo("MultiName (ru: КвалификаторыЧисла (1.0), en: NumberQualifiers (1.0))");
   }
 }

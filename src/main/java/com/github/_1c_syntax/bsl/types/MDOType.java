@@ -224,6 +224,17 @@ public enum MDOType {
     return Optional.ofNullable(MAP_TYPES.get(value));
   }
 
+  /**
+   * Возвращает MDOType по строковому идентификатору
+   *
+   * @param string - Строковый идентификатор типа. Может быть на русском или английском языках,
+   *               а так же во множественном или единственном числе
+   * @return Найденное значение, если не найден - то UNKNOWN
+   */
+  public static MDOType valueByString(String string) {
+    return MAP_TYPES.getOrDefault(string, UNKNOWN);
+  }
+
   private static Map<String, MDOType> computeMapTypes() {
     Map<String, MDOType> map = new CaseInsensitiveMap<>();
     for (MDOType mdoType : MDOType.values()) {

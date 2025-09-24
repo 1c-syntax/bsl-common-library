@@ -27,7 +27,11 @@ import com.github._1c_syntax.bsl.types.ValueTypeVariant;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Примитивные типы данных
@@ -40,6 +44,7 @@ public final class PrimitiveValueType implements ValueType {
   public static final PrimitiveValueType NULL = new PrimitiveValueType("Null", "Null");
 
   private static final List<ValueType> BUILTIN_TYPES = List.of(STRING, DATE, NUMBER, BOOLEAN, NULL);
+  private static final Map<String, PrimitiveValueType> PROVIDED_TYPES = computeProvidedTypes();
 
   @Getter
   @Accessors(fluent = true)
@@ -55,11 +60,31 @@ public final class PrimitiveValueType implements ValueType {
   }
 
   /**
+   * Производит определение типа по переданной строке
+   *
+   * @param name Строковое представление типа
+   * @return Определенный тип
+   */
+  @Nullable
+  public static PrimitiveValueType fromString(String name) {
+    return PROVIDED_TYPES.get(name.toLowerCase(Locale.ROOT));
+  }
+
+  /**
    * Коллекция встроенных типов
    *
    * @return Список встроенных типов
    */
   public static List<ValueType> builtinTypes() {
     return BUILTIN_TYPES;
+  }
+
+  private static Map<String, PrimitiveValueType> computeProvidedTypes() {
+    Map<String, PrimitiveValueType> types = new ConcurrentHashMap<>();
+    builtinTypes().forEach((ValueType valueType) ->
+      types.put(valueType.nameEn().toLowerCase(Locale.ROOT),
+        (PrimitiveValueType) valueType
+      ));
+    return types;
   }
 }
