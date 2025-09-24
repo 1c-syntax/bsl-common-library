@@ -21,10 +21,48 @@
  */
 package com.github._1c_syntax.bsl.types;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
+
 /**
  * Варианты длины
  */
-public enum AllowedLength {
-  FIXED,
-  VARIABLE
+@Getter
+public enum AllowedLength implements EnumWithName {
+  FIXED("Fixed", "Фиксированная"),
+  VARIABLE("Variable", "Переменная");
+
+  @Accessors(fluent = true)
+  private final MultiName value;
+
+  AllowedLength(String nameEn, String nameRu) {
+    this.value = MultiName.create(nameEn, nameRu);
+  }
+
+  private static final Map<String, AllowedLength> keys = computeKeys();
+
+  /**
+   * Ищет элемент перечисления по именам (рус, анг)
+   *
+   * @param string Имя искомого элемента
+   * @return Найденное значение, если не найден - то VARIABLE
+   */
+  public static AllowedLength valueByString(String string) {
+    return keys.getOrDefault(string, VARIABLE);
+  }
+
+  private static Map<String, AllowedLength> computeKeys() {
+    Map<String, AllowedLength> keysMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+    for (var element : values()) {
+      if (element.isUnknown()) {
+        continue;
+      }
+      keysMap.put(element.nameEn(), element);
+      keysMap.put(element.nameRu(), element);
+    }
+    return keysMap;
+  }
 }

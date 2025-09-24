@@ -21,10 +21,14 @@
  */
 package com.github._1c_syntax.bsl.types;
 
+import com.github._1c_syntax.bsl.types.qualifiers.NumberQualifiers;
+import com.github._1c_syntax.bsl.types.qualifiers.StringQualifiers;
+import com.github._1c_syntax.bsl.types.value.PrimitiveValueType;
 import com.github._1c_syntax.bsl.types.value.V8ValueType;
 import lombok.Value;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -51,9 +55,15 @@ public class ValueTypeDescription {
   }
 
   private ValueTypeDescription(List<ValueType> types, List<Qualifier> qualifiers, boolean composite) {
-    this.types = List.copyOf(types);
+    this.types = types.stream()
+      .sorted(Comparator.comparing(ValueType::name))
+      .distinct()
+      .toList();
     this.composite = composite;
-    this.qualifiers = List.copyOf(qualifiers);
+    this.qualifiers = qualifiers.stream()
+      .sorted(Comparator.comparing(Qualifier::description))
+      .distinct()
+      .toList();
   }
 
   /**
@@ -178,5 +188,36 @@ public class ValueTypeDescription {
       return EMPTY;
     }
     return new ValueTypeDescription(types, qualifiers, composite);
+  }
+
+  /**
+   * Создает описание типа для Строки с указанной переменной длиной
+   *
+   * @param length Длина строки
+   * @return Описание типа строки
+   */
+  public static ValueTypeDescription createString(int length) {
+    return create(PrimitiveValueType.STRING, StringQualifiers.create(length));
+  }
+
+  /**
+   * Создает описание типа для Строки указанных длиной и ее вариантом
+   *
+   * @param length        Длина строки
+   * @param allowedLength Вариант длины
+   * @return Описание типа строки
+   */
+  public static ValueTypeDescription createString(int length, AllowedLength allowedLength) {
+    return create(PrimitiveValueType.STRING, StringQualifiers.create(length, allowedLength));
+  }
+
+  /**
+   * Создает описание типа для целого Числа с указанной длиной
+   *
+   * @param length Длина числа
+   * @return Описание типа числа
+   */
+  public static ValueTypeDescription createNumber(int length) {
+    return create(PrimitiveValueType.NUMBER, NumberQualifiers.create(length));
   }
 }

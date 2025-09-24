@@ -21,14 +21,20 @@
  */
 package com.github._1c_syntax.bsl.types.qualifiers;
 
+import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.Qualifier;
 
 /**
  * Квалификатор-пустышка, используется для типов данных, в которых он не предусмотрен
  */
-public class EmptyQualifiers implements Qualifier {
+public final class EmptyQualifiers implements Qualifier {
   public static final EmptyQualifiers EMPTY = new EmptyQualifiers();
 
   private EmptyQualifiers() {
+  }
+
+  @Override
+  public MultiName description() {
+    return MultiName.EMPTY;
   }
 }

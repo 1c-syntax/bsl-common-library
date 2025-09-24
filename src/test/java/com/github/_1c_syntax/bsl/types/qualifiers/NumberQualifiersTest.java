@@ -33,15 +33,22 @@ class NumberQualifiersTest {
     assertThat(quaf.getPrecision()).isEqualTo(10);
     assertThat(quaf.getScale()).isZero();
     assertThat(quaf.isNonNegative()).isFalse();
+    assertThat(quaf.description().toString())
+      .isEqualTo("MultiName (ru: КвалификаторыЧисла (10.0), en: NumberQualifiers (10.0))");
 
     quaf = NumberQualifiers.create(10, 5);
     assertThat(quaf.getPrecision()).isEqualTo(10);
     assertThat(quaf.getScale()).isEqualTo(5);
     assertThat(quaf.isNonNegative()).isFalse();
+    assertThat(quaf.description().toString())
+      .isEqualTo("MultiName (ru: КвалификаторыЧисла (10.5), en: NumberQualifiers (10.5))");
 
     quaf = NumberQualifiers.create(10, 5, true);
     assertThat(quaf.getPrecision()).isEqualTo(10);
     assertThat(quaf.getScale()).isEqualTo(5);
     assertThat(quaf.isNonNegative()).isTrue();
+    assertThat(quaf.description().toString())
+      .isEqualTo("MultiName (ru: КвалификаторыЧисла (10.5 неотр), en: NumberQualifiers (10.5 nonneg))");
+
   }
 }

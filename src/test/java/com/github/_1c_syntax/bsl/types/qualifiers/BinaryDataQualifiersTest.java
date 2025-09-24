@@ -32,9 +32,13 @@ class BinaryDataQualifiersTest {
     var quaf = BinaryDataQualifiers.create(1);
     assertThat(quaf.getLength()).isEqualTo(1);
     assertThat(quaf.getAllowedLength()).isEqualTo(AllowedLength.VARIABLE);
+    assertThat(quaf.description().toString())
+      .isEqualTo("MultiName (ru: КвалификаторыДвоичныхДанных (1, Переменная), en: BinaryDataQualifiers (1, Variable))");
 
     quaf = BinaryDataQualifiers.create(100, AllowedLength.FIXED);
     assertThat(quaf.getLength()).isEqualTo(100);
     assertThat(quaf.getAllowedLength()).isEqualTo(AllowedLength.FIXED);
+    assertThat(quaf.description().toString())
+      .isEqualTo("MultiName (ru: КвалификаторыДвоичныхДанных (100, Фиксированная), en: BinaryDataQualifiers (100, Fixed))");
   }
 }

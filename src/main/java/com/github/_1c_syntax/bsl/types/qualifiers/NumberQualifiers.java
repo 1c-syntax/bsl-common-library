@@ -21,30 +21,47 @@
  */
 package com.github._1c_syntax.bsl.types.qualifiers;
 
+import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.Qualifier;
-import lombok.Getter;
+import lombok.ToString;
+import lombok.Value;
+import lombok.experimental.Accessors;
 
-@Getter
-public class NumberQualifiers implements Qualifier {
+import javax.annotation.Nullable;
+
+@Value
+@ToString(of = "description")
+public class NumberQualifiers implements Qualifier, Comparable<NumberQualifiers> {
   /**
    * Длина числа
    */
-  private final int precision;
+  int precision;
 
   /**
    * Точность (количество знаков после запятой)
    */
-  private final int scale;
+  int scale;
 
   /**
    * Признак неотрицательности (если ложь - возможны любые варианты)
    */
-  private final boolean nonNegative;
+  boolean nonNegative;
+
+  /**
+   * Представление квалификатора
+   */
+  @Accessors(fluent = true)
+  MultiName description;
 
   private NumberQualifiers(int precision, int scale, boolean nonNegative) {
     this.precision = precision;
     this.scale = scale;
     this.nonNegative = nonNegative;
+
+    this.description = MultiName.create(
+      "NumberQualifiers (" + precision + "." + scale + (nonNegative ? " nonneg)" : ")"),
+      "КвалификаторыЧисла (" + precision + "." + scale + (nonNegative ? " неотр)" : ")")
+    );
   }
 
   /**
@@ -80,5 +97,28 @@ public class NumberQualifiers implements Qualifier {
    */
   public static NumberQualifiers create(int precision, int scale, boolean nonNegative) {
     return new NumberQualifiers(precision, scale, nonNegative);
+  }
+
+  @Override
+  public int compareTo(@Nullable NumberQualifiers qualifiers) {
+    if (qualifiers == null) {
+      return 1;
+    }
+
+    if (this.equals(qualifiers)) {
+      return 0;
+    }
+
+    int precisionComparison = Integer.compare(this.precision, qualifiers.getPrecision());
+    if (precisionComparison != 0) {
+      return precisionComparison;
+    }
+
+    int scaleComparison = Integer.compare(this.scale, qualifiers.getScale());
+    if (scaleComparison != 0) {
+      return scaleComparison;
+    }
+
+    return Boolean.compare(this.nonNegative, qualifiers.isNonNegative());
   }
 }

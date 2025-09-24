@@ -28,41 +28,54 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
- * Части даты
+ * Возможные варианты языков, на которых разрабатывается код
  */
 @Getter
-public enum DateFractions implements EnumWithName {
-  DATE("Date", "Дата"),
-  DATE_TIME("DateTime", "ДатаВремя"),
-  TIME("Time", "Время");
+public enum ScriptVariant implements EnumWithName {
+  ENGLISH("English", "Английский", "en"),
+  RUSSIAN("Russian", "Русский", "ru"),
+  UNKNOWN("unknown", "неизвестный", "--") {
+    @Override
+    public boolean isUnknown() {
+      return true;
+    }
+  };
+
+  private static final Map<String, ScriptVariant> keys = computeKeys();
+
+  ScriptVariant(String nameEn, String nameRu, String shortName) {
+    this.value = MultiName.create(nameEn, nameRu);
+    this.shortName = shortName;
+  }
 
   @Accessors(fluent = true)
   private final MultiName value;
 
-  DateFractions(String nameEn, String nameRu) {
-    this.value = MultiName.create(nameEn, nameRu);
-  }
-
-  private static final Map<String, DateFractions> keys = computeKeys();
+  /**
+   * Сокращенное имя
+   */
+  @Accessors(fluent = true)
+  private final String shortName;
 
   /**
-   * Ищет элемент перечисления по именам (рус, анг)
+   * Ищет элемент перечисления по именам (рус, анг, короткое)
    *
    * @param string Имя искомого элемента
-   * @return Найденное значение, если не найден - то DATE_TIME
+   * @return Найденное значение, если не найден - то RUSSIAN
    */
-  public static DateFractions valueByString(String string) {
-    return keys.getOrDefault(string, DATE_TIME);
+  public static ScriptVariant valueByString(String string) {
+    return keys.getOrDefault(string, RUSSIAN);
   }
 
-  private static Map<String, DateFractions> computeKeys() {
-    Map<String, DateFractions> keysMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+  private static Map<String, ScriptVariant> computeKeys() {
+    Map<String, ScriptVariant> keysMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
     for (var element : values()) {
       if (element.isUnknown()) {
         continue;
       }
       keysMap.put(element.nameEn(), element);
       keysMap.put(element.nameRu(), element);
+      keysMap.put(element.shortName(), element);
     }
     return keysMap;
   }

@@ -19,24 +19,27 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-package com.github._1c_syntax.bsl.types.qualifiers;
+package com.github._1c_syntax.bsl.types;
 
-import com.github._1c_syntax.bsl.types.DateFractions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DateQualifiersTest {
-  @Test
-  void create() {
-    var quaf = DateQualifiers.create();
-    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE_TIME);
-    assertThat(quaf.description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыДаты (ДатаВремя), en: DateQualifiers (DateTime))");
-
-    quaf = DateQualifiers.create(DateFractions.DATE);
-    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE);
-    assertThat(quaf.description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыДаты (Дата), en: DateQualifiers (Date))");
+class ScriptVariantTest {
+  @ParameterizedTest(name = "{index}: {0}")
+  @CsvSource(
+    {
+      "RUSSIAN,русский,ru,RussIan",
+      "ENGLISH,английский,en,engLish",
+      "RUSSIAN,ру,рус,eng"
+    }
+  )
+  void testValueByString(ArgumentsAccessor argumentsAccessor) {
+    var element = ScriptVariant.valueOf(argumentsAccessor.getString(0));
+    assertThat(ScriptVariant.valueByString(argumentsAccessor.getString(1))).isEqualTo(element);
+    assertThat(ScriptVariant.valueByString(argumentsAccessor.getString(2))).isEqualTo(element);
+    assertThat(ScriptVariant.valueByString(argumentsAccessor.getString(3))).isEqualTo(element);
   }
 }

@@ -160,30 +160,46 @@ public enum MDOType {
   private static final Set<MDOType> CHILD_TYPES = computeChildTypes();
 
   /**
-   * Англоязычное имя типа
+   * Мультиязычное имя объекта метаданных
    */
-  private final String name;
+  private final MultiName fullName;
 
   /**
-   * Англоязычное имя группы объектов типа
+   * Мультиязычное имя группы объектов метаданных
    */
-  private final String groupName;
-
-  /**
-   * Русскоязычное имя типа
-   */
-  private final String nameRu;
-
-  /**
-   * Русскоязычное имя группы объектов типа
-   */
-  private final String groupNameRu;
+  private final MultiName fullGroupName;
 
   MDOType(String nameEn, String groupNameEn, String nameRu, String groupNameRu) {
-    this.name = nameEn;
-    this.groupName = groupNameEn;
-    this.nameRu = nameRu;
-    this.groupNameRu = groupNameRu;
+    this.fullName = MultiName.create(nameEn, nameRu);
+    this.fullGroupName = MultiName.create(groupNameEn, groupNameRu);
+  }
+
+  /**
+   * @return Английское имя типа метаданных
+   */
+  public String getName() {
+    return fullName.getEn();
+  }
+
+  /**
+   * @return Русское имя типа метаданных
+   */
+  public String getNameRu() {
+    return fullName.getRu();
+  }
+
+  /**
+   * @return Английское имя группы типа метаданных
+   */
+  public String getGroupName() {
+    return fullGroupName.getEn();
+  }
+
+  /**
+   * @return Английское имя группы типа метаданных
+   */
+  public String getGroupNameRu() {
+    return fullGroupName.getRu();
   }
 
   /**

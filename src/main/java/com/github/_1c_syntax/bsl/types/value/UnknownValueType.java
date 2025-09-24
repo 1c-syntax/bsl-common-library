@@ -21,28 +21,26 @@
  */
 package com.github._1c_syntax.bsl.types.value;
 
+import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.ValueType;
 import com.github._1c_syntax.bsl.types.ValueTypeVariant;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 
 /**
  * Для записи неизвестного типа данных
  */
-public class UnknownValueType implements ValueType {
+public final class UnknownValueType implements ValueType {
   @Getter
-  private final String name;
+  @Accessors(fluent = true)
+  private final MultiName fullName;
 
   public UnknownValueType(String name) {
-    this.name = name;
+    this.fullName = MultiName.create(name);
   }
 
   @Override
-  public String getNameRu() {
-    return getName();
-  }
-
-  @Override
-  public ValueTypeVariant getVariant() {
+  public ValueTypeVariant variant() {
     return ValueTypeVariant.UNKNOWN;
   }
 }

@@ -22,24 +22,41 @@
 package com.github._1c_syntax.bsl.types.qualifiers;
 
 import com.github._1c_syntax.bsl.types.AllowedLength;
+import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.Qualifier;
-import lombok.Getter;
+import lombok.ToString;
+import lombok.Value;
+import lombok.experimental.Accessors;
 
-@Getter
-public class StringQualifiers implements Qualifier {
+import javax.annotation.Nullable;
+
+@Value
+@ToString(of = "description")
+public class StringQualifiers implements Qualifier, Comparable<StringQualifiers> {
   /**
    * Длина строки
    */
-  private final int length;
+  int length;
 
   /**
    * Вариант длины
    */
-  private final AllowedLength allowedLength;
+  AllowedLength allowedLength;
+
+  /**
+   * Представление квалификатора
+   */
+  @Accessors(fluent = true)
+  MultiName description;
 
   private StringQualifiers(int length, AllowedLength allowedLength) {
     this.length = length;
     this.allowedLength = allowedLength;
+
+    this.description = MultiName.create(
+      "StringQualifiers (" + length + ", " + allowedLength.value().getEn() + ")",
+      "КвалификаторыСтроки (" + length + ", " + allowedLength.value().getRu() + ")"
+    );
   }
 
   /**
@@ -62,5 +79,22 @@ public class StringQualifiers implements Qualifier {
    */
   public static StringQualifiers create(int length, AllowedLength allowedLength) {
     return new StringQualifiers(length, allowedLength);
+  }
+
+  @Override
+  public int compareTo(@Nullable StringQualifiers qualifiers) {
+    if (qualifiers == null) {
+      return 1;
+    }
+
+    if (this.equals(qualifiers)) {
+      return 0;
+    }
+
+    int allowedLengthComparison = this.allowedLength.compareTo(qualifiers.getAllowedLength());
+    if (allowedLengthComparison != 0) {
+      return allowedLengthComparison;
+    }
+    return Integer.compare(this.length, qualifiers.getLength());
   }
 }

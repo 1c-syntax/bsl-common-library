@@ -123,11 +123,28 @@ public class MdoReference implements Comparable<MdoReference> {
   public static MdoReference create(@Nullable MdoReference mdoReferenceOwner,
                                     MDOType mdoType,
                                     String name) {
+    return create(mdoReferenceOwner, mdoType, name, name);
+  }
+
+  /**
+   * Создание дочерней ссылки с разным представлением имени на русском и английском языках.
+   * Применяется для стандартных реквизитов
+   *
+   * @param mdoReferenceOwner Ссылка родитель
+   * @param mdoType           Тип дочерней ссылки
+   * @param name              Имя дочернего элемента
+   * @param nameRu            Имя дочернего элемента на русском
+   * @return Ссылка на элемент
+   */
+  public static MdoReference create(@Nullable MdoReference mdoReferenceOwner,
+                                    MDOType mdoType,
+                                    String name,
+                                    String nameRu) {
     if (mdoReferenceOwner == null || mdoReferenceOwner.isEmpty()) {
       return create(mdoType, name);
     } else {
       var mdoRef = stringInterner.intern(mdoReferenceOwner.getMdoRef() + "." + mdoType.getName() + "." + name);
-      var mdoRefRu = stringInterner.intern(mdoReferenceOwner.getMdoRefRu() + "." + mdoType.getNameRu() + "." + name);
+      var mdoRefRu = stringInterner.intern(mdoReferenceOwner.getMdoRefRu() + "." + mdoType.getNameRu() + "." + nameRu);
 
       return getOrCompute(mdoType, mdoRef, mdoRefRu);
     }

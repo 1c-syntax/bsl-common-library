@@ -25,5 +25,10 @@ package com.github._1c_syntax.bsl.types;
  * Квалификатор типа данных значения
  */
 public interface Qualifier {
-
+  /**
+   * Формирует представление квалификатора
+   *
+   * @return Представление квалификатора
+   */
+  MultiName description();
 }

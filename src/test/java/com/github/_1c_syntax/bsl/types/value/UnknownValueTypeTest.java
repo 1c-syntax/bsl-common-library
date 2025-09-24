@@ -31,8 +31,8 @@ class UnknownValueTypeTest {
   @Test
   void test() {
     var unknowType = new UnknownValueType("any words");
-    assertThat(unknowType.getName()).isEqualTo("any words");
-    assertThat(unknowType.getNameRu()).isEqualTo("any words");
-    assertThat(unknowType.getVariant()).isEqualTo(ValueTypeVariant.UNKNOWN);
+    assertThat(unknowType.name()).isEqualTo("any words");
+    assertThat(unknowType.nameRu()).isEqualTo("any words");
+    assertThat(unknowType.variant()).isEqualTo(ValueTypeVariant.UNKNOWN);
   }
 }

@@ -19,24 +19,13 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-package com.github._1c_syntax.bsl.types.qualifiers;
+/**
+ * Пакет содержит вспомогательные структуры данных для режима поддержки
+ */
+@ParametersAreNonnullByDefault
+@ReturnValuesAreNonnullByDefault
+package com.github._1c_syntax.bsl.support;
 
-import com.github._1c_syntax.bsl.types.DateFractions;
-import org.junit.jupiter.api.Test;
+import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-class DateQualifiersTest {
-  @Test
-  void create() {
-    var quaf = DateQualifiers.create();
-    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE_TIME);
-    assertThat(quaf.description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыДаты (ДатаВремя), en: DateQualifiers (DateTime))");
-
-    quaf = DateQualifiers.create(DateFractions.DATE);
-    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE);
-    assertThat(quaf.description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыДаты (Дата), en: DateQualifiers (Date))");
-  }
-}
+import javax.annotation.ParametersAreNonnullByDefault;

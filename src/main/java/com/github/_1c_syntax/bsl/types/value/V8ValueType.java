@@ -21,16 +21,18 @@
  */
 package com.github._1c_syntax.bsl.types.value;
 
+import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.ValueType;
 import com.github._1c_syntax.bsl.types.ValueTypeVariant;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
 /**
  * Типы данных платформы 8
  */
-public class V8ValueType implements ValueType {
+public final class V8ValueType implements ValueType {
   public static final V8ValueType VALUE_STORAGE = new V8ValueType("ValueStorage", "ХранилищеЗначений");
   public static final V8ValueType UUID = new V8ValueType("UUID", "УникальныйИдентификатор");
   public static final V8ValueType ANY_REF = new V8ValueType("AnyRef", "ЛюбаяСсылка", ValueTypeVariant.METADATA);
@@ -44,19 +46,19 @@ public class V8ValueType implements ValueType {
   );
 
   @Getter
-  private final String name;
+  @Accessors(fluent = true)
+  private final MultiName fullName;
+
   @Getter
-  private final String nameRu;
-  @Getter
+  @Accessors(fluent = true)
   private final ValueTypeVariant variant;
 
-  private V8ValueType(String name, String nameRu) {
-    this(name, nameRu, ValueTypeVariant.V8);
+  private V8ValueType(String nameEn, String nameRu) {
+    this(nameEn, nameRu, ValueTypeVariant.V8);
   }
 
-  private V8ValueType(String name, String nameRu, ValueTypeVariant variant) {
-    this.name = name;
-    this.nameRu = nameRu;
+  private V8ValueType(String nameEn, String nameRu, ValueTypeVariant variant) {
+    this.fullName = MultiName.create(nameEn, nameRu);
     this.variant = variant;
   }
 

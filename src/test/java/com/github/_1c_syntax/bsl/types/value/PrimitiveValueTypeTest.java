@@ -32,6 +32,6 @@ class PrimitiveValueTypeTest {
   void test() {
     assertThat(PrimitiveValueType.builtinTypes())
       .hasSize(5)
-      .allMatch(valueType -> valueType.getVariant() == ValueTypeVariant.PRIMITIVE);
+      .allMatch(valueType -> valueType.variant() == ValueTypeVariant.PRIMITIVE);
   }
 }

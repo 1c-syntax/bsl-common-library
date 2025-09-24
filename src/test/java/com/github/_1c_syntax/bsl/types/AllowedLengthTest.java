@@ -19,24 +19,27 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-package com.github._1c_syntax.bsl.types.qualifiers;
+package com.github._1c_syntax.bsl.types;
 
-import com.github._1c_syntax.bsl.types.DateFractions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DateQualifiersTest {
-  @Test
-  void create() {
-    var quaf = DateQualifiers.create();
-    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE_TIME);
-    assertThat(quaf.description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыДаты (ДатаВремя), en: DateQualifiers (DateTime))");
+class AllowedLengthTest {
 
-    quaf = DateQualifiers.create(DateFractions.DATE);
-    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE);
-    assertThat(quaf.description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыДаты (Дата), en: DateQualifiers (Date))");
+  @ParameterizedTest(name = "{index}: {0}")
+  @CsvSource(
+    {
+      "FIXED,Fixed,Фиксированная,фиксировАнная",
+      "VARIABLE,VariablE,Variable,Переменная"
+    }
+  )
+  void testValueByString(ArgumentsAccessor argumentsAccessor) {
+    var element = AllowedLength.valueOf(argumentsAccessor.getString(0));
+    assertThat(AllowedLength.valueByString(argumentsAccessor.getString(1))).isEqualTo(element);
+    assertThat(AllowedLength.valueByString(argumentsAccessor.getString(2))).isEqualTo(element);
+    assertThat(AllowedLength.valueByString(argumentsAccessor.getString(3))).isEqualTo(element);
   }
 }

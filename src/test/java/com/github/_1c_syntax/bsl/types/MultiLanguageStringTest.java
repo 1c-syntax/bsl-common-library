@@ -19,24 +19,38 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-package com.github._1c_syntax.bsl.types.qualifiers;
+package com.github._1c_syntax.bsl.types;
 
-import com.github._1c_syntax.bsl.types.DateFractions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DateQualifiersTest {
-  @Test
-  void create() {
-    var quaf = DateQualifiers.create();
-    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE_TIME);
-    assertThat(quaf.description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыДаты (ДатаВремя), en: DateQualifiers (DateTime))");
+class MultiLanguageStringTest {
 
-    quaf = DateQualifiers.create(DateFractions.DATE);
-    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE);
-    assertThat(quaf.description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыДаты (Дата), en: DateQualifiers (Date))");
+  @Test
+  void testCreate() {
+    var keyRu = "ru";
+    var keyEn = "en";
+
+    var value = MultiLanguageString.create(keyRu, keyRu);
+    assertThat(value.isEmpty()).isFalse();
+    assertThat(value.get("RU")).isEqualTo(keyRu);
+    assertThat(value.getAny()).isEqualTo(keyRu);
+
+    var valueCopy = MultiLanguageString.create(keyRu, keyRu);
+    assertThat(value).isEqualTo(valueCopy);
+    assertThat(value == valueCopy).isTrue();
+
+    var valueEn = MultiLanguageString.create(keyEn, keyEn);
+    var valueRuEn = MultiLanguageString.create(value, valueEn);
+    assertThat(valueRuEn.isEmpty()).isFalse();
+    assertThat(valueRuEn.get("RU")).isEqualTo(keyRu);
+    assertThat(valueRuEn.get("en")).isEqualTo(keyEn);
+
+    var valueRuEnList = MultiLanguageString.create(List.of(valueEn, value));
+    assertThat(valueRuEn).isEqualTo(valueRuEnList);
+    assertThat(valueRuEn == valueRuEnList).isTrue();
   }
 }

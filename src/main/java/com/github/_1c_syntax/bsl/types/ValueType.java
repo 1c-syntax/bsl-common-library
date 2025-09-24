@@ -26,24 +26,43 @@ package com.github._1c_syntax.bsl.types;
  */
 public interface ValueType {
   /**
-   * Имя типа
+   * Полное (мультиязычное) имя типа
    *
-   * @return Строковое имя типа, на английском
+   * @return Мультиязычное имя типа, на английском
    */
-  String getName();
-
-  /**
-   * Имя типа на русском
-   *
-   * @return Строковое имя типа, на русском
-   */
-  String getNameRu();
+  MultiName fullName();
 
   /**
    * Вариант типа данных
    *
    * @return Вариант (область) типа данных
    */
-  ValueTypeVariant getVariant();
+  ValueTypeVariant variant();
 
+  /**
+   * Возвращает имя типа по умолчанию
+   *
+   * @return Имя типа по умолчанию
+   */
+  default String name() {
+    return fullName().get();
+  }
+
+  /**
+   * Возвращает имя типа на русском языке
+   *
+   * @return Имя типа на русском языке
+   */
+  default String nameRu() {
+    return fullName().getRu();
+  }
+
+  /**
+   * Возвращает имя типа на английском языке
+   *
+   * @return Имя типа на английском языке
+   */
+  default String nameEn() {
+    return fullName().getEn();
+  }
 }

@@ -33,9 +33,9 @@ class V8ValueTypeTest {
     assertThat(V8ValueType.builtinTypes()).hasSize(6);
 
     assertThat(V8ValueType.builtinTypes())
-      .filteredOn(valueType -> valueType.getVariant() == ValueTypeVariant.V8)
+      .filteredOn(valueType -> valueType.variant() == ValueTypeVariant.V8)
       .hasSize(5);
 
-    assertThat(V8ValueType.ANY_REF.getVariant()).isEqualTo(ValueTypeVariant.METADATA);
+    assertThat(V8ValueType.ANY_REF.variant()).isEqualTo(ValueTypeVariant.METADATA);
   }
 }
