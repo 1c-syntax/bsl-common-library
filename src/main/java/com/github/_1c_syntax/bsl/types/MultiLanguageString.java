@@ -67,7 +67,7 @@ public class MultiLanguageString implements Comparable<MultiLanguageString> {
   }
 
   private MultiLanguageString(Set<Entry> content) {
-    this.content = Collections.unmodifiableSet(content);
+    this.content = Set.copyOf(content);
   }
 
   /**

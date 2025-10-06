@@ -24,7 +24,6 @@ package com.github._1c_syntax.bsl.types.qualifiers;
 import com.github._1c_syntax.bsl.types.DateFractions;
 import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.Qualifier;
-import lombok.Getter;
 import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -37,7 +36,6 @@ public class DateQualifiers implements Qualifier, Comparable<DateQualifiers> {
   /**
    * Части даты
    */
-  @Getter
   DateFractions dateFractions;
 
   /**
