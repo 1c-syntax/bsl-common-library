@@ -77,6 +77,20 @@ public class MdoReference implements Comparable<MdoReference> {
   }
 
   /**
+   * Возвращает строковое представление ссылки в зависимости от языка разработки
+   *
+   * @param scriptVariant Нужный язык разработки
+   * @return Строковое представление ссылки
+   */
+  public String getMdoRef(ScriptVariant scriptVariant) {
+    if (scriptVariant == ScriptVariant.ENGLISH) {
+      return getMdoRef();
+    } else {
+      return getMdoRefRu();
+    }
+  }
+
+  /**
    * Возвращает признак пустоты текущей ссылки
    *
    * @return Признак пустоты
