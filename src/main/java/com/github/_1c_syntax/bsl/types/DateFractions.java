@@ -22,28 +22,31 @@
 package com.github._1c_syntax.bsl.types;
 
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Части даты
  */
-@Getter
+@ToString(of = "fullName")
 public enum DateFractions implements EnumWithName {
   DATE("Date", "Дата"),
   DATE_TIME("DateTime", "ДатаВремя"),
   TIME("Time", "Время");
 
+  private static final Map<String, DateFractions> KEYS = EnumWithName.computeKeys(values());
+
+  @Getter
   @Accessors(fluent = true)
-  private final MultiName value;
+  private final MultiName fullName;
+
 
   DateFractions(String nameEn, String nameRu) {
-    this.value = MultiName.create(nameEn, nameRu);
+    this.fullName = MultiName.create(nameEn, nameRu);
   }
-
-  private static final Map<String, DateFractions> keys = computeKeys();
 
   /**
    * Ищет элемент перечисления по именам (рус, анг)
@@ -51,19 +54,7 @@ public enum DateFractions implements EnumWithName {
    * @param string Имя искомого элемента
    * @return Найденное значение, если не найден - то DATE_TIME
    */
-  public static DateFractions valueByString(String string) {
-    return keys.getOrDefault(string, DATE_TIME);
-  }
-
-  private static Map<String, DateFractions> computeKeys() {
-    Map<String, DateFractions> keysMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
-    for (var element : values()) {
-      if (element.isUnknown()) {
-        continue;
-      }
-      keysMap.put(element.nameEn(), element);
-      keysMap.put(element.nameRu(), element);
-    }
-    return keysMap;
+  public static DateFractions valueByName(String string) {
+    return KEYS.getOrDefault(string.toLowerCase(Locale.ROOT), DATE_TIME);
   }
 }

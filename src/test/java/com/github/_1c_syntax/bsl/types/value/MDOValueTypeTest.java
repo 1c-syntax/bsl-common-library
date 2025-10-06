@@ -27,46 +27,30 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MetadataValueTypeTest {
+class MDOValueTypeTest {
 
   @Test
   void fromString() {
-    var type = MetadataValueType.fromString("DefinedType.ЗначениеДоступа");
+    var type = MDOValueType.valueByName("DataProcessorManager");
     assertThat(type).isNotNull();
-    assertThat(type.getKind()).isEqualTo(MDOType.DEFINED_TYPE);
-    assertThat(type.fullName().getEn()).isEqualTo("DefinedType.ЗначениеДоступа");
-    assertThat(type.fullName().getRu()).isEqualTo("ОпределяемыйТип.ЗначениеДоступа");
-    assertThat(type.isComposite()).isFalse();
-
-    type = MetadataValueType.fromString("EnumRef.ДополнительныеЗначенияДоступа");
-    assertThat(type).isNotNull();
-    assertThat(type.getKind()).isEqualTo(MDOType.ENUM);
-    assertThat(type.fullName().getEn()).isEqualTo("EnumRef.ДополнительныеЗначенияДоступа");
-    assertThat(type.fullName().getRu()).isEqualTo("ПеречислениеСсылка.ДополнительныеЗначенияДоступа");
-    assertThat(type.isComposite()).isFalse();
-
-    type = MetadataValueType.fromString("DataProcessorManager");
-    assertThat(type).isNotNull();
-    assertThat(type.getKind()).isEqualTo(MDOType.DATA_PROCESSOR);
+    assertThat(type.kind()).isEqualTo(MDOType.DATA_PROCESSOR);
     assertThat(type.fullName().getEn()).isEqualTo("DataProcessorManager");
     assertThat(type.fullName().getRu()).isEqualTo("ОбработкаМенеджер");
-    assertThat(type.isComposite()).isTrue();
 
-    type = MetadataValueType.fromString("AnyRef");
+    type = MDOValueType.valueByName("AnyRef");
     assertThat(type).isNotNull();
-    assertThat(type.getKind()).isEqualTo(MDOType.CONFIGURATION);
+    assertThat(type.kind()).isEqualTo(MDOType.CONFIGURATION);
     assertThat(type.fullName().getEn()).isEqualTo("AnyRef");
     assertThat(type.fullName().getRu()).isEqualTo("ЛюбаяСсылка");
-    assertThat(type.isComposite()).isTrue();
 
-    type = MetadataValueType.fromString("Тип");
+    type = MDOValueType.valueByName("Тип");
     assertThat(type).isNull();
   }
 
   @Test
   void test() {
-    assertThat(MetadataValueType.builtinTypes())
-      .hasSize(46)
+    assertThat(MDOValueType.values())
+      .hasSize(53)
       .allMatch(valueType -> valueType.variant() == ValueTypeVariant.METADATA);
   }
 }

@@ -21,8 +21,8 @@
  */
 package com.github._1c_syntax.bsl.types.qualifiers;
 
-import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.DateFractions;
+import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.Qualifier;
 import lombok.Getter;
 import lombok.ToString;
@@ -49,8 +49,8 @@ public class DateQualifiers implements Qualifier, Comparable<DateQualifiers> {
   private DateQualifiers(DateFractions dateFractions) {
     this.dateFractions = dateFractions;
     this.description = MultiName.create(
-      "DateQualifiers (" + dateFractions.value().getEn() + ")",
-      "КвалификаторыДаты (" + dateFractions.value().getRu() + ")"
+      "DateQualifiers (" + dateFractions.nameEn() + ")",
+      "КвалификаторыДаты (" + dateFractions.nameRu() + ")"
     );
   }
 
@@ -83,6 +83,6 @@ public class DateQualifiers implements Qualifier, Comparable<DateQualifiers> {
       return 0;
     }
 
-    return this.dateFractions.compareTo(qualifiers.getDateFractions());
+    return this.dateFractions.fullName().compareTo(qualifiers.getDateFractions().fullName());
   }
 }

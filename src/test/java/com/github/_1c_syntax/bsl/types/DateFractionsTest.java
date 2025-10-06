@@ -36,10 +36,10 @@ class DateFractionsTest {
       "TIME,TIME,time,ВРемя"
     }
   )
-  void testValueByString(ArgumentsAccessor argumentsAccessor) {
+  void testValueByName(ArgumentsAccessor argumentsAccessor) {
     var element = DateFractions.valueOf(argumentsAccessor.getString(0));
-    assertThat(DateFractions.valueByString(argumentsAccessor.getString(1))).isEqualTo(element);
-    assertThat(DateFractions.valueByString(argumentsAccessor.getString(2))).isEqualTo(element);
-    assertThat(DateFractions.valueByString(argumentsAccessor.getString(3))).isEqualTo(element);
+    assertThat(DateFractions.valueByName(argumentsAccessor.getString(1))).isEqualTo(element);
+    assertThat(DateFractions.valueByName(argumentsAccessor.getString(2))).isEqualTo(element);
+    assertThat(DateFractions.valueByName(argumentsAccessor.getString(3))).isEqualTo(element);
   }
 }

@@ -36,10 +36,10 @@ class ScriptVariantTest {
       "RUSSIAN,ру,рус,eng"
     }
   )
-  void testValueByString(ArgumentsAccessor argumentsAccessor) {
+  void testValueByName(ArgumentsAccessor argumentsAccessor) {
     var element = ScriptVariant.valueOf(argumentsAccessor.getString(0));
-    assertThat(ScriptVariant.valueByString(argumentsAccessor.getString(1))).isEqualTo(element);
-    assertThat(ScriptVariant.valueByString(argumentsAccessor.getString(2))).isEqualTo(element);
-    assertThat(ScriptVariant.valueByString(argumentsAccessor.getString(3))).isEqualTo(element);
+    assertThat(ScriptVariant.valueByName(argumentsAccessor.getString(1))).isEqualTo(element);
+    assertThat(ScriptVariant.valueByName(argumentsAccessor.getString(2))).isEqualTo(element);
+    assertThat(ScriptVariant.valueByName(argumentsAccessor.getString(3))).isEqualTo(element);
   }
 }

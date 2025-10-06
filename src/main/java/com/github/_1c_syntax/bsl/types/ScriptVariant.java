@@ -22,40 +22,39 @@
 package com.github._1c_syntax.bsl.types;
 
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Возможные варианты языков, на которых разрабатывается код
  */
-@Getter
+@ToString(of = "fullName")
 public enum ScriptVariant implements EnumWithName {
   ENGLISH("English", "Английский", "en"),
   RUSSIAN("Russian", "Русский", "ru"),
-  UNKNOWN("unknown", "неизвестный", "--") {
-    @Override
-    public boolean isUnknown() {
-      return true;
-    }
-  };
+  UNKNOWN("unknown", "неизвестный", "--");
 
-  private static final Map<String, ScriptVariant> keys = computeKeys();
+  private static final Map<String, ScriptVariant> KEYS = computeKeys();
 
-  ScriptVariant(String nameEn, String nameRu, String shortName) {
-    this.value = MultiName.create(nameEn, nameRu);
-    this.shortName = shortName;
-  }
-
+  @Getter
   @Accessors(fluent = true)
-  private final MultiName value;
+  private final MultiName fullName;
 
   /**
    * Сокращенное имя
    */
+  @Getter
   @Accessors(fluent = true)
   private final String shortName;
+
+  ScriptVariant(String nameEn, String nameRu, String shortName) {
+    this.fullName = MultiName.create(nameEn, nameRu);
+    this.shortName = shortName;
+  }
 
   /**
    * Ищет элемент перечисления по именам (рус, анг, короткое)
@@ -63,19 +62,19 @@ public enum ScriptVariant implements EnumWithName {
    * @param string Имя искомого элемента
    * @return Найденное значение, если не найден - то RUSSIAN
    */
-  public static ScriptVariant valueByString(String string) {
-    return keys.getOrDefault(string, RUSSIAN);
+  public static ScriptVariant valueByName(String string) {
+    return KEYS.getOrDefault(string, RUSSIAN);
   }
 
   private static Map<String, ScriptVariant> computeKeys() {
     Map<String, ScriptVariant> keysMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
     for (var element : values()) {
-      if (element.isUnknown()) {
+      if (element == UNKNOWN) {
         continue;
       }
-      keysMap.put(element.nameEn(), element);
-      keysMap.put(element.nameRu(), element);
-      keysMap.put(element.shortName(), element);
+      keysMap.put(element.nameEn().toLowerCase(Locale.ROOT), element);
+      keysMap.put(element.nameRu().toLowerCase(Locale.ROOT), element);
+      keysMap.put(element.shortName().toLowerCase(Locale.ROOT), element);
     }
     return keysMap;
   }

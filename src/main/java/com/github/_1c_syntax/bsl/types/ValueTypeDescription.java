@@ -21,10 +21,9 @@
  */
 package com.github._1c_syntax.bsl.types;
 
-import com.github._1c_syntax.bsl.types.qualifiers.EmptyQualifiers;
 import com.github._1c_syntax.bsl.types.qualifiers.NumberQualifiers;
 import com.github._1c_syntax.bsl.types.qualifiers.StringQualifiers;
-import com.github._1c_syntax.bsl.types.value.MetadataValueType;
+import com.github._1c_syntax.bsl.types.value.MDOValueType;
 import com.github._1c_syntax.bsl.types.value.PrimitiveValueType;
 import lombok.Value;
 
@@ -57,13 +56,13 @@ public class ValueTypeDescription {
 
   private ValueTypeDescription(List<ValueType> types, List<Qualifier> qualifiers, boolean composite) {
     this.types = types.stream()
-      .sorted(Comparator.comparing(ValueType::name))
+      .sorted(Comparator.comparing(ValueType::nameEn))
       .distinct()
       .toList();
     this.composite = composite;
     this.qualifiers = qualifiers.stream()
       .sorted(Comparator.comparing(Qualifier::description))
-      .filter(qualifier -> !(qualifier instanceof EmptyQualifiers))
+      .filter(qualifier -> !Qualifier.EMPTY.equals(qualifier))
       .distinct()
       .toList();
   }
@@ -94,7 +93,7 @@ public class ValueTypeDescription {
    * @return Описание типа
    */
   public static ValueTypeDescription create(ValueType type) {
-    return create(type, EmptyQualifiers.EMPTY);
+    return create(type, Qualifier.EMPTY);
   }
 
   /**
@@ -115,7 +114,7 @@ public class ValueTypeDescription {
    * @return Описание типа
    */
   public static ValueTypeDescription create(List<ValueType> types) {
-    return create(types, EmptyQualifiers.EMPTY);
+    return create(types, Qualifier.EMPTY);
   }
 
   /**
@@ -141,10 +140,7 @@ public class ValueTypeDescription {
       return EMPTY;
     }
 
-    var composite = types.size() > 1
-      || types.get(0) instanceof MetadataValueType metadataValueType
-      && metadataValueType.isComposite();
-
+    var composite = types.size() > 1 || types.get(0) instanceof MDOValueType;
     return new ValueTypeDescription(types, qualifiers, composite);
   }
 
@@ -192,5 +188,60 @@ public class ValueTypeDescription {
    */
   public static ValueTypeDescription createNumber(int length) {
     return create(PrimitiveValueType.NUMBER, NumberQualifiers.create(length));
+  }
+
+  /**
+   * Создает описание типа для ссылки на объект метаданных
+   *
+   * @param mdoType Тип метаданных
+   * @param mdoName Имя объекта метаданных
+   * @return Описание типа ссылки
+   */
+  public static ValueTypeDescription createRef(MDOType mdoType, String mdoName) {
+    var result = ValueTypes.getOrCompute(mdoType.nameEn() + "Ref." + mdoName);
+    return create(result);
+  }
+
+  /**
+   * Создает описание типа для ссылки на объект метаданных
+   *
+   * @param mdoReference Ссылка на объект метаданных
+   * @return Описание типа ссылки
+   */
+  public static ValueTypeDescription createRef(MdoReference mdoReference) {
+    if (mdoReference.isEmpty()) {
+      return EMPTY;
+    }
+
+    return create(createRefType(mdoReference));
+  }
+
+  /**
+   * Создает описание типа для набора ссылок на объекты метаданных
+   *
+   * @param mdoReferences Набор ссылок на объекты метаданных
+   * @return Описание типа
+   */
+  public static ValueTypeDescription createRef(List<MdoReference> mdoReferences) {
+    if (mdoReferences.isEmpty()) {
+      return EMPTY;
+    }
+
+    var types = mdoReferences.stream()
+      .filter(mdoReference -> !mdoReference.isEmpty())
+      .map(ValueTypeDescription::createRefType)
+      .toList();
+
+    if (types.isEmpty()) {
+      return EMPTY;
+    }
+
+    return create(types);
+  }
+
+  private static ValueType createRefType(MdoReference mdoReference) {
+    var parts = mdoReference.getMdoRef().split("\\.");
+    parts[0] += "Ref";
+    return ValueTypes.getOrCompute(String.join(".", parts));
   }
 }

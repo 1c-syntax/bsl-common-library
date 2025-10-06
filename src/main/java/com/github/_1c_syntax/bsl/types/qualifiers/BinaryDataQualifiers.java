@@ -53,8 +53,8 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
     this.length = length;
     this.allowedLength = allowedLength;
     this.description = MultiName.create(
-      "BinaryDataQualifiers (" + length + ", " + allowedLength.value().getEn() + ")",
-      "КвалификаторыДвоичныхДанных (" + length + ", " + allowedLength.value().getRu() + ")"
+      "BinaryDataQualifiers (" + length + ", " + allowedLength.nameEn() + ")",
+      "КвалификаторыДвоичныхДанных (" + length + ", " + allowedLength.nameRu() + ")"
     );
   }
 
@@ -90,7 +90,8 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
       return 0;
     }
 
-    int allowedLengthComparison = this.allowedLength.compareTo(qualifiers.getAllowedLength());
+    int allowedLengthComparison = this.allowedLength.fullName()
+      .compareTo(qualifiers.getAllowedLength().fullName());
     if (allowedLengthComparison != 0) {
       return allowedLengthComparison;
     }

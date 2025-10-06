@@ -43,7 +43,7 @@ class MultiNameTest {
 
     var valueCopy = MultiName.create(keyRu);
     assertThat(value).isEqualTo(valueCopy);
-    assertThat(value == valueCopy).isTrue();
+    assertThat(value).isSameAs(valueCopy);
 
     var valueEn = MultiName.create(keyEn);
     assertThat(valueEn.isEmpty()).isFalse();
@@ -56,7 +56,7 @@ class MultiNameTest {
     var valueRuEn = MultiName.create(keyEn, keyRu);
     assertThat(valueRuEn.isEmpty()).isFalse();
     assertThat(valueRuEn.get("en")).isEqualTo(keyEn);
-    assertThat(valueRuEn.get()).isEqualTo(keyRu);
+    assertThat(valueRuEn.get()).isEqualTo(keyEn);
     assertThat(valueRuEn.get(ScriptVariant.RUSSIAN)).isEqualTo(keyRu);
     assertThat(valueRuEn.getRu()).isEqualTo(keyRu);
     assertThat(valueRuEn.getEn()).isEqualTo(keyEn);
@@ -68,5 +68,35 @@ class MultiNameTest {
     assertThat(valueAuto.get(ScriptVariant.UNKNOWN)).isEqualTo(keyAuto);
     assertThat(valueAuto.getRu()).isEqualTo(keyAuto);
     assertThat(valueAuto.getEn()).isEmpty();
+  }
+
+  @Test
+  void testEmpty() {
+    var value = MultiName.create("");
+    assertThat(value.isEmpty()).isTrue();
+
+    var value2 = MultiName.create("", "");
+    assertThat(value2.isEmpty()).isTrue();
+
+    var value3 = MultiName.create("en", "");
+    assertThat(value3.isEmpty()).isFalse();
+    assertThat(value3.getRu()).isEmpty();
+    assertThat(value3.getEn()).isEqualTo("en");
+
+    var value4 = MultiName.create("", "рус");
+    assertThat(value4.isEmpty()).isFalse();
+    assertThat(value4.getRu()).isEqualTo("рус");
+    assertThat(value4.getEn()).isEmpty();
+  }
+
+  @Test
+  void testCompare() {
+    var value = MultiName.create("");
+    var value2 = MultiName.create("name", "имя");
+    var value3 = MultiName.create("other_name", "имя");
+    assertThat(value.compareTo(null)).isEqualTo(1);
+    assertThat(value.compareTo(MultiName.EMPTY)).isZero();
+    assertThat(value.compareTo(value2)).isEqualTo(-3);
+    assertThat(value2.compareTo(value3)).isEqualTo(-1);
   }
 }

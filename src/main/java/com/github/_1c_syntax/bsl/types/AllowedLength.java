@@ -22,27 +22,30 @@
 package com.github._1c_syntax.bsl.types;
 
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Варианты длины
  */
-@Getter
+@ToString(of = "fullName")
 public enum AllowedLength implements EnumWithName {
   FIXED("Fixed", "Фиксированная"),
   VARIABLE("Variable", "Переменная");
 
+  private static final Map<String, AllowedLength> KEYS = EnumWithName.computeKeys(values());
+
+  @Getter
   @Accessors(fluent = true)
-  private final MultiName value;
+  private final MultiName fullName;
+
 
   AllowedLength(String nameEn, String nameRu) {
-    this.value = MultiName.create(nameEn, nameRu);
+    this.fullName = MultiName.create(nameEn, nameRu);
   }
-
-  private static final Map<String, AllowedLength> keys = computeKeys();
 
   /**
    * Ищет элемент перечисления по именам (рус, анг)
@@ -50,19 +53,7 @@ public enum AllowedLength implements EnumWithName {
    * @param string Имя искомого элемента
    * @return Найденное значение, если не найден - то VARIABLE
    */
-  public static AllowedLength valueByString(String string) {
-    return keys.getOrDefault(string, VARIABLE);
-  }
-
-  private static Map<String, AllowedLength> computeKeys() {
-    Map<String, AllowedLength> keysMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
-    for (var element : values()) {
-      if (element.isUnknown()) {
-        continue;
-      }
-      keysMap.put(element.nameEn(), element);
-      keysMap.put(element.nameRu(), element);
-    }
-    return keysMap;
+  public static AllowedLength valueByName(String string) {
+    return KEYS.getOrDefault(string.toLowerCase(Locale.ROOT), VARIABLE);
   }
 }

@@ -22,8 +22,8 @@
 package com.github._1c_syntax.bsl.types;
 
 import com.github._1c_syntax.bsl.types.qualifiers.DateQualifiers;
-import com.github._1c_syntax.bsl.types.qualifiers.EmptyQualifiers;
-import com.github._1c_syntax.bsl.types.value.MetadataValueType;
+import com.github._1c_syntax.bsl.types.value.CustomValueType;
+import com.github._1c_syntax.bsl.types.value.MDOValueType;
 import com.github._1c_syntax.bsl.types.value.PrimitiveValueType;
 import com.github._1c_syntax.bsl.types.value.V8ValueType;
 import org.junit.jupiter.api.Test;
@@ -47,11 +47,17 @@ class ValueTypeDescriptionTest {
     assertThat(empty.isComposite()).isFalse();
     assertThat(empty.getTypes()).isEmpty();
     assertThat(empty.getQualifiers()).isEmpty();
+
+    var empty2 = ValueTypeDescription.create(Collections.emptyList(), Collections.emptyList());
+    assertThat(empty2).isEqualTo(empty);
+
+    empty2 = ValueTypeDescription.create(Collections.emptyList(), Collections.emptyList(), false);
+    assertThat(empty2).isEqualTo(empty);
   }
 
   @Test
   void testTypes() {
-    var types = List.of(PrimitiveValueType.STRING, PrimitiveValueType.NULL, V8ValueType.VALUE_STORAGE);
+    List<ValueType> types = List.of(PrimitiveValueType.STRING, PrimitiveValueType.NULL, V8ValueType.VALUE_STORAGE);
     var vtd = ValueTypeDescription.create(types);
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes())
@@ -68,11 +74,11 @@ class ValueTypeDescriptionTest {
 
   @Test
   void testType() {
-    var vtd = ValueTypeDescription.create(MetadataValueType.ANY_REF);
+    var vtd = ValueTypeDescription.create(MDOValueType.ANY_REF);
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes())
       .hasSize(1)
-      .contains(MetadataValueType.ANY_REF);
+      .contains(MDOValueType.ANY_REF);
     assertThat(vtd.isComposite()).isTrue();
     assertThat(vtd.getQualifiers()).isEmpty();
 
@@ -84,7 +90,7 @@ class ValueTypeDescriptionTest {
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers()).isEmpty();
 
-    vtd = ValueTypeDescription.create(V8ValueType.VALUE_STORAGE, EmptyQualifiers.EMPTY);
+    vtd = ValueTypeDescription.create(V8ValueType.VALUE_STORAGE, Qualifier.EMPTY);
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes())
       .hasSize(1)
@@ -96,11 +102,11 @@ class ValueTypeDescriptionTest {
   @Test
   void testQualifiers() {
     var qf = DateQualifiers.create();
-    var vtd = ValueTypeDescription.create(MetadataValueType.ANY_REF, EmptyQualifiers.EMPTY);
+    var vtd = ValueTypeDescription.create(MDOValueType.ANY_REF, Qualifier.EMPTY);
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes())
       .hasSize(1)
-      .contains(MetadataValueType.ANY_REF);
+      .contains(MDOValueType.ANY_REF);
     assertThat(vtd.isComposite()).isTrue();
     assertThat(vtd.getQualifiers()).isEmpty();
 
@@ -144,8 +150,10 @@ class ValueTypeDescriptionTest {
       .contains(PrimitiveValueType.STRING);
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers()).hasSize(1);
-    assertThat(vtd.getQualifiers().get(0).description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыСтроки (1, Переменная), en: StringQualifiers (1, Variable))");
+    assertThat(vtd.getQualifiers().get(0).description().getRu())
+      .isEqualTo("КвалификаторыСтроки (1, Переменная)");
+    assertThat(vtd.getQualifiers().get(0).description().getEn())
+      .isEqualTo("StringQualifiers (1, Variable)");
 
     vtd = ValueTypeDescription.createString(1, AllowedLength.FIXED);
     assertThat(vtd.isEmpty()).isFalse();
@@ -154,8 +162,10 @@ class ValueTypeDescriptionTest {
       .contains(PrimitiveValueType.STRING);
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers()).hasSize(1);
-    assertThat(vtd.getQualifiers().get(0).description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыСтроки (1, Фиксированная), en: StringQualifiers (1, Fixed))");
+    assertThat(vtd.getQualifiers().get(0).description().getRu())
+      .isEqualTo("КвалификаторыСтроки (1, Фиксированная)");
+    assertThat(vtd.getQualifiers().get(0).description().getEn())
+      .isEqualTo("StringQualifiers (1, Fixed)");
   }
 
   @Test
@@ -167,7 +177,66 @@ class ValueTypeDescriptionTest {
       .contains(PrimitiveValueType.NUMBER);
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers()).hasSize(1);
-    assertThat(vtd.getQualifiers().get(0).description().toString())
-      .isEqualTo("MultiName (ru: КвалификаторыЧисла (1.0), en: NumberQualifiers (1.0))");
+    assertThat(vtd.getQualifiers().get(0).description().getRu())
+      .isEqualTo("КвалификаторыЧисла (1.0)");
+    assertThat(vtd.getQualifiers().get(0).description().getEn())
+      .isEqualTo("NumberQualifiers (1.0)");
+  }
+
+  @Test
+  void testCreateRef() {
+    var vtd = ValueTypeDescription.createRef(MDOType.ENUM, "Enum1");
+    assertThat(vtd.isEmpty()).isFalse();
+    assertThat(vtd.getTypes()).hasSize(1);
+    assertThat(vtd.isComposite()).isFalse();
+    assertThat(vtd.getQualifiers()).isEmpty();
+
+    var type = vtd.getTypes().get(0);
+    assertThat(type.variant()).isEqualTo(ValueTypeVariant.METADATA);
+    assertThat(type.fullName()).isEqualTo(MultiName.create("EnumRef.Enum1", "ПеречислениеСсылка.Enum1"));
+    assertThat(type).isInstanceOf(CustomValueType.class);
+    assertThat(((CustomValueType) type).kind()).isEqualTo(MDOType.ENUM);
+
+    var vtd2 = ValueTypeDescription.createRef(MdoReference.create(MDOType.ENUM, "Enum1"));
+    assertThat(vtd2).isEqualTo(vtd);
+
+    var vtd3 = ValueTypeDescription.createRef(MdoReference.EMPTY);
+    assertThat(vtd3).isEqualTo(ValueTypeDescription.EMPTY);
+  }
+
+  @Test
+  void testCreateRefs() {
+    var ref1 = MdoReference.create(MDOType.ENUM, "Enum1");
+    var ref2 = MdoReference.create(MDOType.ENUM, "Enum2");
+    var ref3 = MdoReference.create("Catalog.Catalog1");
+    var vtd = ValueTypeDescription.createRef(List.of(ref1, ref2, ref3));
+    assertThat(vtd.isEmpty()).isFalse();
+    assertThat(vtd.getTypes()).hasSize(3);
+    assertThat(vtd.isComposite()).isTrue();
+    assertThat(vtd.getQualifiers()).isEmpty();
+    assertThat(vtd.getTypes())
+      .allMatch(type -> type.variant() == ValueTypeVariant.METADATA)
+      .allMatch(CustomValueType.class::isInstance);
+
+    var vtd2 = ValueTypeDescription.createRef(List.of(ref1, ref2, ref3, ref3));
+    assertThat(vtd2).isEqualTo(vtd);
+
+    var vtd3 = ValueTypeDescription.createRef(List.of(ref1, ref2, MdoReference.EMPTY, ref3));
+    assertThat(vtd3).isEqualTo(vtd);
+
+    assertThat(ValueTypeDescription.createRef(Collections.emptyList())).isEqualTo(ValueTypeDescription.EMPTY);
+  }
+
+  @Test
+  void testCreateMultiLevelRef() {
+    var ref = MdoReference.create("Catalog.Product.Attribute.Price");
+    var vtd = ValueTypeDescription.createRef(ref);
+
+    assertThat(vtd.isEmpty()).isFalse();
+    assertThat(vtd.getTypes()).hasSize(1);
+
+    var type = vtd.getTypes().get(0);
+    // Проверить, что ключ сформирован корректно как "CatalogRef.Product.Attribute.Price"
+    assertThat(type.fullName().getEn()).contains("Ref.Product").contains("Attribute.Price");
   }
 }

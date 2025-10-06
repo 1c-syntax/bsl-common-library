@@ -103,10 +103,10 @@ public final class MultiName implements Comparable<MultiName> {
    * @return Имя нужного кода
    */
   public String get() {
-    if (nameRu.isEmpty()) {
-      return nameEn;
+    if (nameEn.isEmpty()) {
+      return nameRu;
     }
-    return nameRu;
+    return nameEn;
   }
 
   /**
@@ -116,7 +116,7 @@ public final class MultiName implements Comparable<MultiName> {
    * @return Имя нужного имени
    */
   public String get(String code) {
-    return get(ScriptVariant.valueByString(code));
+    return get(ScriptVariant.valueByName(code));
   }
 
   /**
@@ -197,27 +197,12 @@ public final class MultiName implements Comparable<MultiName> {
    * @return Признак того, что в строке есть символы, неиспользуемые в чисто английском синтаксисе
    */
   private static boolean containsNonEnglish(String text) {
-    if (text.isEmpty()) {
-      return false;
-    }
-
-    for (int i = 0; i < text.length(); i++) {
+    for (var i = 0; i < text.length(); i++) {
       var c = text.charAt(i);
-
-      // если символ вне ASCII - точно не английский
-      if (c > 127) {
-        return true;
-      }
-
-      // Проверка английских символов в ASCII диапазоне
-      if (!((c >= 'A' && c <= 'Z')
-        || (c >= 'a' && c <= 'z')
-        || (c >= '0' && c <= '9')
-        || c == '_')) {
+      if (Character.UnicodeScript.of(c) == Character.UnicodeScript.CYRILLIC) {
         return true;
       }
     }
-
     return false;
   }
 }

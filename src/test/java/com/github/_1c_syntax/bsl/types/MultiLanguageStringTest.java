@@ -23,6 +23,7 @@ package com.github._1c_syntax.bsl.types;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,7 +42,7 @@ class MultiLanguageStringTest {
 
     var valueCopy = MultiLanguageString.create(keyRu, keyRu);
     assertThat(value).isEqualTo(valueCopy);
-    assertThat(value == valueCopy).isTrue();
+    assertThat(value).isSameAs(valueCopy);
 
     var valueEn = MultiLanguageString.create(keyEn, keyEn);
     var valueRuEn = MultiLanguageString.create(value, valueEn);
@@ -51,6 +52,9 @@ class MultiLanguageStringTest {
 
     var valueRuEnList = MultiLanguageString.create(List.of(valueEn, value));
     assertThat(valueRuEn).isEqualTo(valueRuEnList);
-    assertThat(valueRuEn == valueRuEnList).isTrue();
+    assertThat(valueRuEn).isSameAs(valueRuEnList);
+
+    var empty = MultiLanguageString.create(Collections.emptyList());
+    assertThat(empty).isEqualTo(MultiLanguageString.EMPTY);
   }
 }

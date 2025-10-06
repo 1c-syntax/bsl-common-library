@@ -36,10 +36,10 @@ class AllowedLengthTest {
       "VARIABLE,VariablE,Variable,Переменная"
     }
   )
-  void testValueByString(ArgumentsAccessor argumentsAccessor) {
+  void testValueByName(ArgumentsAccessor argumentsAccessor) {
     var element = AllowedLength.valueOf(argumentsAccessor.getString(0));
-    assertThat(AllowedLength.valueByString(argumentsAccessor.getString(1))).isEqualTo(element);
-    assertThat(AllowedLength.valueByString(argumentsAccessor.getString(2))).isEqualTo(element);
-    assertThat(AllowedLength.valueByString(argumentsAccessor.getString(3))).isEqualTo(element);
+    assertThat(AllowedLength.valueByName(argumentsAccessor.getString(1))).isEqualTo(element);
+    assertThat(AllowedLength.valueByName(argumentsAccessor.getString(2))).isEqualTo(element);
+    assertThat(AllowedLength.valueByName(argumentsAccessor.getString(3))).isEqualTo(element);
   }
 }

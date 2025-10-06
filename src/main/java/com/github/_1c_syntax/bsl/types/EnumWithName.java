@@ -21,6 +21,11 @@
  */
 package com.github._1c_syntax.bsl.types;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
 /**
  * Расширение для перечислений, подсказывающее о наличии строкового значения, по которому его можно найти
  */
@@ -30,16 +35,7 @@ public interface EnumWithName {
    *
    * @return Мультиязычное имя значения перечисления
    */
-  MultiName value();
-
-  /**
-   * Возвращает имя значения по умолчанию
-   *
-   * @return Имя значения по умолчанию
-   */
-  default String name() {
-    return value().get();
-  }
+  MultiName fullName();
 
   /**
    * Возвращает имя значения на русском языке
@@ -47,7 +43,7 @@ public interface EnumWithName {
    * @return Имя значения на русском языке
    */
   default String nameRu() {
-    return value().getRu();
+    return fullName().getRu();
   }
 
   /**
@@ -56,13 +52,43 @@ public interface EnumWithName {
    * @return Имя значения на английском языке
    */
   default String nameEn() {
-    return value().getEn();
+    return fullName().getEn();
   }
 
   /**
-   * Признак того, что значение используется как значение для неизвестных
+   * Сервисный метод для формирования кеша ключей
+   *
+   * @param values  Список элементов класса
+   * @param exclude Исключаемый элемент
+   * @param <T>     Тип класса
+   * @return Кеш ключей
    */
-  default boolean isUnknown() {
-    return false;
+  static <T extends EnumWithName> Map<String, T> computeKeys(T[] values, T exclude) {
+    Map<String, T> keysMap = new HashMap<>();
+    for (var element : values) {
+      if (element == exclude) {
+        continue;
+      }
+      keysMap.put(element.nameEn().toLowerCase(Locale.ROOT), element);
+      keysMap.put(element.nameRu().toLowerCase(Locale.ROOT), element);
+    }
+    return Collections.unmodifiableMap(keysMap);
+  }
+
+
+  /**
+   * Сервисный метод для формирования кеша ключей
+   *
+   * @param values Список элементов класса
+   * @param <T>    Тип класса
+   * @return Кеш ключей
+   */
+  static <T extends EnumWithName> Map<String, T> computeKeys(T[] values) {
+    Map<String, T> keysMap = new HashMap<>();
+    for (var element : values) {
+      keysMap.put(element.nameEn().toLowerCase(Locale.ROOT), element);
+      keysMap.put(element.nameRu().toLowerCase(Locale.ROOT), element);
+    }
+    return Collections.unmodifiableMap(keysMap);
   }
 }

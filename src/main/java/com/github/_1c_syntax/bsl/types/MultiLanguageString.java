@@ -134,7 +134,7 @@ public class MultiLanguageString implements Comparable<MultiLanguageString> {
    * @return Если пустая, тогда true
    */
   public boolean isEmpty() {
-    return this == EMPTY;
+    return content.isEmpty();
   }
 
   @Override
@@ -143,35 +143,24 @@ public class MultiLanguageString implements Comparable<MultiLanguageString> {
       return 1;
     }
 
-    if (this.equals(multiLanguageString)) {
-      return 0;
+    var leftList = content.stream().sorted().toList();
+    var rightList = multiLanguageString.content.stream().sorted().toList();
+
+    var sizeComparison = Integer.compare(leftList.size(), rightList.size());
+    if (sizeComparison != 0) {
+      return sizeComparison;
     }
 
-    int compareResult = content.size() - multiLanguageString.content.size();
-    if (compareResult != 0) {
-      return compareResult;
+    for (var i = 0; i < leftList.size(); i++) {
+      var entryComparison = leftList.get(i).compareTo(rightList.get(i));
+      if (entryComparison != 0) {
+        return entryComparison;
+      }
     }
-
-    // количество равно, но списки не равны
-    // попробуем оставить в списках только уникальные элементы
-    // если останется больше 0 (а странно будет, если не так), то сравним по первому элементу
-    var left = new HashSet<>(content);
-    var right = new HashSet<>(multiLanguageString.content);
-    left.removeAll(right);
-    right.removeAll(left);
-    if (left.isEmpty() && right.isEmpty()) {
-      return 0; // хз как это получилось
-    } else if (left.isEmpty()) {
-      return -1;
-    } else if (right.isEmpty()) {
-      return 1;
-    } else {
-      var leftOne = left.iterator().next();
-      var rightOne = right.iterator().next();
-      return leftOne.compareTo(rightOne);
-    }
+    return 0;
   }
 
+  @Override
   public String toString() {
     if (isEmpty()) {
       return "empty";
@@ -197,7 +186,7 @@ public class MultiLanguageString implements Comparable<MultiLanguageString> {
 
     private Entry(String langKey, String value) {
       this.langKey = stringInterner.intern(langKey);
-      this.value = value;
+      this.value = stringInterner.intern(value);
     }
 
     public static Entry create(String langKey, String value) {

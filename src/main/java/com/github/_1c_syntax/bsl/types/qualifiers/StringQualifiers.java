@@ -54,8 +54,8 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
     this.allowedLength = allowedLength;
 
     this.description = MultiName.create(
-      "StringQualifiers (" + length + ", " + allowedLength.value().getEn() + ")",
-      "КвалификаторыСтроки (" + length + ", " + allowedLength.value().getRu() + ")"
+      "StringQualifiers (" + length + ", " + allowedLength.nameEn() + ")",
+      "КвалификаторыСтроки (" + length + ", " + allowedLength.nameRu() + ")"
     );
   }
 
@@ -91,7 +91,8 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
       return 0;
     }
 
-    int allowedLengthComparison = this.allowedLength.compareTo(qualifiers.getAllowedLength());
+    int allowedLengthComparison = this.allowedLength.fullName()
+      .compareTo(qualifiers.getAllowedLength().fullName());
     if (allowedLengthComparison != 0) {
       return allowedLengthComparison;
     }

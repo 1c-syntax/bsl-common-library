@@ -21,7 +21,6 @@
  */
 package com.github._1c_syntax.bsl.types.value;
 
-import com.github._1c_syntax.bsl.types.MDOType;
 import com.github._1c_syntax.bsl.types.ValueTypeVariant;
 import org.junit.jupiter.api.Test;
 
@@ -31,19 +30,24 @@ class PrimitiveValueTypeTest {
 
   @Test
   void test() {
-    assertThat(PrimitiveValueType.builtinTypes())
+    assertThat(PrimitiveValueType.values())
       .hasSize(5)
       .allMatch(valueType -> valueType.variant() == ValueTypeVariant.PRIMITIVE);
   }
 
   @Test
   void fromString() {
-    var type = PrimitiveValueType.fromString("string");
+    var type = PrimitiveValueType.valueByName("string");
     assertThat(type).isNotNull();
     assertThat(type.fullName().getEn()).isEqualTo("String");
     assertThat(type.fullName().getRu()).isEqualTo("Строка");
 
-    type = PrimitiveValueType.fromString("Тип");
+    // RU-ввод и регистронезависимость
+    var typeRu = PrimitiveValueType.valueByName("Строка");
+    assertThat(typeRu).isNotNull();
+    assertThat(PrimitiveValueType.valueByName("StRiNg")).isSameAs(type);
+
+    type = PrimitiveValueType.valueByName("Тип");
     assertThat(type).isNull();
   }
 }

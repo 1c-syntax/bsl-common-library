@@ -106,8 +106,8 @@ public class MdoReference implements Comparable<MdoReference> {
    * @return Ссылка на объект
    */
   public static MdoReference create(MDOType mdoType, String name) {
-    var mdoRef = stringInterner.intern(mdoType.getName() + "." + name);
-    var mdoRefRu = stringInterner.intern(mdoType.getNameRu() + "." + name);
+    var mdoRef = stringInterner.intern(mdoType.nameEn() + "." + name);
+    var mdoRefRu = stringInterner.intern(mdoType.nameRu() + "." + name);
 
     return getOrCompute(mdoType, mdoRef, mdoRefRu);
   }
@@ -143,8 +143,8 @@ public class MdoReference implements Comparable<MdoReference> {
     if (mdoReferenceOwner == null || mdoReferenceOwner.isEmpty()) {
       return create(mdoType, name);
     } else {
-      var mdoRef = stringInterner.intern(mdoReferenceOwner.getMdoRef() + "." + mdoType.getName() + "." + name);
-      var mdoRefRu = stringInterner.intern(mdoReferenceOwner.getMdoRefRu() + "." + mdoType.getNameRu() + "." + nameRu);
+      var mdoRef = stringInterner.intern(mdoReferenceOwner.getMdoRef() + "." + mdoType.nameEn() + "." + name);
+      var mdoRefRu = stringInterner.intern(mdoReferenceOwner.getMdoRefRu() + "." + mdoType.nameRu() + "." + nameRu);
 
       return getOrCompute(mdoType, mdoRef, mdoRefRu);
     }
