@@ -61,7 +61,7 @@ dependencies {
     testImplementation("org.slf4j", "slf4j-reload4j", "2.0.16")
 
     // тестирование
-    testImplementation(platform("org.junit:junit-bom:5.11.4"))
+    testImplementation(platform("org.junit:junit-bom:6.0.0"))
     testImplementation("org.junit.jupiter", "junit-jupiter-api")
     testImplementation("org.junit.jupiter", "junit-jupiter-params")
     testImplementation("org.assertj", "assertj-core", "3.27.0")
