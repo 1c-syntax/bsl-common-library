@@ -24,26 +24,11 @@ package com.github._1c_syntax.bsl.types;
 /**
  * Описание типа значения
  */
-public interface ValueType {
-  /**
-   * Имя типа
-   *
-   * @return Строковое имя типа, на английском
-   */
-  String getName();
-
-  /**
-   * Имя типа на русском
-   *
-   * @return Строковое имя типа, на русском
-   */
-  String getNameRu();
-
+public interface ValueType extends EnumWithName {
   /**
    * Вариант типа данных
    *
    * @return Вариант (область) типа данных
    */
-  ValueTypeVariant getVariant();
-
+  ValueTypeVariant variant();
 }

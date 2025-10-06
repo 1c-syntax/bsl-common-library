@@ -21,11 +21,40 @@
  */
 package com.github._1c_syntax.bsl.types;
 
+import lombok.Getter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
+import java.util.Locale;
+import java.util.Map;
+
 /**
  * Части даты
  */
-public enum DateFractions {
-  DATE,
-  DATETIME,
-  TIME
+@ToString(of = "fullName")
+public enum DateFractions implements EnumWithName {
+  DATE("Date", "Дата"),
+  DATE_TIME("DateTime", "ДатаВремя"),
+  TIME("Time", "Время");
+
+  private static final Map<String, DateFractions> KEYS = EnumWithName.computeKeys(values());
+
+  @Getter
+  @Accessors(fluent = true)
+  private final MultiName fullName;
+
+
+  DateFractions(String nameEn, String nameRu) {
+    this.fullName = MultiName.create(nameEn, nameRu);
+  }
+
+  /**
+   * Ищет элемент перечисления по именам (рус, анг)
+   *
+   * @param string Имя искомого элемента
+   * @return Найденное значение, если не найден - то DATE_TIME
+   */
+  public static DateFractions valueByName(String string) {
+    return KEYS.getOrDefault(string.toLowerCase(Locale.ROOT), DATE_TIME);
+  }
 }

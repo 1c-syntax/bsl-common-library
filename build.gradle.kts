@@ -1,5 +1,5 @@
-import java.util.*
 import org.jreleaser.model.Active.*
+import java.util.*
 
 plugins {
     `java-library`
@@ -57,14 +57,16 @@ dependencies {
     // stat analysis
     compileOnly("com.github.spotbugs", "spotbugs-annotations", "4.8.6")
 
-    // тестирование
-    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.11.4")
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.11.4")
-    testImplementation("org.assertj", "assertj-core", "3.27.0")
-    testImplementation("com.ginsberg", "junit5-system-exit", "2.0.2")
-
     // логирование
     testImplementation("org.slf4j", "slf4j-reload4j", "2.0.16")
+
+    // тестирование
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
+    testImplementation("org.junit.jupiter", "junit-jupiter-api")
+    testImplementation("org.junit.jupiter", "junit-jupiter-params")
+    testImplementation("org.assertj", "assertj-core", "3.27.0")
+    testImplementation("com.ginsberg", "junit5-system-exit", "2.0.2")
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine")
 }
 
 java {

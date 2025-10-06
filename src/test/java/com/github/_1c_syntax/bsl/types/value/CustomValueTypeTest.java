@@ -21,28 +21,18 @@
  */
 package com.github._1c_syntax.bsl.types.value;
 
-import com.github._1c_syntax.bsl.types.ValueType;
 import com.github._1c_syntax.bsl.types.ValueTypeVariant;
-import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
-/**
- * Для записи неизвестного типа данных
- */
-public class UnknownValueType implements ValueType {
-  @Getter
-  private final String name;
+import static org.assertj.core.api.Assertions.assertThat;
 
-  public UnknownValueType(String name) {
-    this.name = name;
-  }
+class CustomValueTypeTest {
 
-  @Override
-  public String getNameRu() {
-    return getName();
-  }
-
-  @Override
-  public ValueTypeVariant getVariant() {
-    return ValueTypeVariant.UNKNOWN;
+  @Test
+  void test() {
+    var unknowType = CustomValueType.create("any_words");
+    assertThat(unknowType.nameEn()).isEqualTo("any_words");
+    assertThat(unknowType.nameRu()).isEmpty();
+    assertThat(unknowType.variant()).isEqualTo(ValueTypeVariant.UNKNOWN);
   }
 }

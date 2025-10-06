@@ -19,35 +19,27 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-package com.github._1c_syntax.bsl.types.value;
+package com.github._1c_syntax.bsl.types;
 
-import com.github._1c_syntax.bsl.types.ValueTypeVariant;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PrimitiveValueTypeTest {
+class AllowedLengthTest {
 
-  @Test
-  void test() {
-    assertThat(PrimitiveValueType.values())
-      .hasSize(5)
-      .allMatch(valueType -> valueType.variant() == ValueTypeVariant.PRIMITIVE);
-  }
-
-  @Test
-  void fromString() {
-    var type = PrimitiveValueType.valueByName("string");
-    assertThat(type).isNotNull();
-    assertThat(type.fullName().getEn()).isEqualTo("String");
-    assertThat(type.fullName().getRu()).isEqualTo("Строка");
-
-    // RU-ввод и регистронезависимость
-    var typeRu = PrimitiveValueType.valueByName("Строка");
-    assertThat(typeRu).isNotNull();
-    assertThat(PrimitiveValueType.valueByName("StRiNg")).isSameAs(type);
-
-    type = PrimitiveValueType.valueByName("Тип");
-    assertThat(type).isNull();
+  @ParameterizedTest(name = "{index}: {0}")
+  @CsvSource(
+    {
+      "FIXED,Fixed,Фиксированная,фиксировАнная",
+      "VARIABLE,VariablE,Variable,Переменная"
+    }
+  )
+  void testValueByName(ArgumentsAccessor argumentsAccessor) {
+    var element = AllowedLength.valueOf(argumentsAccessor.getString(0));
+    assertThat(AllowedLength.valueByName(argumentsAccessor.getString(1))).isEqualTo(element);
+    assertThat(AllowedLength.valueByName(argumentsAccessor.getString(2))).isEqualTo(element);
+    assertThat(AllowedLength.valueByName(argumentsAccessor.getString(3))).isEqualTo(element);
   }
 }

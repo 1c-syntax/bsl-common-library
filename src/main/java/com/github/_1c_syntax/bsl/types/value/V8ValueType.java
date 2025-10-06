@@ -21,51 +21,85 @@
  */
 package com.github._1c_syntax.bsl.types.value;
 
+import com.github._1c_syntax.bsl.types.EnumWithName;
+import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.ValueType;
 import com.github._1c_syntax.bsl.types.ValueTypeVariant;
 import lombok.Getter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
-import java.util.List;
+import javax.annotation.Nullable;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Типы данных платформы 8
  */
-public class V8ValueType implements ValueType {
-  public static final V8ValueType VALUE_STORAGE = new V8ValueType("ValueStorage", "ХранилищеЗначений");
-  public static final V8ValueType UUID = new V8ValueType("UUID", "УникальныйИдентификатор");
-  public static final V8ValueType ANY_REF = new V8ValueType("AnyRef", "ЛюбаяСсылка", ValueTypeVariant.METADATA);
-  public static final V8ValueType FIXED_STRUCTURE = new V8ValueType("FixedStructure", "ФиксированнаяСтруктура");
-  public static final V8ValueType FIXED_ARRAY = new V8ValueType("FixedArray", "ФиксированныйМассив");
-  public static final V8ValueType FIXED_MAP = new V8ValueType("FixedMap", "ФиксированноеСоответствие");
+@ToString(of = "fullName")
+public enum V8ValueType implements ValueType {
+  ACCOUNTING_RECORD_TYPE("AccountingRecordType", "ВидДвиженияБухгалтерии"),
+  ACCUMULATION_RECORD_TYPE("AccumulationRecordType", "ВидДвиженияНакопления"),
+  CHART("Chart", "Диаграмма"),
+  COLOR("Color", "Цвет"),
+  COMPARISON_TYPE("ComparisonType", "ВидСравнения"),
+  DATA_ANALYSIS_TIME_INTERVAL_UNIT_TYPE("DataAnalysisTimeIntervalUnitType",
+    "ТипЕдиницыИнтервалаВремениАнализаДанных"),
+  DATA_COMPOSITION_SETTINGS_COMPOSER("DataCompositionSettingsComposer",
+    "КомпоновщикНастроекКомпоновкиДанных"),
+  DYNAMIC_LIST("DynamicList", "ДинамическийСписок"),
+  FILTER("Filter", "Отбор"),
+  FIXED_ARRAY("FixedArray", "ФиксированныйМассив"),
+  FIXED_MAP("FixedMap", "ФиксированноеСоответствие"),
+  FIXED_STRUCTURE("FixedStructure", "ФиксированнаяСтруктура"),
+  FONT("Font", "Шрифт"),
+  FORMATTED_DOCUMENT("FormattedDocument", "ФорматированныйДокумент"),
+  FORMATTED_STRING("FormattedString", "ФорматированнаяСтрока"),
+  GANTT_CHART("GanttChart", "ДиаграммаГанта"),
+  GEOGRAPHICAL_SCHEMA("GeographicalSchema", "ГеографическаяСхема"),
+  GRAPHICAL_SCHEMA("GraphicalSchema", "ГрафическаяСхема"),
+  ORDER("Order", "Порядок"),
+  PDF_DOCUMENT("PDFDocument", "PDFДокумент"),
+  PICTURE("Picture", "Картинка"),
+  PLANNER("Planner", "Планировщик"),
+  REPORT_BUILDER("ReportBuilder", "ПостроительОтчета"),
+  SETTINGS_COMPOSER("SettingsComposer", "НастройкиКомпоновщика"),
+  SIZE_CHANGE_MODE("SizeChangeMode", "РежимИзмененияРазмера"),
+  SPREADSHEET_DOCUMENT("SpreadsheetDocument", "ТабличныйДокумент"),
+  STANDARD_BEGINNING_DATE("StandardBeginningDate", "СтандартнаяДатаНачала"),
+  STANDARD_PERIOD("StandardPeriod", "СтандартныйПериод"),
+  TEXT_DOCUMENT("TextDocument", "ТекстовыйДокумент"),
+  TYPE_DESCRIPTION("TypeDescription", "ОписаниеТипа"),
+  UUID("UUID", "УникальныйИдентификатор"),
+  VALUE_LIST("ValueList", "СписокЗначений"),
+  VALUE_STORAGE("ValueStorage", "ХранилищеЗначений"),
+  VALUE_TABLE("ValueTable", "ТаблицаЗначений"),
+  VALUE_TREE("ValueTree", "ДеревоЗначений"),
+  VERTICAL_ALIGN("VerticalAlign", "ВертикальноеПоложение");
 
-  private static final List<ValueType> BUILTIN_TYPES = List.of(
-    VALUE_STORAGE, UUID, ANY_REF,
-    FIXED_STRUCTURE, FIXED_ARRAY, FIXED_MAP
-  );
+  private static final Map<String, V8ValueType> KEYS = EnumWithName.computeKeys(values());
 
   @Getter
-  private final String name;
-  @Getter
-  private final String nameRu;
-  @Getter
-  private final ValueTypeVariant variant;
+  @Accessors(fluent = true)
+  private final MultiName fullName;
 
-  private V8ValueType(String name, String nameRu) {
-    this(name, nameRu, ValueTypeVariant.V8);
-  }
-
-  private V8ValueType(String name, String nameRu, ValueTypeVariant variant) {
-    this.name = name;
-    this.nameRu = nameRu;
-    this.variant = variant;
+  V8ValueType(String nameEn, String nameRu) {
+    this.fullName = MultiName.create(nameEn, nameRu);
   }
 
   /**
-   * Коллекция встроенных типов
+   * Ищет элемент перечисления по именам (рус, анг)
    *
-   * @return Список встроенных типов
+   * @param name Имя искомого элемента
+   * @return Найденное значение, если не найден - то null
    */
-  public static List<ValueType> builtinTypes() {
-    return BUILTIN_TYPES;
+  @Nullable
+  public static V8ValueType valueByName(String name) {
+    return KEYS.get(name.toLowerCase(Locale.ROOT));
+  }
+
+  @Override
+  public ValueTypeVariant variant() {
+    return ValueTypeVariant.V8;
   }
 }

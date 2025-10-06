@@ -22,6 +22,7 @@
 package com.github._1c_syntax.bsl.types.qualifiers;
 
 import com.github._1c_syntax.bsl.types.AllowedLength;
+import com.github._1c_syntax.bsl.types.MultiName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,9 +33,15 @@ class BinaryDataQualifiersTest {
     var quaf = BinaryDataQualifiers.create(1);
     assertThat(quaf.getLength()).isEqualTo(1);
     assertThat(quaf.getAllowedLength()).isEqualTo(AllowedLength.VARIABLE);
+    assertThat(quaf.description())
+      .isEqualTo(MultiName.create("BinaryDataQualifiers (1, Variable)", "КвалификаторыДвоичныхДанных (1, Переменная)"));
 
     quaf = BinaryDataQualifiers.create(100, AllowedLength.FIXED);
     assertThat(quaf.getLength()).isEqualTo(100);
     assertThat(quaf.getAllowedLength()).isEqualTo(AllowedLength.FIXED);
+    assertThat(quaf.description())
+      .isEqualTo(MultiName.create("BinaryDataQualifiers (100, Fixed)", "КвалификаторыДвоичныхДанных (100, Фиксированная)"));
+
+    assertThat(quaf.compareTo(null)).isEqualTo(1);
   }
 }

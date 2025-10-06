@@ -21,10 +21,14 @@
  */
 package com.github._1c_syntax.bsl.types;
 
-import com.github._1c_syntax.bsl.types.value.V8ValueType;
+import com.github._1c_syntax.bsl.types.qualifiers.NumberQualifiers;
+import com.github._1c_syntax.bsl.types.qualifiers.StringQualifiers;
+import com.github._1c_syntax.bsl.types.value.MDOValueType;
+import com.github._1c_syntax.bsl.types.value.PrimitiveValueType;
 import lombok.Value;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -51,9 +55,16 @@ public class ValueTypeDescription {
   }
 
   private ValueTypeDescription(List<ValueType> types, List<Qualifier> qualifiers, boolean composite) {
-    this.types = List.copyOf(types);
+    this.types = types.stream()
+      .sorted(Comparator.comparing(ValueType::nameEn))
+      .distinct()
+      .toList();
     this.composite = composite;
-    this.qualifiers = List.copyOf(qualifiers);
+    this.qualifiers = qualifiers.stream()
+      .sorted(Comparator.comparing(Qualifier::description))
+      .filter(qualifier -> !Qualifier.EMPTY.equals(qualifier))
+      .distinct()
+      .toList();
   }
 
   /**
@@ -82,7 +93,7 @@ public class ValueTypeDescription {
    * @return Описание типа
    */
   public static ValueTypeDescription create(ValueType type) {
-    return create(List.of(type), type == V8ValueType.ANY_REF);
+    return create(type, Qualifier.EMPTY);
   }
 
   /**
@@ -92,32 +103,8 @@ public class ValueTypeDescription {
    * @param qualifier Квалификатор типа
    * @return Описание типа
    */
-  public static ValueTypeDescription create(ValueType type, Qualifier... qualifier) {
-    return create(List.of(type), type == V8ValueType.ANY_REF, qualifier);
-  }
-
-  /**
-   * Конструктор описания типа по одному типу и явным указанием признака составного типа.
-   * Рекомендуется использовать только если алгоритм автоматического определения не подходит
-   *
-   * @param type      Тип
-   * @param composite Признак составного типа
-   * @return Описание типа
-   */
-  public static ValueTypeDescription create(ValueType type, boolean composite) {
-    return create(List.of(type), composite);
-  }
-
-  /**
-   * Конструктор описания типа по одному типу, явным указанием признака составного типа и
-   * набором квалификаторов.
-   *
-   * @param type      Тип
-   * @param composite Признак составного типа
-   * @return Описание типа
-   */
-  public static ValueTypeDescription create(ValueType type, boolean composite, Qualifier... qualifiers) {
-    return create(List.of(type), composite, qualifiers);
+  public static ValueTypeDescription create(ValueType type, Qualifier qualifier) {
+    return create(List.of(type), List.of(qualifier));
   }
 
   /**
@@ -127,19 +114,7 @@ public class ValueTypeDescription {
    * @return Описание типа
    */
   public static ValueTypeDescription create(List<ValueType> types) {
-    return create(types, types.size() > 1 || types.contains(V8ValueType.ANY_REF));
-  }
-
-  /**
-   * Конструктор описания типа по списку типов и явным указанием признака составного типа.
-   * Рекомендуется использовать только если алгоритм автоматического определения не подходит
-   *
-   * @param types     Список типов
-   * @param composite Признак составного типа
-   * @return Описание типа
-   */
-  public static ValueTypeDescription create(List<ValueType> types, boolean composite) {
-    return create(types, composite, new Qualifier[0]);
+    return create(types, Qualifier.EMPTY);
   }
 
   /**
@@ -150,33 +125,123 @@ public class ValueTypeDescription {
    * @return Описание типа
    */
   public static ValueTypeDescription create(List<ValueType> types, Qualifier... qualifiers) {
-    return create(types, types.size() > 1 || types.contains(V8ValueType.ANY_REF), qualifiers);
+    return create(types, List.of(qualifiers));
+  }
+
+  /**
+   * Конструктор описания типа по списку типов и квалификаторов
+   *
+   * @param types      Список типов
+   * @param qualifiers Список квалификаторов
+   * @return Описание типа
+   */
+  public static ValueTypeDescription create(List<ValueType> types, List<Qualifier> qualifiers) {
+    if (types.isEmpty()) {
+      return EMPTY;
+    }
+
+    var composite = types.size() > 1 || types.get(0) instanceof MDOValueType;
+    return new ValueTypeDescription(types, qualifiers, composite);
   }
 
   /**
    * Конструктор описания типа
    *
    * @param types      Список типов
-   * @param composite  Признак составного типа
    * @param qualifiers Список квалификаторов
+   * @param composite  Признак составного типа
    * @return Описание типа
    */
-  public static ValueTypeDescription create(List<ValueType> types, boolean composite, Qualifier... qualifiers) {
-    return create(types, composite, List.of(qualifiers));
-  }
-
-  /**
-   * Конструктор описания типа
-   *
-   * @param types      Список типов
-   * @param composite  Признак составного типа
-   * @param qualifiers Список квалификаторов
-   * @return Описание типа
-   */
-  public static ValueTypeDescription create(List<ValueType> types, boolean composite, List<Qualifier> qualifiers) {
+  public static ValueTypeDescription create(List<ValueType> types, List<Qualifier> qualifiers, boolean composite) {
     if (types.isEmpty()) {
       return EMPTY;
     }
     return new ValueTypeDescription(types, qualifiers, composite);
+  }
+
+  /**
+   * Создает описание типа для Строки с указанной переменной длиной
+   *
+   * @param length Длина строки
+   * @return Описание типа строки
+   */
+  public static ValueTypeDescription createString(int length) {
+    return create(PrimitiveValueType.STRING, StringQualifiers.create(length));
+  }
+
+  /**
+   * Создает описание типа для Строки указанных длиной и ее вариантом
+   *
+   * @param length        Длина строки
+   * @param allowedLength Вариант длины
+   * @return Описание типа строки
+   */
+  public static ValueTypeDescription createString(int length, AllowedLength allowedLength) {
+    return create(PrimitiveValueType.STRING, StringQualifiers.create(length, allowedLength));
+  }
+
+  /**
+   * Создает описание типа для целого Числа с указанной длиной
+   *
+   * @param length Длина числа
+   * @return Описание типа числа
+   */
+  public static ValueTypeDescription createNumber(int length) {
+    return create(PrimitiveValueType.NUMBER, NumberQualifiers.create(length));
+  }
+
+  /**
+   * Создает описание типа для ссылки на объект метаданных
+   *
+   * @param mdoType Тип метаданных
+   * @param mdoName Имя объекта метаданных
+   * @return Описание типа ссылки
+   */
+  public static ValueTypeDescription createRef(MDOType mdoType, String mdoName) {
+    var result = ValueTypes.getOrCompute(mdoType.nameEn() + "Ref." + mdoName);
+    return create(result);
+  }
+
+  /**
+   * Создает описание типа для ссылки на объект метаданных
+   *
+   * @param mdoReference Ссылка на объект метаданных
+   * @return Описание типа ссылки
+   */
+  public static ValueTypeDescription createRef(MdoReference mdoReference) {
+    if (mdoReference.isEmpty()) {
+      return EMPTY;
+    }
+
+    return create(createRefType(mdoReference));
+  }
+
+  /**
+   * Создает описание типа для набора ссылок на объекты метаданных
+   *
+   * @param mdoReferences Набор ссылок на объекты метаданных
+   * @return Описание типа
+   */
+  public static ValueTypeDescription createRef(List<MdoReference> mdoReferences) {
+    if (mdoReferences.isEmpty()) {
+      return EMPTY;
+    }
+
+    var types = mdoReferences.stream()
+      .filter(mdoReference -> !mdoReference.isEmpty())
+      .map(ValueTypeDescription::createRefType)
+      .toList();
+
+    if (types.isEmpty()) {
+      return EMPTY;
+    }
+
+    return create(types);
+  }
+
+  private static ValueType createRefType(MdoReference mdoReference) {
+    var parts = mdoReference.getMdoRef().split("\\.");
+    parts[0] += "Ref";
+    return ValueTypes.getOrCompute(String.join(".", parts));
   }
 }

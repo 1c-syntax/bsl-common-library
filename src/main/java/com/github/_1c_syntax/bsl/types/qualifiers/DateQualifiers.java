@@ -22,18 +22,34 @@
 package com.github._1c_syntax.bsl.types.qualifiers;
 
 import com.github._1c_syntax.bsl.types.DateFractions;
+import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.Qualifier;
-import lombok.Getter;
+import lombok.ToString;
+import lombok.Value;
+import lombok.experimental.Accessors;
 
-public class DateQualifiers implements Qualifier {
+import javax.annotation.Nullable;
+
+@Value
+@ToString(of = "description")
+public class DateQualifiers implements Qualifier, Comparable<DateQualifiers> {
   /**
    * Части даты
    */
-  @Getter
-  private final DateFractions dateFractions;
+  DateFractions dateFractions;
+
+  /**
+   * Представление квалификатора
+   */
+  @Accessors(fluent = true)
+  MultiName description;
 
   private DateQualifiers(DateFractions dateFractions) {
     this.dateFractions = dateFractions;
+    this.description = MultiName.create(
+      "DateQualifiers (" + dateFractions.nameEn() + ")",
+      "КвалификаторыДаты (" + dateFractions.nameRu() + ")"
+    );
   }
 
   /**
@@ -42,7 +58,7 @@ public class DateQualifiers implements Qualifier {
    * @return Квалификатор даты
    */
   public static DateQualifiers create() {
-    return create(DateFractions.DATETIME);
+    return create(DateFractions.DATE_TIME);
   }
 
   /**
@@ -53,5 +69,18 @@ public class DateQualifiers implements Qualifier {
    */
   public static DateQualifiers create(DateFractions dateFractions) {
     return new DateQualifiers(dateFractions);
+  }
+
+  @Override
+  public int compareTo(@Nullable DateQualifiers qualifiers) {
+    if (qualifiers == null) {
+      return 1;
+    }
+
+    if (this.equals(qualifiers)) {
+      return 0;
+    }
+
+    return this.dateFractions.fullName().compareTo(qualifiers.getDateFractions().fullName());
   }
 }

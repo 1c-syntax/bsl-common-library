@@ -30,12 +30,23 @@ class V8ValueTypeTest {
 
   @Test
   void test() {
-    assertThat(V8ValueType.builtinTypes()).hasSize(6);
+    assertThat(V8ValueType.values())
+      .hasSize(36)
+      .allMatch(valueType -> valueType.variant() == ValueTypeVariant.V8);
+  }
 
-    assertThat(V8ValueType.builtinTypes())
-      .filteredOn(valueType -> valueType.getVariant() == ValueTypeVariant.V8)
-      .hasSize(5);
+  @Test
+  void fromString() {
+    var type = V8ValueType.valueByName("UUID");
+    assertThat(type).isNotNull();
+    assertThat(type.fullName().getEn()).isEqualTo("UUID");
+    assertThat(type.fullName().getRu()).isEqualTo("УникальныйИдентификатор");
 
-    assertThat(V8ValueType.ANY_REF.getVariant()).isEqualTo(ValueTypeVariant.METADATA);
+    assertThat(V8ValueType.valueByName("uuid")).isSameAs(type);
+    var typeRu = V8ValueType.valueByName("УникальныйИдентификатор");
+    assertThat(typeRu).isSameAs(type);
+
+    type = V8ValueType.valueByName("Тип");
+    assertThat(type).isNull();
   }
 }

@@ -22,6 +22,7 @@
 package com.github._1c_syntax.bsl.types.qualifiers;
 
 import com.github._1c_syntax.bsl.types.DateFractions;
+import com.github._1c_syntax.bsl.types.MultiName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,8 +31,15 @@ class DateQualifiersTest {
   @Test
   void create() {
     var quaf = DateQualifiers.create();
-    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATETIME);
+    assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE_TIME);
+    assertThat(quaf.description())
+      .isEqualTo(MultiName.create("DateQualifiers (DateTime)", "КвалификаторыДаты (ДатаВремя)"));
+
     quaf = DateQualifiers.create(DateFractions.DATE);
     assertThat(quaf.getDateFractions()).isEqualTo(DateFractions.DATE);
+    assertThat(quaf.description())
+      .isEqualTo(MultiName.create("DateQualifiers (Date)", "КвалификаторыДаты (Дата)"));
+
+    assertThat(quaf.compareTo(null)).isEqualTo(1);
   }
 }

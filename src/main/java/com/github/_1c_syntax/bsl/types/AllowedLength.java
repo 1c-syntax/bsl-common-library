@@ -21,10 +21,39 @@
  */
 package com.github._1c_syntax.bsl.types;
 
+import lombok.Getter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
+import java.util.Locale;
+import java.util.Map;
+
 /**
  * Варианты длины
  */
-public enum AllowedLength {
-  FIXED,
-  VARIABLE
+@ToString(of = "fullName")
+public enum AllowedLength implements EnumWithName {
+  FIXED("Fixed", "Фиксированная"),
+  VARIABLE("Variable", "Переменная");
+
+  private static final Map<String, AllowedLength> KEYS = EnumWithName.computeKeys(values());
+
+  @Getter
+  @Accessors(fluent = true)
+  private final MultiName fullName;
+
+
+  AllowedLength(String nameEn, String nameRu) {
+    this.fullName = MultiName.create(nameEn, nameRu);
+  }
+
+  /**
+   * Ищет элемент перечисления по именам (рус, анг)
+   *
+   * @param string Имя искомого элемента
+   * @return Найденное значение, если не найден - то VARIABLE
+   */
+  public static AllowedLength valueByName(String string) {
+    return KEYS.getOrDefault(string.toLowerCase(Locale.ROOT), VARIABLE);
+  }
 }

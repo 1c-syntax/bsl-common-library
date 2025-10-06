@@ -21,18 +21,36 @@
  */
 package com.github._1c_syntax.bsl.types.value;
 
+import com.github._1c_syntax.bsl.types.MDOType;
 import com.github._1c_syntax.bsl.types.ValueTypeVariant;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UnknownValueTypeTest {
+class MDOValueTypeTest {
+
+  @Test
+  void fromString() {
+    var type = MDOValueType.valueByName("DataProcessorManager");
+    assertThat(type).isNotNull();
+    assertThat(type.kind()).isEqualTo(MDOType.DATA_PROCESSOR);
+    assertThat(type.fullName().getEn()).isEqualTo("DataProcessorManager");
+    assertThat(type.fullName().getRu()).isEqualTo("ОбработкаМенеджер");
+
+    type = MDOValueType.valueByName("AnyRef");
+    assertThat(type).isNotNull();
+    assertThat(type.kind()).isEqualTo(MDOType.CONFIGURATION);
+    assertThat(type.fullName().getEn()).isEqualTo("AnyRef");
+    assertThat(type.fullName().getRu()).isEqualTo("ЛюбаяСсылка");
+
+    type = MDOValueType.valueByName("Тип");
+    assertThat(type).isNull();
+  }
 
   @Test
   void test() {
-    var unknowType = new UnknownValueType("any words");
-    assertThat(unknowType.getName()).isEqualTo("any words");
-    assertThat(unknowType.getNameRu()).isEqualTo("any words");
-    assertThat(unknowType.getVariant()).isEqualTo(ValueTypeVariant.UNKNOWN);
+    assertThat(MDOValueType.values())
+      .hasSize(53)
+      .allMatch(valueType -> valueType.variant() == ValueTypeVariant.METADATA);
   }
 }

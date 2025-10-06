@@ -21,45 +21,52 @@
  */
 package com.github._1c_syntax.bsl.types.value;
 
+import com.github._1c_syntax.bsl.types.EnumWithName;
+import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.ValueType;
 import com.github._1c_syntax.bsl.types.ValueTypeVariant;
 import lombok.Getter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
-import java.util.List;
+import javax.annotation.Nullable;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Примитивные типы данных
  */
-public class PrimitiveValueType implements ValueType {
-  public static final PrimitiveValueType STRING = new PrimitiveValueType("String", "Строка");
-  public static final PrimitiveValueType DATE = new PrimitiveValueType("Date", "Дата");
-  public static final PrimitiveValueType NUMBER = new PrimitiveValueType("Number", "Число");
-  public static final PrimitiveValueType BOOLEAN = new PrimitiveValueType("Boolean", "Булево");
-  public static final PrimitiveValueType NULL = new PrimitiveValueType("Null", "Null");
+@ToString(of = "fullName")
+public enum PrimitiveValueType implements ValueType {
+  STRING("String", "Строка"),
+  DATE("Date", "Дата"),
+  NUMBER("Number", "Число"),
+  BOOLEAN("Boolean", "Булево"),
+  NULL("Null", "Null");
 
-  private static final List<ValueType> BUILTIN_TYPES = List.of(STRING, DATE, NUMBER, BOOLEAN, NULL);
+  private static final Map<String, PrimitiveValueType> KEYS = EnumWithName.computeKeys(values());
 
   @Getter
-  private final String name;
-  @Getter
-  private final String nameRu;
+  @Accessors(fluent = true)
+  private final MultiName fullName;
 
-  private PrimitiveValueType(String name, String nameRu) {
-    this.name = name;
-    this.nameRu = nameRu;
+  PrimitiveValueType(String nameEn, String nameRu) {
+    this.fullName = MultiName.create(nameEn, nameRu);
   }
 
   @Override
-  public ValueTypeVariant getVariant() {
+  public ValueTypeVariant variant() {
     return ValueTypeVariant.PRIMITIVE;
   }
 
   /**
-   * Коллекция встроенных типов
+   * Производит определение типа по переданной строке
    *
-   * @return Список встроенных типов
+   * @param name Строковое представление типа
+   * @return Найденное значение, если не найден - то null
    */
-  public static List<ValueType> builtinTypes() {
-    return BUILTIN_TYPES;
+  @Nullable
+  public static PrimitiveValueType valueByName(String name) {
+    return KEYS.get(name.toLowerCase(Locale.ROOT));
   }
 }

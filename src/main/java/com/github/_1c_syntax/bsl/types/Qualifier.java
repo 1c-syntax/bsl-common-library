@@ -25,5 +25,15 @@ package com.github._1c_syntax.bsl.types;
  * Квалификатор типа данных значения
  */
 public interface Qualifier {
+  /**
+   * Квалификатор-пустышка, используется для типов данных, в которых он не предусмотрен
+   */
+  Qualifier EMPTY = () -> MultiName.EMPTY;
 
+  /**
+   * Формирует представление квалификатора
+   *
+   * @return Представление квалификатора
+   */
+  MultiName description();
 }

@@ -33,15 +33,38 @@ class NumberQualifiersTest {
     assertThat(quaf.getPrecision()).isEqualTo(10);
     assertThat(quaf.getScale()).isZero();
     assertThat(quaf.isNonNegative()).isFalse();
+    assertThat(quaf.description().getRu()).isEqualTo("КвалификаторыЧисла (10.0)");
+    assertThat(quaf.description().getEn()).isEqualTo("NumberQualifiers (10.0)");
 
     quaf = NumberQualifiers.create(10, 5);
     assertThat(quaf.getPrecision()).isEqualTo(10);
     assertThat(quaf.getScale()).isEqualTo(5);
     assertThat(quaf.isNonNegative()).isFalse();
+    assertThat(quaf.description().getRu()).isEqualTo("КвалификаторыЧисла (10.5)");
+    assertThat(quaf.description().getEn()).isEqualTo("NumberQualifiers (10.5)");
 
     quaf = NumberQualifiers.create(10, 5, true);
     assertThat(quaf.getPrecision()).isEqualTo(10);
     assertThat(quaf.getScale()).isEqualTo(5);
     assertThat(quaf.isNonNegative()).isTrue();
+    assertThat(quaf.description().getRu()).isEqualTo("КвалификаторыЧисла (10.5 неотр)");
+    assertThat(quaf.description().getEn()).isEqualTo("NumberQualifiers (10.5 nonneg)");
+
+    assertThat(quaf.compareTo(null)).isEqualTo(1);
+  }
+
+  @Test
+  void compare() {
+    var quaf = NumberQualifiers.create(10);
+    var quaf2 = NumberQualifiers.create(10, 5);
+    var quaf3 = NumberQualifiers.create(10);
+    var quaf4 = NumberQualifiers.create(9);
+    var quaf5 = NumberQualifiers.create(10, 5, true);
+
+    assertThat(quaf2.compareTo(quaf)).isEqualTo(1);
+    assertThat(quaf3.compareTo(quaf2)).isEqualTo(-1);
+    assertThat(quaf.compareTo(quaf3)).isZero();
+    assertThat(quaf.compareTo(quaf4)).isEqualTo(1);
+    assertThat(quaf2.compareTo(quaf5)).isEqualTo(-1);
   }
 }

@@ -36,5 +36,7 @@ class StringQualifiersTest {
     quaf = StringQualifiers.create(100, AllowedLength.FIXED);
     assertThat(quaf.getLength()).isEqualTo(100);
     assertThat(quaf.getAllowedLength()).isEqualTo(AllowedLength.FIXED);
+
+    assertThat(quaf.compareTo(null)).isEqualTo(1);
   }
 }
