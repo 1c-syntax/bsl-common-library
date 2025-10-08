@@ -46,6 +46,18 @@ class SupportVariantTest {
   }
 
   @Test
+  void testMax2() {
+    var var1 = SupportVariant.NOT_SUPPORTED;
+    var var2 = SupportVariant.NONE;
+    var var3 = SupportVariant.EDITABLE_SUPPORT_ENABLED;
+    assertThat(SupportVariant.max(var1, var2)).isEqualTo(SupportVariant.NOT_SUPPORTED);
+    assertThat(SupportVariant.max(var3, var1)).isEqualTo(SupportVariant.EDITABLE_SUPPORT_ENABLED);
+    assertThat(SupportVariant.max(var3, var2)).isEqualTo(SupportVariant.EDITABLE_SUPPORT_ENABLED);
+    assertThat(SupportVariant.max(var2, var1)).isEqualTo(SupportVariant.NOT_SUPPORTED);
+    assertThat(SupportVariant.max(var2, var2)).isEqualTo(SupportVariant.NONE);
+  }
+
+  @Test
   void testValueOf() {
     assertThat(SupportVariant.valueOf(0)).isEqualTo(SupportVariant.NOT_EDITABLE);
     assertThat(SupportVariant.valueOf(1)).isEqualTo(SupportVariant.EDITABLE_SUPPORT_ENABLED);

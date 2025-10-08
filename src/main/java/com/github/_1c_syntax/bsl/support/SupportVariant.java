@@ -50,6 +50,17 @@ public enum SupportVariant {
   }
 
   /**
+   * Сравнивает два варианта поддержи и возвращает наибольший по приоритету
+   *
+   * @param first  Первый вариант
+   * @param second Второй вариант
+   * @return Наибольший вариант
+   */
+  public static SupportVariant max(SupportVariant first, SupportVariant second) {
+    return first.priority <= second.priority ? first : second;
+  }
+
+  /**
    * Находит элемент по приоритету
    *
    * @param priority номер приоритета
