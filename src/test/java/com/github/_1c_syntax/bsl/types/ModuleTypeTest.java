@@ -60,6 +60,11 @@ class ModuleTypeTest {
     assertThat(modules)
       .hasSize(1)
       .contains(ModuleType.ObjectModule);
+
+    modules = ModuleType.byMDOType(MDOType.WEB_SOCKET_CLIENT);
+    assertThat(modules)
+      .hasSize(1)
+      .contains(ModuleType.WEBSocketClientModule);
   }
 
   @Test

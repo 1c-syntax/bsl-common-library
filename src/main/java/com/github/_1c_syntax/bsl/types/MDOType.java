@@ -150,14 +150,14 @@ public enum MDOType implements EnumWithName {
     "РеквизитАдресации", "Реквизиты адресации"),
   TEMPLATE("Template", "Templates", "Макет", "Макеты"),
 
+  UNKNOWN("", "", "", ""),
   WEB_SERVICE("WebService", "WebServices", "WebСервис", "WebСервисы"),
+  WEB_SOCKET_CLIENT("WebSocketClient", "WebSocketClients", "WebSocketКлиент", "WebSocketКлиенты"),
   WS_OPERATION("Operation", "Operations", "Операция", "Операции"),
+
   WS_OPERATION_PARAMETER("Parameter", "Parameters", "Параметр", "Параметры"),
   WS_REFERENCE("WSReference", "WSReferences", "WSСсылка", "WSСсылки"),
-
-  XDTO_PACKAGE("XDTOPackage", "XDTOPackages", "ПакетXDTO", "ПакетыXDTO"),
-
-  UNKNOWN("", "", "", "");
+  XDTO_PACKAGE("XDTOPackage", "XDTOPackages", "ПакетXDTO", "ПакетыXDTO");
 
   private static final Map<String, MDOType> KEYS = computeKeys();
   private static final Set<MDOType> CHILD_TYPES = computeChildTypes();
