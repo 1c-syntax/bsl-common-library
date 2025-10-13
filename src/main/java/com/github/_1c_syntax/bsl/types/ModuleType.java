@@ -57,6 +57,7 @@ public enum ModuleType {
   ExternalConnectionModule("ExternalConnectionModule.bsl"),
   OrdinaryApplicationModule("OrdinaryApplicationModule.bsl"),
   HTTPServiceModule("Module.bsl"),
+  WEBSocketClientModule("Module.bsl"),
   WEBServiceModule("Module.bsl"),
   RecalculationModule("RecordSetModule.bsl"),
 
@@ -185,6 +186,9 @@ public enum ModuleType {
           break;
         case WEB_SERVICE:
           types.add(WEBServiceModule);
+          break;
+        case WEB_SOCKET_CLIENT:
+          types.add(WEBSocketClientModule);
           break;
         case RECALCULATION:
           types.add(RecalculationModule);
