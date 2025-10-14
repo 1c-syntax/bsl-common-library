@@ -91,8 +91,11 @@ public enum MDOType implements EnumWithName {
     "ВнешняяОбработка", "ВнешниеОбработки"),
   EXTERNAL_DATA_SOURCE("ExternalDataSource", "ExternalDataSources",
     "ВнешнийИсточникДанных", "ВнешниеИсточникиДанных"),
+  EXTERNAL_DATA_SOURCE_CUBE("Cube", "Cubes", "Куб", "Кубы"),
+  EXTERNAL_DATA_SOURCE_DIMENSION_TABLE("DimensionTable", "DimensionTables",
+    "ТаблицаИзмерений", "ТаблицыИзмерений"),
+  EXTERNAL_DATA_SOURCE_FUNCTION("Function", "Functions", "Функция", "Функции"),
   EXTERNAL_DATA_SOURCE_TABLE("Table", "Tables", "Таблица", "Таблицы"),
-  EXTERNAL_DATA_SOURCE_TABLE_FILED("Field", "Fields", "Поле", "Поля"),
   EXTERNAL_REPORT("ExternalReport", "ExternalReports",
     "ВнешнийОтчет", "ВнешниеОтчеты"),
   EXT_DIMENSION_ACCOUNTING_FLAG("ExtDimensionAccountingFlag", "ExtDimensionAccountingFlags",
@@ -150,14 +153,15 @@ public enum MDOType implements EnumWithName {
     "РеквизитАдресации", "Реквизиты адресации"),
   TEMPLATE("Template", "Templates", "Макет", "Макеты"),
 
-  UNKNOWN("", "", "", ""),
   WEB_SERVICE("WebService", "WebServices", "WebСервис", "WebСервисы"),
   WEB_SOCKET_CLIENT("WebSocketClient", "WebSocketClients", "WebSocketКлиент", "WebSocketКлиенты"),
   WS_OPERATION("Operation", "Operations", "Операция", "Операции"),
-
   WS_OPERATION_PARAMETER("Parameter", "Parameters", "Параметр", "Параметры"),
   WS_REFERENCE("WSReference", "WSReferences", "WSСсылка", "WSСсылки"),
-  XDTO_PACKAGE("XDTOPackage", "XDTOPackages", "ПакетXDTO", "ПакетыXDTO");
+
+  XDTO_PACKAGE("XDTOPackage", "XDTOPackages", "ПакетXDTO", "ПакетыXDTO"),
+
+  UNKNOWN("", "", "", "");
 
   private static final Map<String, MDOType> KEYS = computeKeys();
   private static final Set<MDOType> CHILD_TYPES = computeChildTypes();
@@ -247,6 +251,7 @@ public enum MDOType implements EnumWithName {
       WS_OPERATION_PARAMETER, HTTP_SERVICE_URL_TEMPLATE, HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL,
       TASK_ADDRESSING_ATTRIBUTE, DIMENSION, RESOURCE, ENUM_VALUE, COLUMN,
       ACCOUNTING_FLAG, EXT_DIMENSION_ACCOUNTING_FLAG, STANDARD_ATTRIBUTE, STANDARD_TABULAR_SECTION,
-      EXTERNAL_DATA_SOURCE_TABLE, EXTERNAL_DATA_SOURCE_TABLE_FILED);
+      EXTERNAL_DATA_SOURCE_TABLE,
+      EXTERNAL_DATA_SOURCE_DIMENSION_TABLE, EXTERNAL_DATA_SOURCE_CUBE, EXTERNAL_DATA_SOURCE_FUNCTION);
   }
 }

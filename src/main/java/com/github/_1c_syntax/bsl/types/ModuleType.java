@@ -117,6 +117,7 @@ public enum ModuleType {
         case CALCULATION_REGISTER:
         case INFORMATION_REGISTER:
         case EXTERNAL_DATA_SOURCE_TABLE:
+        case EXTERNAL_DATA_SOURCE_CUBE:
           types.add(ManagerModule);
           types.add(RecordSetModule);
           break;
@@ -128,6 +129,7 @@ public enum ModuleType {
         case DATA_PROCESSOR:
         case DOCUMENT:
         case EXCHANGE_PLAN:
+        case EXTERNAL_DATA_SOURCE_DIMENSION_TABLE:
         case REPORT:
         case TASK:
           types.add(ManagerModule);
