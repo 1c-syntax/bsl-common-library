@@ -92,10 +92,11 @@ public enum MDOType implements EnumWithName {
   EXTERNAL_DATA_SOURCE("ExternalDataSource", "ExternalDataSources",
     "ВнешнийИсточникДанных", "ВнешниеИсточникиДанных"),
   EXTERNAL_DATA_SOURCE_CUBE("Cube", "Cubes", "Куб", "Кубы"),
-  EXTERNAL_DATA_SOURCE_DIMENSION_TABLE("DimensionTable", "DimensionTables",
+  EXTERNAL_DATA_SOURCE_CUBE_DIMENSION_TABLE("DimensionTable", "DimensionTables",
     "ТаблицаИзмерений", "ТаблицыИзмерений"),
   EXTERNAL_DATA_SOURCE_FUNCTION("Function", "Functions", "Функция", "Функции"),
   EXTERNAL_DATA_SOURCE_TABLE("Table", "Tables", "Таблица", "Таблицы"),
+  EXTERNAL_DATA_SOURCE_TABLE_FIELD("Field", "Fields", "Поле", "Поля"),
   EXTERNAL_REPORT("ExternalReport", "ExternalReports",
     "ВнешнийОтчет", "ВнешниеОтчеты"),
   EXT_DIMENSION_ACCOUNTING_FLAG("ExtDimensionAccountingFlag", "ExtDimensionAccountingFlags",
@@ -251,7 +252,7 @@ public enum MDOType implements EnumWithName {
       WS_OPERATION_PARAMETER, HTTP_SERVICE_URL_TEMPLATE, HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL,
       TASK_ADDRESSING_ATTRIBUTE, DIMENSION, RESOURCE, ENUM_VALUE, COLUMN,
       ACCOUNTING_FLAG, EXT_DIMENSION_ACCOUNTING_FLAG, STANDARD_ATTRIBUTE, STANDARD_TABULAR_SECTION,
-      EXTERNAL_DATA_SOURCE_TABLE,
-      EXTERNAL_DATA_SOURCE_DIMENSION_TABLE, EXTERNAL_DATA_SOURCE_CUBE, EXTERNAL_DATA_SOURCE_FUNCTION);
+      EXTERNAL_DATA_SOURCE_TABLE, EXTERNAL_DATA_SOURCE_CUBE_DIMENSION_TABLE,
+      EXTERNAL_DATA_SOURCE_TABLE_FIELD, EXTERNAL_DATA_SOURCE_CUBE, EXTERNAL_DATA_SOURCE_FUNCTION);
   }
 }
