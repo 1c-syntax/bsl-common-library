@@ -129,7 +129,7 @@ public enum ModuleType {
         case DATA_PROCESSOR:
         case DOCUMENT:
         case EXCHANGE_PLAN:
-        case EXTERNAL_DATA_SOURCE_DIMENSION_TABLE:
+        case EXTERNAL_DATA_SOURCE_CUBE_DIMENSION_TABLE:
         case REPORT:
         case TASK:
           types.add(ManagerModule);
