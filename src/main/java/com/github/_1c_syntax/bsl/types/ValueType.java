@@ -19,13 +19,16 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-/**
- * Пакет содержит общие типы данных
- */
-@ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
 package com.github._1c_syntax.bsl.types;
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+/**
+ * Описание типа значения
+ */
+public interface ValueType extends EnumWithName {
+  /**
+   * Вариант типа данных
+   *
+   * @return Вариант (область) типа данных
+   */
+  ValueTypeVariant variant();
+}

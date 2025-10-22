@@ -22,10 +22,13 @@
 package com.github._1c_syntax.bsl.types;
 
 import lombok.Getter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -34,8 +37,8 @@ import java.util.stream.Collectors;
 /**
  * Типы объектов метаданных
  */
-@Getter
-public enum MDOType {
+@ToString(of = "fullName")
+public enum MDOType implements EnumWithName {
   ACCOUNTING_FLAG("AccountingFlag", "AccountingFlags", "ПризнакУчета", "ПризнакиУчета"),
   ACCOUNTING_REGISTER("AccountingRegister", "AccountingRegisters",
     "РегистрБухгалтерии", "РегистрыБухгалтерии"),
@@ -88,8 +91,12 @@ public enum MDOType {
     "ВнешняяОбработка", "ВнешниеОбработки"),
   EXTERNAL_DATA_SOURCE("ExternalDataSource", "ExternalDataSources",
     "ВнешнийИсточникДанных", "ВнешниеИсточникиДанных"),
+  EXTERNAL_DATA_SOURCE_CUBE("Cube", "Cubes", "Куб", "Кубы"),
+  EXTERNAL_DATA_SOURCE_CUBE_DIMENSION_TABLE("DimensionTable", "DimensionTables",
+    "ТаблицаИзмерений", "ТаблицыИзмерений"),
+  EXTERNAL_DATA_SOURCE_FUNCTION("Function", "Functions", "Функция", "Функции"),
   EXTERNAL_DATA_SOURCE_TABLE("Table", "Tables", "Таблица", "Таблицы"),
-  EXTERNAL_DATA_SOURCE_TABLE_FILED("Field", "Fields", "Поле", "Поля"),
+  EXTERNAL_DATA_SOURCE_TABLE_FIELD("Field", "Fields", "Поле", "Поля"),
   EXTERNAL_REPORT("ExternalReport", "ExternalReports",
     "ВнешнийОтчет", "ВнешниеОтчеты"),
   EXT_DIMENSION_ACCOUNTING_FLAG("ExtDimensionAccountingFlag", "ExtDimensionAccountingFlags",
@@ -148,6 +155,7 @@ public enum MDOType {
   TEMPLATE("Template", "Templates", "Макет", "Макеты"),
 
   WEB_SERVICE("WebService", "WebServices", "WebСервис", "WebСервисы"),
+  WEB_SOCKET_CLIENT("WebSocketClient", "WebSocketClients", "WebSocketКлиент", "WebSocketКлиенты"),
   WS_OPERATION("Operation", "Operations", "Операция", "Операции"),
   WS_OPERATION_PARAMETER("Parameter", "Parameters", "Параметр", "Параметры"),
   WS_REFERENCE("WSReference", "WSReferences", "WSСсылка", "WSСсылки"),
@@ -156,34 +164,40 @@ public enum MDOType {
 
   UNKNOWN("", "", "", "");
 
-  private static final Map<String, MDOType> MAP_TYPES = computeMapTypes();
+  private static final Map<String, MDOType> KEYS = computeKeys();
   private static final Set<MDOType> CHILD_TYPES = computeChildTypes();
 
   /**
-   * Англоязычное имя типа
+   * Мультиязычное имя объекта метаданных
    */
-  private final String name;
+  @Getter
+  @Accessors(fluent = true)
+  private final MultiName fullName;
 
   /**
-   * Англоязычное имя группы объектов типа
+   * Мультиязычное имя группы объектов метаданных
    */
-  private final String groupName;
-
-  /**
-   * Русскоязычное имя типа
-   */
-  private final String nameRu;
-
-  /**
-   * Русскоязычное имя группы объектов типа
-   */
-  private final String groupNameRu;
+  @Getter
+  @Accessors(fluent = true)
+  private final MultiName fullGroupName;
 
   MDOType(String nameEn, String groupNameEn, String nameRu, String groupNameRu) {
-    this.name = nameEn;
-    this.groupName = groupNameEn;
-    this.nameRu = nameRu;
-    this.groupNameRu = groupNameRu;
+    this.fullName = MultiName.create(nameEn, nameRu);
+    this.fullGroupName = MultiName.create(groupNameEn, groupNameRu);
+  }
+
+  /**
+   * @return Английское имя группы типа метаданных
+   */
+  public String groupName() {
+    return fullGroupName.getEn();
+  }
+
+  /**
+   * @return Русское имя группы типа метаданных
+   */
+  public String groupNameRu() {
+    return fullGroupName.getRu();
   }
 
   /**
@@ -200,21 +214,35 @@ public enum MDOType {
   /**
    * Возвращает MDOType по строковому идентификатору
    *
-   * @param value - Строковый идентификатор типа. Может быть на русском или английском языках,
-   *              а так же во множественном или единственном числе
+   * @param name - Строковый идентификатор типа. Может быть на русском или английском языках,
+   *             а так же во множественном или единственном числе
    * @return - Найденный тип
    */
-  public static Optional<MDOType> fromValue(String value) {
-    return Optional.ofNullable(MAP_TYPES.get(value));
+  public static Optional<MDOType> fromValue(String name) {
+    return Optional.ofNullable(KEYS.get(name.toLowerCase(Locale.ROOT)));
   }
 
-  private static Map<String, MDOType> computeMapTypes() {
+  /**
+   * Возвращает MDOType по строковому идентификатору
+   *
+   * @param string - Строковый идентификатор типа. Может быть на русском или английском языках,
+   *               а так же во множественном или единственном числе
+   * @return Найденное значение, если не найден - то UNKNOWN
+   */
+  public static MDOType valueByName(String string) {
+    return KEYS.getOrDefault(string.toLowerCase(Locale.ROOT), UNKNOWN);
+  }
+
+  private static Map<String, MDOType> computeKeys() {
     Map<String, MDOType> map = new CaseInsensitiveMap<>();
-    for (MDOType mdoType : MDOType.values()) {
-      map.put(mdoType.getName(), mdoType);
-      map.put(mdoType.getGroupName(), mdoType);
-      map.put(mdoType.getNameRu(), mdoType);
-      map.put(mdoType.getGroupNameRu(), mdoType);
+    for (var element : values()) {
+      if (element == UNKNOWN) {
+        continue;
+      }
+      map.put(element.nameEn().toLowerCase(Locale.ROOT), element);
+      map.put(element.groupName().toLowerCase(Locale.ROOT), element);
+      map.put(element.nameRu().toLowerCase(Locale.ROOT), element);
+      map.put(element.groupNameRu().toLowerCase(Locale.ROOT), element);
     }
     return map;
   }
@@ -224,6 +252,7 @@ public enum MDOType {
       WS_OPERATION_PARAMETER, HTTP_SERVICE_URL_TEMPLATE, HTTP_SERVICE_METHOD, INTEGRATION_SERVICE_CHANNEL,
       TASK_ADDRESSING_ATTRIBUTE, DIMENSION, RESOURCE, ENUM_VALUE, COLUMN,
       ACCOUNTING_FLAG, EXT_DIMENSION_ACCOUNTING_FLAG, STANDARD_ATTRIBUTE, STANDARD_TABULAR_SECTION,
-      EXTERNAL_DATA_SOURCE_TABLE, EXTERNAL_DATA_SOURCE_TABLE_FILED);
+      EXTERNAL_DATA_SOURCE_TABLE, EXTERNAL_DATA_SOURCE_CUBE_DIMENSION_TABLE,
+      EXTERNAL_DATA_SOURCE_TABLE_FIELD, EXTERNAL_DATA_SOURCE_CUBE, EXTERNAL_DATA_SOURCE_FUNCTION);
   }
 }

@@ -20,11 +20,11 @@
  * License along with BSL Common library.
  */
 /**
- * Пакет содержит общие типы данных
+ * Пакет содержит набор квалификаторов
  */
 @ParametersAreNonnullByDefault
 @ReturnValuesAreNonnullByDefault
-package com.github._1c_syntax.bsl.types;
+package com.github._1c_syntax.bsl.types.qualifiers;
 
 import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
 

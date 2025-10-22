@@ -19,13 +19,27 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with BSL Common library.
  */
-/**
- * Пакет содержит общие типы данных
- */
-@ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
 package com.github._1c_syntax.bsl.types;
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
+import org.junit.jupiter.params.provider.CsvSource;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import static org.assertj.core.api.Assertions.assertThat;
+
+class AllowedLengthTest {
+
+  @ParameterizedTest(name = "{index}: {0}")
+  @CsvSource(
+    {
+      "FIXED,Fixed,Фиксированная,фиксировАнная",
+      "VARIABLE,VariablE,Variable,Переменная"
+    }
+  )
+  void testValueByName(ArgumentsAccessor argumentsAccessor) {
+    var element = AllowedLength.valueOf(argumentsAccessor.getString(0));
+    assertThat(AllowedLength.valueByName(argumentsAccessor.getString(1))).isEqualTo(element);
+    assertThat(AllowedLength.valueByName(argumentsAccessor.getString(2))).isEqualTo(element);
+    assertThat(AllowedLength.valueByName(argumentsAccessor.getString(3))).isEqualTo(element);
+  }
+}

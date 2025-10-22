@@ -20,11 +20,11 @@
  * License along with BSL Common library.
  */
 /**
- * Пакет содержит общие типы данных
+ * Пакет содержит вспомогательные структуры данных для режима поддержки
  */
 @ParametersAreNonnullByDefault
 @ReturnValuesAreNonnullByDefault
-package com.github._1c_syntax.bsl.types;
+package com.github._1c_syntax.bsl.support;
 
 import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
 

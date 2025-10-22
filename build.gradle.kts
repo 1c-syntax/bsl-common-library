@@ -1,5 +1,5 @@
-import java.util.*
 import org.jreleaser.model.Active.*
+import java.util.*
 
 plugins {
     `java-library`
@@ -7,14 +7,14 @@ plugins {
     jacoco
     id("org.cadixdev.licenser") version "0.6.1"
     id("me.qoomon.git-versioning") version "6.4.4"
-    id("io.freefair.lombok") version "8.14.2"
-    id("io.freefair.javadoc-links") version "8.14.2"
-    id("io.freefair.javadoc-utf-8") version "8.14.2"
-    id("io.freefair.maven-central.validate-poms") version "8.14.2"
-    id("com.github.ben-manes.versions") version "0.52.0"
+    id("io.freefair.lombok") version "9.0.0"
+    id("io.freefair.javadoc-links") version "9.0.0"
+    id("io.freefair.javadoc-utf-8") version "9.0.0"
+    id("io.freefair.maven-central.validate-poms") version "9.0.0"
+    id("com.github.ben-manes.versions") version "0.53.0"
     id("ru.vyarus.pom") version "3.0.0"
-    id("org.jreleaser") version "1.19.0"
-    id("org.sonarqube") version "6.2.0.5505"
+    id("org.jreleaser") version "1.20.0"
+    id("org.sonarqube") version "7.0.0.6105"
 }
 
 repositories {
@@ -57,14 +57,16 @@ dependencies {
     // stat analysis
     compileOnly("com.github.spotbugs", "spotbugs-annotations", "4.8.6")
 
-    // тестирование
-    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.11.4")
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.11.4")
-    testImplementation("org.assertj", "assertj-core", "3.27.0")
-    testImplementation("com.ginsberg", "junit5-system-exit", "2.0.2")
-
     // логирование
     testImplementation("org.slf4j", "slf4j-reload4j", "2.0.16")
+
+    // тестирование
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
+    testImplementation("org.junit.jupiter", "junit-jupiter-api")
+    testImplementation("org.junit.jupiter", "junit-jupiter-params")
+    testImplementation("org.assertj", "assertj-core", "3.27.0")
+    testImplementation("com.ginsberg", "junit5-system-exit", "2.0.2")
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine")
 }
 
 java {

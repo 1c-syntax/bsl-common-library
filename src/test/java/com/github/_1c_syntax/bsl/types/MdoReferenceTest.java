@@ -150,4 +150,17 @@ class MdoReferenceTest {
     assertThat(mdoRef3.isEmpty()).isFalse();
     assertThat(mdoRef3).isEqualTo(mdoRef);
   }
+
+  @Test
+  void testGetMdoRefAuto() {
+    var mdoRef = MdoReference.create("catalog.test");
+    assertThat(mdoRef).isNotNull();
+    assertThat(mdoRef.isEmpty()).isFalse();
+
+    assertThat(mdoRef.getMdoRef()).isEqualTo("Catalog.test");
+    assertThat(mdoRef.getMdoRefRu()).isEqualTo("Справочник.test");
+    assertThat(mdoRef.getMdoRef(ScriptVariant.ENGLISH)).isEqualTo("Catalog.test");
+    assertThat(mdoRef.getMdoRef(ScriptVariant.RUSSIAN)).isEqualTo("Справочник.test");
+    assertThat(mdoRef.getMdoRef(ScriptVariant.UNKNOWN)).isEqualTo("Справочник.test");
+  }
 }

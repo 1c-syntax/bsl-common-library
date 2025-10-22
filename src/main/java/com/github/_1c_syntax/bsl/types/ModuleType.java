@@ -57,6 +57,7 @@ public enum ModuleType {
   ExternalConnectionModule("ExternalConnectionModule.bsl"),
   OrdinaryApplicationModule("OrdinaryApplicationModule.bsl"),
   HTTPServiceModule("Module.bsl"),
+  WEBSocketClientModule("Module.bsl"),
   WEBServiceModule("Module.bsl"),
   RecalculationModule("RecordSetModule.bsl"),
 
@@ -116,6 +117,7 @@ public enum ModuleType {
         case CALCULATION_REGISTER:
         case INFORMATION_REGISTER:
         case EXTERNAL_DATA_SOURCE_TABLE:
+        case EXTERNAL_DATA_SOURCE_CUBE:
           types.add(ManagerModule);
           types.add(RecordSetModule);
           break;
@@ -127,6 +129,7 @@ public enum ModuleType {
         case DATA_PROCESSOR:
         case DOCUMENT:
         case EXCHANGE_PLAN:
+        case EXTERNAL_DATA_SOURCE_CUBE_DIMENSION_TABLE:
         case REPORT:
         case TASK:
           types.add(ManagerModule);
@@ -185,6 +188,9 @@ public enum ModuleType {
           break;
         case WEB_SERVICE:
           types.add(WEBServiceModule);
+          break;
+        case WEB_SOCKET_CLIENT:
+          types.add(WEBSocketClientModule);
           break;
         case RECALCULATION:
           types.add(RecalculationModule);
