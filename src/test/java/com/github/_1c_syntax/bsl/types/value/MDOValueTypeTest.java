@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2025
+ * Copyright (c) 2021 - 2026
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -50,7 +50,7 @@ class MDOValueTypeTest {
   @Test
   void test() {
     assertThat(MDOValueType.values())
-      .hasSize(55)
+      .hasSize(57)
       .allMatch(valueType -> valueType.variant() == ValueTypeVariant.METADATA);
   }
 }

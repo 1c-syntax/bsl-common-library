@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2025
+ * Copyright (c) 2021 - 2026
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -25,8 +25,8 @@ import com.github._1c_syntax.utils.StringInterner;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentSkipListMap;

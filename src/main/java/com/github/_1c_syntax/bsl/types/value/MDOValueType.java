@@ -1,7 +1,7 @@
 /*
  * This file is a part of BSL Common library.
  *
- * Copyright (c) 2021 - 2025
+ * Copyright (c) 2021 - 2026
  * Tymko Oleg <olegtymko@yandex.ru>, Maximov Valery <maximovvalery@gmail.com> and contributors
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -29,8 +29,8 @@ import com.github._1c_syntax.bsl.types.ValueTypeVariant;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Locale;
 import java.util.Map;
 
@@ -53,6 +53,7 @@ public enum MDOValueType implements ValueType {
     true),
   CALCULATION_REGISTER_MANAGER(MDOType.CALCULATION_REGISTER, "Manager", "Менеджер"),
   CALCULATION_REGISTER_RECORD_SET(MDOType.CALCULATION_REGISTER, "RecordSet", "НаборЗаписей"),
+  CATALOG_LIST(MDOType.CATALOG, "List", "Список"),
   CATALOG_MANAGER(MDOType.CATALOG, "Manager", "Менеджер"),
   CATALOG_OBJECT(MDOType.CATALOG, "Object", "Объект"),
   CATALOG_REF(MDOType.CATALOG, "Ref", "Ссылка"),
@@ -72,6 +73,7 @@ public enum MDOValueType implements ValueType {
   DATA_PROCESSOR_OBJECT(MDOType.DATA_PROCESSOR, "Object", "Объект"),
   DEFINED_TYPE(MDOType.DEFINED_TYPE, "", ""),
   DOCUMENT_JOURNAL_MANAGER(MDOType.DOCUMENT_JOURNAL, "Manager", "Менеджер"),
+  DOCUMENT_LIST(MDOType.DOCUMENT, "List", "Список"),
   DOCUMENT_MANAGER(MDOType.DOCUMENT, "Manager", "Менеджер"),
   DOCUMENT_OBJECT(MDOType.DOCUMENT, "Object", "Объект"),
   DOCUMENT_REF(MDOType.DOCUMENT, "Ref", "Ссылка"),

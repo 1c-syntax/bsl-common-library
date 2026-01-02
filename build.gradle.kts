@@ -7,14 +7,14 @@ plugins {
     jacoco
     id("org.cadixdev.licenser") version "0.6.1"
     id("me.qoomon.git-versioning") version "6.4.4"
-    id("io.freefair.lombok") version "9.0.0"
-    id("io.freefair.javadoc-links") version "9.0.0"
-    id("io.freefair.javadoc-utf-8") version "9.0.0"
-    id("io.freefair.maven-central.validate-poms") version "9.0.0"
+    id("io.freefair.lombok") version "9.1.0"
+    id("io.freefair.javadoc-links") version "9.1.0"
+    id("io.freefair.javadoc-utf-8") version "9.1.0"
+    id("io.freefair.maven-central.validate-poms") version "9.1.0"
     id("com.github.ben-manes.versions") version "0.53.0"
     id("ru.vyarus.pom") version "3.0.0"
-    id("org.jreleaser") version "1.20.0"
-    id("org.sonarqube") version "7.0.0.6105"
+    id("org.jreleaser") version "1.21.0"
+    id("org.sonarqube") version "7.2.2.6593"
 }
 
 repositories {
@@ -54,8 +54,7 @@ dependencies {
     // логирование
     implementation("org.slf4j", "slf4j-api", "2.0.16")
 
-    // stat analysis
-    compileOnly("com.github.spotbugs", "spotbugs-annotations", "4.8.6")
+    implementation("org.jspecify", "jspecify", "1.0.0")
 
     // логирование
     testImplementation("org.slf4j", "slf4j-reload4j", "2.0.16")
