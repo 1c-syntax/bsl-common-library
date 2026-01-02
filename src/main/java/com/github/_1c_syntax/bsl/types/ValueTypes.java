@@ -26,8 +26,8 @@ import com.github._1c_syntax.bsl.types.value.MDOValueType;
 import com.github._1c_syntax.bsl.types.value.PrimitiveValueType;
 import com.github._1c_syntax.bsl.types.value.V8ValueType;
 import lombok.experimental.UtilityClass;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;

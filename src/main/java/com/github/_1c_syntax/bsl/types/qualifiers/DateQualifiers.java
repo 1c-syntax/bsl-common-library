@@ -27,8 +27,7 @@ import com.github._1c_syntax.bsl.types.Qualifier;
 import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.Accessors;
-
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 @Value
 @ToString(of = "description")

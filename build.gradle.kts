@@ -54,8 +54,7 @@ dependencies {
     // логирование
     implementation("org.slf4j", "slf4j-api", "2.0.16")
 
-    // stat analysis
-    compileOnly("com.github.spotbugs", "spotbugs-annotations", "4.8.6")
+    implementation("org.jspecify", "jspecify", "1.0.0")
 
     // логирование
     testImplementation("org.slf4j", "slf4j-reload4j", "2.0.16")
