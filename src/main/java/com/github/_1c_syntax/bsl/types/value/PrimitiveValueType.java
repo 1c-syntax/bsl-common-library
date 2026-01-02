@@ -28,8 +28,8 @@ import com.github._1c_syntax.bsl.types.ValueTypeVariant;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Locale;
 import java.util.Map;
 

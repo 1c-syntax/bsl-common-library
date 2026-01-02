@@ -25,8 +25,8 @@ import com.github._1c_syntax.utils.StringInterner;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentSkipListMap;

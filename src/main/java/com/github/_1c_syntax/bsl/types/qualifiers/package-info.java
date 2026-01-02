@@ -22,10 +22,7 @@
 /**
  * Пакет содержит набор квалификаторов
  */
-@ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
+@NullMarked
 package com.github._1c_syntax.bsl.types.qualifiers;
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
