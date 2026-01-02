@@ -50,7 +50,7 @@ class MDOValueTypeTest {
   @Test
   void test() {
     assertThat(MDOValueType.values())
-      .hasSize(55)
+      .hasSize(57)
       .allMatch(valueType -> valueType.variant() == ValueTypeVariant.METADATA);
   }
 }
