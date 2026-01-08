@@ -78,6 +78,7 @@ public enum MDOValueType implements ValueType {
   DOCUMENT_OBJECT(MDOType.DOCUMENT, "Object", "Объект"),
   DOCUMENT_REF(MDOType.DOCUMENT, "Ref", "Ссылка"),
   ENUM_LIST(MDOType.ENUM, "List", "Список"),
+  ENUM_MANAGER(MDOType.ENUM, "Manager", "Менеджер"),
   ENUM_REF(MDOType.ENUM, "Ref", "Ссылка"),
   EXCHANGE_PLAN_MANAGER(MDOType.EXCHANGE_PLAN, "Manager", "Менеджер"),
   EXCHANGE_PLAN_OBJECT(MDOType.EXCHANGE_PLAN, "Object", "Объект"),

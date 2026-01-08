@@ -40,6 +40,7 @@ import java.util.Map;
 public enum V8ValueType implements ValueType {
   ACCOUNTING_RECORD_TYPE("AccountingRecordType", "ВидДвиженияБухгалтерии"),
   ACCUMULATION_RECORD_TYPE("AccumulationRecordType", "ВидДвиженияНакопления"),
+  BINARY_DATA("BinaryData", "ДвоичныеДанные"),
   CHART("Chart", "Диаграмма"),
   COLOR("Color", "Цвет"),
   COMPARISON_TYPE("ComparisonType", "ВидСравнения"),
