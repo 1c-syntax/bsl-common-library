@@ -59,6 +59,7 @@ public enum V8ValueType implements ValueType {
   GANTT_CHART("GanttChart", "ДиаграммаГанта"),
   GEOGRAPHICAL_SCHEMA("GeographicalSchema", "ГеографическаяСхема"),
   GRAPHICAL_SCHEMA("GraphicalSchema", "ГрафическаяСхема"),
+  HORIZONTAL_ALIGN("HorizontalAlign", "ГоризонтальноеПоложение"),
   ORDER("Order", "Порядок"),
   PDF_DOCUMENT("PDFDocument", "PDFДокумент"),
   PICTURE("Picture", "Картинка"),
@@ -76,8 +77,7 @@ public enum V8ValueType implements ValueType {
   VALUE_STORAGE("ValueStorage", "ХранилищеЗначений"),
   VALUE_TABLE("ValueTable", "ТаблицаЗначений"),
   VALUE_TREE("ValueTree", "ДеревоЗначений"),
-  VERTICAL_ALIGN("VerticalAlign", "ВертикальноеПоложение"),
-  HORIZONTAL_ALIGN("HorizontalAlign", "ГоризонтальноеПоложение");
+  VERTICAL_ALIGN("VerticalAlign", "ВертикальноеПоложение");
 
   private static final Map<String, V8ValueType> KEYS = EnumWithName.computeKeys(values());
 
