@@ -49,12 +49,12 @@ gitVersioning.apply {
 dependencies {
 
     implementation("org.apache.commons:commons-collections4:4.5.0")
-    implementation("io.github.1c-syntax:utils:0.6.3")
+    implementation("io.github.1c-syntax:utils:0.7.0")
 
     // логирование
     implementation("org.slf4j:slf4j-api:2.0.17")
 
-    implementation("org.jspecify:jspecify:1.0.0")
+    api("org.jspecify:jspecify:1.0.0")
 
     // логирование
     testImplementation("org.slf4j:slf4j-reload4j:2.0.17")
@@ -70,8 +70,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
     withSourcesJar()
     withJavadocJar()
 }
