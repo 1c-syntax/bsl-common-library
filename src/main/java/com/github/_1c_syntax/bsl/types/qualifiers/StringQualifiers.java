@@ -35,7 +35,7 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
   /**
    * Длина строки
    */
-  int length;
+  long length;
 
   /**
    * Вариант длины
@@ -48,7 +48,7 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
   @Accessors(fluent = true)
   MultiName description;
 
-  private StringQualifiers(int length, AllowedLength allowedLength) {
+  private StringQualifiers(long length, AllowedLength allowedLength) {
     this.length = length;
     this.allowedLength = allowedLength;
 
@@ -63,21 +63,43 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
    * Вариант длины - переменный
    *
    * @param length Длина строки base64
-   * @return Квалификатор двоичных данных
+   * @return Квалификатор строки
    */
   public static StringQualifiers create(int length) {
+    return create((long) length);
+  }
+
+  /**
+   * Создает квалификатор строки на основании длины строки.
+   * Вариант длины - переменный
+   *
+   * @param length Длина строки base64
+   * @return Квалификатор строки
+   */
+  public static StringQualifiers create(long length) {
     return create(length, AllowedLength.VARIABLE);
   }
 
   /**
-   * Создает квалификатор двоичных данных
+   * Создает квалификатор строки
    *
-   * @param length        Длина строки base64
+   * @param length        Длина строки 
    * @param allowedLength Вариант длины строки
-   * @return Квалификатор двоичных данных
+   * @return Квалификатор строки
+   */
+  public static StringQualifiers create(long length, AllowedLength allowedLength) {
+    return new StringQualifiers(length, allowedLength);
+  }
+
+  /**
+   * Создает квалификатор строки
+   *
+   * @param length        Длина строки 
+   * @param allowedLength Вариант длины строки
+   * @return Квалификатор строки
    */
   public static StringQualifiers create(int length, AllowedLength allowedLength) {
-    return new StringQualifiers(length, allowedLength);
+    return create((long) length, allowedLength);
   }
 
   @Override
@@ -95,6 +117,6 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
     if (allowedLengthComparison != 0) {
       return allowedLengthComparison;
     }
-    return Integer.compare(this.length, qualifiers.getLength());
+    return Long.compare(this.length, qualifiers.getLength());
   }
 }
