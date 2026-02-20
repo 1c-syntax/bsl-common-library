@@ -140,7 +140,7 @@ public class ValueTypeDescription {
       return EMPTY;
     }
 
-    var composite = types.size() > 1 || types.get(0) instanceof MDOValueType;
+    var composite = types.size() > 1 || types.getFirst() instanceof MDOValueType;
     return new ValueTypeDescription(types, qualifiers, composite);
   }
 

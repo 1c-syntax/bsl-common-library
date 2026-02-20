@@ -36,12 +36,21 @@ class BinaryDataQualifiersTest {
     assertThat(quaf.description())
       .isEqualTo(MultiName.create("BinaryDataQualifiers (1, Variable)", "КвалификаторыДвоичныхДанных (1, Переменная)"));
 
-    quaf = BinaryDataQualifiers.create(100, AllowedLength.FIXED);
-    assertThat(quaf.getLength()).isEqualTo(100);
-    assertThat(quaf.getAllowedLength()).isEqualTo(AllowedLength.FIXED);
-    assertThat(quaf.description())
+    var quaf2 = BinaryDataQualifiers.create(100, AllowedLength.FIXED);
+    assertThat(quaf2.getLength()).isEqualTo(100);
+    assertThat(quaf2.getAllowedLength()).isEqualTo(AllowedLength.FIXED);
+    assertThat(quaf2.description())
       .isEqualTo(MultiName.create("BinaryDataQualifiers (100, Fixed)", "КвалификаторыДвоичныхДанных (100, Фиксированная)"));
 
+    var quaf3 = BinaryDataQualifiers.create(101, AllowedLength.FIXED);
+    assertThat(quaf3.getLength()).isEqualTo(101);
+    assertThat(quaf3.getAllowedLength()).isEqualTo(AllowedLength.FIXED);
+    assertThat(quaf3.description())
+      .isEqualTo(MultiName.create("BinaryDataQualifiers (101, Fixed)", "КвалификаторыДвоичныхДанных (101, Фиксированная)"));
+
     assertThat(quaf.compareTo(null)).isEqualTo(1);
+    assertThat(quaf.compareTo(quaf2)).isLessThan(1);
+    assertThat(quaf2.compareTo(quaf3)).isLessThan(1);
+    assertThat(quaf2.compareTo(quaf2)).isZero();
   }
 }

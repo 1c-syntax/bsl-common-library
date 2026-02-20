@@ -82,7 +82,7 @@ public class MultiLanguageString implements Comparable<MultiLanguageString> {
     if (strings.isEmpty()) {
       return EMPTY;
     } else if (strings.size() == 1) {
-      return strings.get(0);
+      return strings.getFirst();
     } else {
       Set<Entry> content = new HashSet<>();
       strings.forEach(string -> content.addAll(string.getContent()));

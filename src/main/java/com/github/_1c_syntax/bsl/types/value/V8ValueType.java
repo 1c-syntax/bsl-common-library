@@ -59,6 +59,7 @@ public enum V8ValueType implements ValueType {
   GANTT_CHART("GanttChart", "ДиаграммаГанта"),
   GEOGRAPHICAL_SCHEMA("GeographicalSchema", "ГеографическаяСхема"),
   GRAPHICAL_SCHEMA("GraphicalSchema", "ГрафическаяСхема"),
+  HORIZONTAL_ALIGN("HorizontalAlign", "ГоризонтальноеПоложение"),
   ORDER("Order", "Порядок"),
   PDF_DOCUMENT("PDFDocument", "PDFДокумент"),
   PICTURE("Picture", "Картинка"),
