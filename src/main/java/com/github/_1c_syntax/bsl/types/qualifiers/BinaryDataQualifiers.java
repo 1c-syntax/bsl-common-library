@@ -35,7 +35,7 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
   /**
    * Длина строки base64
    */
-  int length;
+  long length;
 
   /**
    * Вариант длины
@@ -48,7 +48,7 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
   @Accessors(fluent = true)
   MultiName description;
 
-  private BinaryDataQualifiers(int length, AllowedLength allowedLength) {
+  private BinaryDataQualifiers(long length, AllowedLength allowedLength) {
     this.length = length;
     this.allowedLength = allowedLength;
     this.description = MultiName.create(
@@ -65,6 +65,17 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
    * @return Квалификатор двоичных данных
    */
   public static BinaryDataQualifiers create(int length) {
+    return create((long) length);
+  }
+
+  /**
+   * Создает квалификатор двоичных данных на основании длины строки base64.
+   * Вариант длины - переменный
+   *
+   * @param length Длина строки base64
+   * @return Квалификатор двоичных данных
+   */
+  public static BinaryDataQualifiers create(long length) {
     return create(length, AllowedLength.VARIABLE);
   }
 
@@ -75,8 +86,19 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
    * @param allowedLength Вариант длины строки
    * @return Квалификатор двоичных данных
    */
-  public static BinaryDataQualifiers create(int length, AllowedLength allowedLength) {
+  public static BinaryDataQualifiers create(long length, AllowedLength allowedLength) {
     return new BinaryDataQualifiers(length, allowedLength);
+  }
+
+  /**
+   * Создает квалификатор двоичных данных
+   *
+   * @param length        Длина строки base64
+   * @param allowedLength Вариант длины строки
+   * @return Квалификатор двоичных данных
+   */
+  public static BinaryDataQualifiers create(int length, AllowedLength allowedLength) {
+    return create((long) length, allowedLength);
   }
 
   @Override
@@ -94,6 +116,6 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
     if (allowedLengthComparison != 0) {
       return allowedLengthComparison;
     }
-    return Integer.compare(this.length, qualifiers.getLength());
+    return Long.compare(this.length, qualifiers.getLength());
   }
 }

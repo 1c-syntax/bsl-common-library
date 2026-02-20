@@ -76,7 +76,8 @@ public enum V8ValueType implements ValueType {
   VALUE_STORAGE("ValueStorage", "ХранилищеЗначений"),
   VALUE_TABLE("ValueTable", "ТаблицаЗначений"),
   VALUE_TREE("ValueTree", "ДеревоЗначений"),
-  VERTICAL_ALIGN("VerticalAlign", "ВертикальноеПоложение");
+  VERTICAL_ALIGN("VerticalAlign", "ВертикальноеПоложение"),
+  HORIZONTAL_ALIGN("HorizontalAlign", "ГоризонтальноеПоложение");
 
   private static final Map<String, V8ValueType> KEYS = EnumWithName.computeKeys(values());
 

@@ -35,7 +35,7 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
   /**
    * Длина строки
    */
-  int length;
+  long length;
 
   /**
    * Вариант длины
@@ -48,7 +48,7 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
   @Accessors(fluent = true)
   MultiName description;
 
-  private StringQualifiers(int length, AllowedLength allowedLength) {
+  private StringQualifiers(long length, AllowedLength allowedLength) {
     this.length = length;
     this.allowedLength = allowedLength;
 
@@ -66,6 +66,17 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
    * @return Квалификатор двоичных данных
    */
   public static StringQualifiers create(int length) {
+    return create((long) length);
+  }
+
+  /**
+   * Создает квалификатор строки на основании длины строки.
+   * Вариант длины - переменный
+   *
+   * @param length Длина строки base64
+   * @return Квалификатор двоичных данных
+   */
+  public static StringQualifiers create(long length) {
     return create(length, AllowedLength.VARIABLE);
   }
 
@@ -76,8 +87,19 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
    * @param allowedLength Вариант длины строки
    * @return Квалификатор двоичных данных
    */
-  public static StringQualifiers create(int length, AllowedLength allowedLength) {
+  public static StringQualifiers create(long length, AllowedLength allowedLength) {
     return new StringQualifiers(length, allowedLength);
+  }
+
+  /**
+   * Создает квалификатор двоичных данных
+   *
+   * @param length        Длина строки base64
+   * @param allowedLength Вариант длины строки
+   * @return Квалификатор двоичных данных
+   */
+  public static StringQualifiers create(int length, AllowedLength allowedLength) {
+    return create((long) length, allowedLength);
   }
 
   @Override
@@ -95,6 +117,6 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
     if (allowedLengthComparison != 0) {
       return allowedLengthComparison;
     }
-    return Integer.compare(this.length, qualifiers.getLength());
+    return Long.compare(this.length, qualifiers.getLength());
   }
 }
