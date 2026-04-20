@@ -43,7 +43,7 @@ class CompatibilityModeTest {
     assertThat(version.getVersion()).isEqualTo(99);
 
     version = new CompatibilityMode(versionDontUse);
-    assertThat(version.getMinor()).isEqualTo(3);
+    assertThat(version.getMinor()).isEqualTo(99);
     assertThat(version.getVersion()).isEqualTo(99);
 
     version = new CompatibilityMode(version8_3_10);
@@ -56,7 +56,7 @@ class CompatibilityModeTest {
     assertThat(version.getVersion()).isZero();
 
     version = new CompatibilityMode();
-    assertThat(version.getMinor()).isEqualTo(3);
+    assertThat(version.getMinor()).isEqualTo(99);
     assertThat(version.getVersion()).isEqualTo(99);
   }
 
@@ -74,6 +74,22 @@ class CompatibilityModeTest {
     assertThat(CompatibilityMode.compareTo(versionB, versionC)).isEqualTo(-1);
     assertThat(CompatibilityMode.compareTo(versionA, versionC)).isEqualTo(-1);
 
+  }
+
+  @Test
+  void compareToDontUseDominates() {
+    // «Режим совместимости не используется» доминирует над любой конкретной
+    // версией, включая семейство 8.5+ (ранее (3,99) проигрывало (5,x)).
+    var dontUse = new CompatibilityMode();
+    var version85 = new CompatibilityMode(5, 2);
+    var version8310 = new CompatibilityMode(3, 10);
+
+    assertThat(CompatibilityMode.compareTo(version85, dontUse)).isEqualTo(1);
+    assertThat(CompatibilityMode.compareTo(dontUse, version85)).isEqualTo(-1);
+    assertThat(CompatibilityMode.compareTo(version8310, dontUse)).isEqualTo(1);
+    assertThat(CompatibilityMode.compareTo(dontUse, new CompatibilityMode("DontUse"))).isZero();
+    // Явная (3,99) — не «DontUse», сравнивается численно и проигрывает 8.5.
+    assertThat(CompatibilityMode.compareTo(new CompatibilityMode(3, 99), version85)).isEqualTo(1);
   }
 
   @Test
@@ -95,7 +111,8 @@ class CompatibilityModeTest {
     assertThat(versionF.its82()).isFalse();
     assertThat(versionF.its83()).isFalse();
     assertThat(versionF.its85()).isFalse();
-    assertThat(versionUNK.its83()).isTrue();
+    // DontUse (8.99.99) не относится к конкретному семейству версий.
+    assertThat(versionUNK.its83()).isFalse();
   }
 
 }
