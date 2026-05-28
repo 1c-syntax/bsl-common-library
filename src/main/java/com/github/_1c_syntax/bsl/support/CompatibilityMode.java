@@ -55,7 +55,10 @@ public class CompatibilityMode {
   public CompatibilityMode(String value) {
 
     if (value.equalsIgnoreCase(DONT_USE) || value.isEmpty()) {
-      setVersionComponents(THIRD_VERSION, MAX_VERSION);
+      // «Совместимость не используется» — исполнение на актуальной платформе без
+      // ограничений. Представляем как 8.99.99, чтобы режим доминировал над любой
+      // конкретной версией (включая семейство 8.5+), а не трактовался как 8.3.99.
+      setVersionComponents(MAX_VERSION, MAX_VERSION);
       return;
     }
 
