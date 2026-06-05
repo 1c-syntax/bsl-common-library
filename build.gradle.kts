@@ -49,7 +49,7 @@ gitVersioning.apply {
 dependencies {
 
     implementation("org.apache.commons:commons-collections4:4.5.0")
-    implementation("io.github.1c-syntax:utils:0.7.0")
+    implementation("io.github.1c-syntax:utils:0.7.2")
 
     // логирование
     implementation("org.slf4j:slf4j-api:2.0.18")
