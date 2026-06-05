@@ -52,12 +52,12 @@ dependencies {
     implementation("io.github.1c-syntax:utils:0.7.0")
 
     // логирование
-    implementation("org.slf4j:slf4j-api:2.0.17")
+    implementation("org.slf4j:slf4j-api:2.0.18")
 
     api("org.jspecify:jspecify:1.0.0")
 
     // логирование
-    testImplementation("org.slf4j:slf4j-reload4j:2.0.17")
+    testImplementation("org.slf4j:slf4j-reload4j:2.0.18")
 
     // тестирование
     testImplementation(platform("org.junit:junit-bom:6.0.3"))
