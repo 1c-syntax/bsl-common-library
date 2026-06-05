@@ -7,14 +7,14 @@ plugins {
     jacoco
     id("cloud.rio.license") version "0.18.0"
     id("me.qoomon.git-versioning") version "6.4.4"
-    id("io.freefair.lombok") version "9.2.0"
-    id("io.freefair.javadoc-links") version "9.2.0"
-    id("io.freefair.javadoc-utf-8") version "9.2.0"
+    id("io.freefair.lombok") version "9.5.0"
+    id("io.freefair.javadoc-links") version "9.5.0"
+    id("io.freefair.javadoc-utf-8") version "9.5.0"
 //    id("io.freefair.maven-central.validate-poms") version "9.2.0"
     id("com.github.ben-manes.versions") version "0.54.0"
     id("ru.vyarus.pom") version "3.0.0"
     id("org.jreleaser") version "1.23.0"
-    id("org.sonarqube") version "7.2.3.7755"
+    id("org.sonarqube") version "7.3.0.8198"
 }
 
 repositories {
@@ -52,12 +52,12 @@ dependencies {
     implementation("io.github.1c-syntax:utils:0.7.0")
 
     // логирование
-    implementation("org.slf4j:slf4j-api:2.0.17")
+    implementation("org.slf4j:slf4j-api:2.0.18")
 
     api("org.jspecify:jspecify:1.0.0")
 
     // логирование
-    testImplementation("org.slf4j:slf4j-reload4j:2.0.17")
+    testImplementation("org.slf4j:slf4j-reload4j:2.0.18")
 
     // тестирование
     testImplementation(platform("org.junit:junit-bom:6.0.3"))
