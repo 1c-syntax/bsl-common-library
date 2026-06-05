@@ -49,6 +49,7 @@ class MDOTypeTest {
       .doesNotContain(MDOType.COLUMN)
       .doesNotContain(MDOType.ACCOUNTING_FLAG)
       .doesNotContain(MDOType.EXT_DIMENSION_ACCOUNTING_FLAG)
+      .doesNotContain(MDOType.PREDEFINED_VALUE)
       .doesNotContain(MDOType.UNKNOWN);
   }
 
@@ -56,6 +57,8 @@ class MDOTypeTest {
   void fromValue() {
     assertThat(MDOType.fromValue("FORM")).isPresent().contains(MDOType.FORM);
     assertThat(MDOType.fromValue("attribute")).isPresent().contains(MDOType.ATTRIBUTE);
+    assertThat(MDOType.fromValue("Predefined")).isPresent().contains(MDOType.PREDEFINED_VALUE);
+    assertThat(MDOType.fromValue("Предопределенный")).isPresent().contains(MDOType.PREDEFINED_VALUE);
     assertThat(MDOType.fromValue("string")).isNotPresent();
   }
 }
