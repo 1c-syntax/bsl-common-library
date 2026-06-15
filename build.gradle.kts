@@ -64,7 +64,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.assertj:assertj-core:3.27.7")
-    testImplementation("com.ginsberg:junit5-system-exit:2.0.2")
+    testImplementation("com.ginsberg:junit5-system-exit:2.0.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
