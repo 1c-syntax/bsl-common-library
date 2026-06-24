@@ -35,6 +35,8 @@ import org.jspecify.annotations.Nullable;
 @ToString(of = {"description"})
 @EqualsAndHashCode(of = {"precision", "scale", "nonNegative"})
 public class NumberQualifiers implements Qualifier, Comparable<NumberQualifiers> {
+  private static final GenericInterner<NumberQualifiers> INTERNER = new GenericInterner<>();
+
   /**
    * Длина числа
    */
@@ -59,8 +61,6 @@ public class NumberQualifiers implements Qualifier, Comparable<NumberQualifiers>
     "NumberQualifiers (" + precision + "." + scale + (nonNegative ? " nonneg)" : ")"),
     "КвалификаторыЧисла (" + precision + "." + scale + (nonNegative ? " неотр)" : ")")
   );
-
-  private static final GenericInterner<NumberQualifiers> INTERNER = new GenericInterner<>();
 
   /**
    * Создает квалификатор числа на основании длины.

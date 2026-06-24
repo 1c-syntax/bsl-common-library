@@ -36,6 +36,8 @@ import org.jspecify.annotations.Nullable;
 @ToString(of = {"description"})
 @EqualsAndHashCode(of = {"dateFractions"})
 public class DateQualifiers implements Qualifier, Comparable<DateQualifiers> {
+  private static final GenericInterner<DateQualifiers> INTERNER = new GenericInterner<>();
+
   /**
    * Части даты (0 = TIME, 1 = DATE, 2 = DATE_TIME)
    */
@@ -50,8 +52,6 @@ public class DateQualifiers implements Qualifier, Comparable<DateQualifiers> {
     "DateQualifiers (" + getDateFractions().nameEn() + ")",
     "КвалификаторыДаты (" + getDateFractions().nameRu() + ")"
   );
-
-  private static final GenericInterner<DateQualifiers> INTERNER = new GenericInterner<>();
 
   public DateFractions getDateFractions() {
     return switch (dateFractions) {

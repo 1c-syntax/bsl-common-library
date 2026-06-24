@@ -175,8 +175,7 @@ class MdoReferenceTest {
     assertThat(ref.getMdoRef()).isEqualTo("Catalog.MyObject");
 
     var found = MdoReference.find("catalog.myobject");
-    assertThat(found).isPresent();
-    assertThat(found.get()).isSameAs(ref);
+    assertThat(found).containsSame(ref);
     assertThat(found.get().getMdoRef()).isEqualTo("Catalog.MyObject");
   }
 
@@ -186,8 +185,7 @@ class MdoReferenceTest {
     assertThat(ref.getMdoRefRu()).isEqualTo("Справочник.MyObject");
 
     var found = MdoReference.find("справочник.myobject");
-    assertThat(found).isPresent();
-    assertThat(found.get()).isSameAs(ref);
+    assertThat(found).containsSame(ref);
     assertThat(found.get().getMdoRefRu()).isEqualTo("Справочник.MyObject");
   }
 

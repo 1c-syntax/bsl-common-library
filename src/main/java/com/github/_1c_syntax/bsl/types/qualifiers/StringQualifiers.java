@@ -36,6 +36,8 @@ import org.jspecify.annotations.Nullable;
 @ToString(of = {"description"})
 @EqualsAndHashCode(of = {"length", "allowedLength"})
 public class StringQualifiers implements Qualifier, Comparable<StringQualifiers> {
+  private static final GenericInterner<StringQualifiers> INTERNER = new GenericInterner<>();
+
   /**
    * Длина строки
    */
@@ -55,8 +57,6 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
     "StringQualifiers (" + length + ", " + getAllowedLength().nameEn() + ")",
     "КвалификаторыСтроки (" + length + ", " + getAllowedLength().nameRu() + ")"
   );
-
-  private static final GenericInterner<StringQualifiers> INTERNER = new GenericInterner<>();
 
   public AllowedLength getAllowedLength() {
     return allowedLength == 0 ? AllowedLength.VARIABLE : AllowedLength.FIXED;

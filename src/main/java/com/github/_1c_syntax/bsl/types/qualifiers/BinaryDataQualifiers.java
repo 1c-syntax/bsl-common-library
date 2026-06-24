@@ -36,6 +36,8 @@ import org.jspecify.annotations.Nullable;
 @ToString(of = {"description"})
 @EqualsAndHashCode(of = {"length", "allowedLength"})
 public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQualifiers> {
+  private static final GenericInterner<BinaryDataQualifiers> INTERNER = new GenericInterner<>();
+
   /**
    * Длина строки base64
    */
@@ -55,8 +57,6 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
     "BinaryDataQualifiers (" + length + ", " + getAllowedLength().nameEn() + ")",
     "КвалификаторыДвоичныхДанных (" + length + ", " + getAllowedLength().nameRu() + ")"
   );
-
-  private static final GenericInterner<BinaryDataQualifiers> INTERNER = new GenericInterner<>();
 
   public AllowedLength getAllowedLength() {
     return allowedLength == 0 ? AllowedLength.VARIABLE : AllowedLength.FIXED;
