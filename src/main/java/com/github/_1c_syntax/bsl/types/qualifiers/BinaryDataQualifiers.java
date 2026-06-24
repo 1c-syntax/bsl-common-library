@@ -24,13 +24,17 @@ package com.github._1c_syntax.bsl.types.qualifiers;
 import com.github._1c_syntax.bsl.types.AllowedLength;
 import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.Qualifier;
+import com.github._1c_syntax.utils.GenericInterner;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import org.jspecify.annotations.Nullable;
 
 @Value
-@ToString(of = "description")
+@ToString(of = {"description"})
+@EqualsAndHashCode(of = {"length", "allowedLength"})
 public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQualifiers> {
   /**
    * Длина строки base64
@@ -38,23 +42,24 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
   long length;
 
   /**
-   * Вариант длины
+   * Вариант длины (0 = VARIABLE, 1 = FIXED)
    */
-  AllowedLength allowedLength;
+  byte allowedLength;
 
   /**
    * Представление квалификатора
    */
   @Accessors(fluent = true)
-  MultiName description;
+  @Getter(lazy = true)
+  MultiName description = MultiName.create(
+    "BinaryDataQualifiers (" + length + ", " + getAllowedLength().nameEn() + ")",
+    "КвалификаторыДвоичныхДанных (" + length + ", " + getAllowedLength().nameRu() + ")"
+  );
 
-  private BinaryDataQualifiers(long length, AllowedLength allowedLength) {
-    this.length = length;
-    this.allowedLength = allowedLength;
-    this.description = MultiName.create(
-      "BinaryDataQualifiers (" + length + ", " + allowedLength.nameEn() + ")",
-      "КвалификаторыДвоичныхДанных (" + length + ", " + allowedLength.nameRu() + ")"
-    );
+  private static final GenericInterner<BinaryDataQualifiers> INTERNER = new GenericInterner<>();
+
+  public AllowedLength getAllowedLength() {
+    return allowedLength == 0 ? AllowedLength.VARIABLE : AllowedLength.FIXED;
   }
 
   /**
@@ -76,7 +81,7 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
    * @return Квалификатор двоичных данных
    */
   public static BinaryDataQualifiers create(long length) {
-    return create(length, AllowedLength.VARIABLE);
+    return INTERNER.intern(new BinaryDataQualifiers(length, (byte) 0));
   }
 
   /**
@@ -87,7 +92,8 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
    * @return Квалификатор двоичных данных
    */
   public static BinaryDataQualifiers create(long length, AllowedLength allowedLength) {
-    return new BinaryDataQualifiers(length, allowedLength);
+    byte code = allowedLength == AllowedLength.FIXED ? (byte) 1 : (byte) 0;
+    return INTERNER.intern(new BinaryDataQualifiers(length, code));
   }
 
   /**
@@ -102,20 +108,14 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
   }
 
   @Override
-  public int compareTo(@Nullable BinaryDataQualifiers qualifiers) {
-    if (qualifiers == null) {
+  public int compareTo(@Nullable BinaryDataQualifiers other) {
+    if (other == null) {
       return 1;
     }
-
-    if (this.equals(qualifiers)) {
+    if (this.equals(other)) {
       return 0;
     }
-
-    int allowedLengthComparison = this.allowedLength.fullName()
-      .compareTo(qualifiers.getAllowedLength().fullName());
-    if (allowedLengthComparison != 0) {
-      return allowedLengthComparison;
-    }
-    return Long.compare(this.length, qualifiers.getLength());
+    int cmp = Byte.compare(this.allowedLength, other.allowedLength);
+    return cmp != 0 ? cmp : Long.compare(this.length, other.length);
   }
 }

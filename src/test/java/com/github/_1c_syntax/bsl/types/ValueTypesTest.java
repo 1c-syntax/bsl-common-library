@@ -25,6 +25,11 @@ import com.github._1c_syntax.bsl.types.value.CustomValueType;
 import com.github._1c_syntax.bsl.types.value.PrimitiveValueType;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ValueTypesTest {
@@ -81,5 +86,27 @@ class ValueTypesTest {
     assertThat(customValueType.variant()).isEqualTo(ValueTypeVariant.UNKNOWN);
 
     assertThat(ValueTypes.getOrCompute("МойТип")).isSameAs(type);
+  }
+
+  @Test
+  void testConcurrentGetOrComputeSameKeyReturnsSameInstance() throws Exception {
+    var threadCount = 16;
+    var executor = Executors.newFixedThreadPool(threadCount);
+    var barrier = new CyclicBarrier(threadCount);
+
+    var futures = IntStream.range(0, threadCount)
+      .mapToObj(i -> (Callable<ValueType>) () -> {
+        barrier.await();
+        return ValueTypes.getOrCompute("CatalogRef.ConcurrentObject");
+      })
+      .map(executor::submit)
+      .toList();
+
+    var first = futures.getFirst().get();
+    for (var f : futures) {
+      assertThat(f.get()).isSameAs(first);
+    }
+
+    executor.shutdown();
   }
 }

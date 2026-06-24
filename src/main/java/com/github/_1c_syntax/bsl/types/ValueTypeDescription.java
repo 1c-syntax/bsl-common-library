@@ -25,6 +25,7 @@ import com.github._1c_syntax.bsl.types.qualifiers.NumberQualifiers;
 import com.github._1c_syntax.bsl.types.qualifiers.StringQualifiers;
 import com.github._1c_syntax.bsl.types.value.MDOValueType;
 import com.github._1c_syntax.bsl.types.value.PrimitiveValueType;
+import com.github._1c_syntax.utils.GenericInterner;
 import lombok.Value;
 
 import java.util.Collections;
@@ -37,6 +38,8 @@ import java.util.List;
 @Value
 public class ValueTypeDescription {
   public static final ValueTypeDescription EMPTY = new ValueTypeDescription();
+
+  private static final GenericInterner<ValueTypeDescription> INTERNER = new GenericInterner<>();
 
   /**
    * Список типов описания
@@ -141,7 +144,7 @@ public class ValueTypeDescription {
     }
 
     var composite = types.size() > 1 || types.getFirst() instanceof MDOValueType;
-    return new ValueTypeDescription(types, qualifiers, composite);
+    return INTERNER.intern(new ValueTypeDescription(types, qualifiers, composite));
   }
 
   /**
@@ -156,7 +159,7 @@ public class ValueTypeDescription {
     if (types.isEmpty()) {
       return EMPTY;
     }
-    return new ValueTypeDescription(types, qualifiers, composite);
+    return INTERNER.intern(new ValueTypeDescription(types, qualifiers, composite));
   }
 
   /**

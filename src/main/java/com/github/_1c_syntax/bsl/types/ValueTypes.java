@@ -31,7 +31,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Помощник получения типа по ключу. Кеширует рассчитанные значения
@@ -58,30 +58,37 @@ public class ValueTypes {
    * @return Найденное или созданное значение
    */
   public static ValueType getOrCompute(String name) {
-    var value = get(name);
+    var enKey = name.toLowerCase(Locale.ROOT);
+    var value = KEYS.get(enKey);
     if (value == null) {
-      var posDot = name.indexOf(".");
-      if (posDot > 0) { // есть точка, считаем что это тип метаданных
-        var key = name.substring(0, posDot);
-        var baseType = get(key);
-        if (baseType instanceof MDOValueType mdoValueType) {
-          value = CustomValueType.create(mdoValueType.kind(),
-            mdoValueType.nameEn() + name.substring(posDot),
-            mdoValueType.nameRu() + name.substring(posDot));
-        }
+      var computed = computeValue(name);
+      var existing = KEYS.putIfAbsent(enKey, computed);
+      if (existing != null) {
+        value = existing;
+      } else {
+        value = computed;
+        KEYS.putIfAbsent(computed.nameRu().toLowerCase(Locale.ROOT), computed);
       }
-
-      if (value == null) {
-        value = CustomValueType.create(name);
-      }
-      KEYS.putIfAbsent(value.nameEn().toLowerCase(Locale.ROOT), value);
-      KEYS.putIfAbsent(value.nameRu().toLowerCase(Locale.ROOT), value);
     }
     return value;
   }
 
+  private static ValueType computeValue(String name) {
+    var posDot = name.indexOf(".");
+    if (posDot > 0) {
+      var key = name.substring(0, posDot);
+      var baseType = KEYS.get(key.toLowerCase(Locale.ROOT));
+      if (baseType instanceof MDOValueType mdoValueType) {
+        return CustomValueType.create(mdoValueType.kind(),
+          mdoValueType.nameEn() + name.substring(posDot),
+          mdoValueType.nameRu() + name.substring(posDot));
+      }
+    }
+    return CustomValueType.create(name);
+  }
+
   private static Map<String, ValueType> computeKeys() {
-    Map<String, ValueType> keysMap = new ConcurrentSkipListMap<>();
+    Map<String, ValueType> keysMap = new ConcurrentHashMap<>();
     List.of(MDOValueType.values(), PrimitiveValueType.values(), V8ValueType.values())
       .forEach(enums ->
         keysMap.putAll(EnumWithName.computeKeys(enums))

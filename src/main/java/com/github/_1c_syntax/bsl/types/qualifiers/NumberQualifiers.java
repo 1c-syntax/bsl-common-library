@@ -23,13 +23,17 @@ package com.github._1c_syntax.bsl.types.qualifiers;
 
 import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.Qualifier;
+import com.github._1c_syntax.utils.GenericInterner;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import org.jspecify.annotations.Nullable;
 
 @Value
-@ToString(of = "description")
+@ToString(of = {"description"})
+@EqualsAndHashCode(of = {"precision", "scale", "nonNegative"})
 public class NumberQualifiers implements Qualifier, Comparable<NumberQualifiers> {
   /**
    * Длина числа
@@ -50,18 +54,13 @@ public class NumberQualifiers implements Qualifier, Comparable<NumberQualifiers>
    * Представление квалификатора
    */
   @Accessors(fluent = true)
-  MultiName description;
+  @Getter(lazy = true)
+  MultiName description = MultiName.create(
+    "NumberQualifiers (" + precision + "." + scale + (nonNegative ? " nonneg)" : ")"),
+    "КвалификаторыЧисла (" + precision + "." + scale + (nonNegative ? " неотр)" : ")")
+  );
 
-  private NumberQualifiers(int precision, int scale, boolean nonNegative) {
-    this.precision = precision;
-    this.scale = scale;
-    this.nonNegative = nonNegative;
-
-    this.description = MultiName.create(
-      "NumberQualifiers (" + precision + "." + scale + (nonNegative ? " nonneg)" : ")"),
-      "КвалификаторыЧисла (" + precision + "." + scale + (nonNegative ? " неотр)" : ")")
-    );
-  }
+  private static final GenericInterner<NumberQualifiers> INTERNER = new GenericInterner<>();
 
   /**
    * Создает квалификатор числа на основании длины.
@@ -95,7 +94,7 @@ public class NumberQualifiers implements Qualifier, Comparable<NumberQualifiers>
    * @return Квалификатор числа
    */
   public static NumberQualifiers create(int precision, int scale, boolean nonNegative) {
-    return new NumberQualifiers(precision, scale, nonNegative);
+    return INTERNER.intern(new NumberQualifiers(precision, scale, nonNegative));
   }
 
   @Override

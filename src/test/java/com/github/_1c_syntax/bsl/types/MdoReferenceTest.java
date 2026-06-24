@@ -23,6 +23,11 @@ package com.github._1c_syntax.bsl.types;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -162,5 +167,62 @@ class MdoReferenceTest {
     assertThat(mdoRef.getMdoRef(ScriptVariant.ENGLISH)).isEqualTo("Catalog.test");
     assertThat(mdoRef.getMdoRef(ScriptVariant.RUSSIAN)).isEqualTo("Справочник.test");
     assertThat(mdoRef.getMdoRef(ScriptVariant.UNKNOWN)).isEqualTo("Справочник.test");
+  }
+
+  @Test
+  void testFindWithDifferentCasePreservesOriginalCase() {
+    var ref = MdoReference.create(MDOType.CATALOG, "MyObject");
+    assertThat(ref.getMdoRef()).isEqualTo("Catalog.MyObject");
+
+    var found = MdoReference.find("catalog.myobject");
+    assertThat(found).isPresent();
+    assertThat(found.get()).isSameAs(ref);
+    assertThat(found.get().getMdoRef()).isEqualTo("Catalog.MyObject");
+  }
+
+  @Test
+  void testFindWithRussianDifferentCasePreservesOriginalCase() {
+    var ref = MdoReference.create(MDOType.CATALOG, "MyObject");
+    assertThat(ref.getMdoRefRu()).isEqualTo("Справочник.MyObject");
+
+    var found = MdoReference.find("справочник.myobject");
+    assertThat(found).isPresent();
+    assertThat(found.get()).isSameAs(ref);
+    assertThat(found.get().getMdoRefRu()).isEqualTo("Справочник.MyObject");
+  }
+
+  @Test
+  void testExplicitCreatePreservesExactCase() {
+    var ref = MdoReference.create(MDOType.CATALOG, "Catalog.MyObject", "Справочник.MyObject");
+    assertThat(ref.getMdoRef()).isEqualTo("Catalog.MyObject");
+    assertThat(ref.getMdoRefRu()).isEqualTo("Справочник.MyObject");
+
+    assertThat(MdoReference.find("catalog.myobject")).containsSame(ref);
+    assertThat(MdoReference.find("CATALOG.MYOBJECT")).containsSame(ref);
+
+    assertThat(MdoReference.find("справочник.myobject")).containsSame(ref);
+    assertThat(MdoReference.find("СПРАВОЧНИК.MYOBJECT")).containsSame(ref);
+  }
+
+  @Test
+  void testConcurrentCreateSameKeyReturnsSameInstance() throws Exception {
+    var threadCount = 16;
+    var executor = Executors.newFixedThreadPool(threadCount);
+    var barrier = new CyclicBarrier(threadCount);
+
+    var futures = IntStream.range(0, threadCount)
+      .mapToObj(i -> (Callable<MdoReference>) () -> {
+        barrier.await();
+        return MdoReference.create(MDOType.CATALOG, "ConcurrentObject");
+      })
+      .map(executor::submit)
+      .toList();
+
+    var first = futures.getFirst().get();
+    for (var f : futures) {
+      assertThat(f.get()).isSameAs(first);
+    }
+
+    executor.shutdown();
   }
 }
