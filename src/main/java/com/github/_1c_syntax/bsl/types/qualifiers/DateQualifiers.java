@@ -24,31 +24,45 @@ package com.github._1c_syntax.bsl.types.qualifiers;
 import com.github._1c_syntax.bsl.types.DateFractions;
 import com.github._1c_syntax.bsl.types.MultiName;
 import com.github._1c_syntax.bsl.types.Qualifier;
+import com.github._1c_syntax.utils.GenericInterner;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import org.jspecify.annotations.Nullable;
 
 @Value
-@ToString(of = "description")
+@ToString(of = {"description"})
+@EqualsAndHashCode(of = {"dateFractions"})
 public class DateQualifiers implements Qualifier, Comparable<DateQualifiers> {
+  private static final GenericInterner<DateQualifiers> INTERNER = new GenericInterner<>();
+
   /**
-   * Части даты
+   * Части даты (0 = TIME, 1 = DATE, 2 = DATE_TIME)
    */
-  DateFractions dateFractions;
+  byte dateFractions;
 
   /**
    * Представление квалификатора
    */
   @Accessors(fluent = true)
-  MultiName description;
+  @Getter(lazy = true)
+  MultiName description = MultiName.create(
+    "DateQualifiers (" + getDateFractions().nameEn() + ")",
+    "КвалификаторыДаты (" + getDateFractions().nameRu() + ")"
+  );
 
-  private DateQualifiers(DateFractions dateFractions) {
+  private DateQualifiers(byte dateFractions) {
     this.dateFractions = dateFractions;
-    this.description = MultiName.create(
-      "DateQualifiers (" + dateFractions.nameEn() + ")",
-      "КвалификаторыДаты (" + dateFractions.nameRu() + ")"
-    );
+  }
+
+  public DateFractions getDateFractions() {
+    return switch (dateFractions) {
+      case 0 -> DateFractions.TIME;
+      case 1 -> DateFractions.DATE;
+      default -> DateFractions.DATE_TIME;
+    };
   }
 
   /**
@@ -67,19 +81,22 @@ public class DateQualifiers implements Qualifier, Comparable<DateQualifiers> {
    * @return Квалификатор даты
    */
   public static DateQualifiers create(DateFractions dateFractions) {
-    return new DateQualifiers(dateFractions);
+    byte code = switch (dateFractions) {
+      case TIME -> 0;
+      case DATE -> 1;
+      default -> 2;
+    };
+    return INTERNER.intern(new DateQualifiers(code));
   }
 
   @Override
-  public int compareTo(@Nullable DateQualifiers qualifiers) {
-    if (qualifiers == null) {
+  public int compareTo(@Nullable DateQualifiers other) {
+    if (other == null) {
       return 1;
     }
-
-    if (this.equals(qualifiers)) {
+    if (this.equals(other)) {
       return 0;
     }
-
-    return this.dateFractions.fullName().compareTo(qualifiers.getDateFractions().fullName());
+    return Byte.compare(this.dateFractions, other.dateFractions);
   }
 }
