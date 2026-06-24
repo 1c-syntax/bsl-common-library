@@ -58,6 +58,11 @@ public class BinaryDataQualifiers implements Qualifier, Comparable<BinaryDataQua
     "КвалификаторыДвоичныхДанных (" + length + ", " + getAllowedLength().nameRu() + ")"
   );
 
+  private BinaryDataQualifiers(long length, byte allowedLength) {
+    this.length = length;
+    this.allowedLength = allowedLength;
+  }
+
   public AllowedLength getAllowedLength() {
     return allowedLength == 0 ? AllowedLength.VARIABLE : AllowedLength.FIXED;
   }

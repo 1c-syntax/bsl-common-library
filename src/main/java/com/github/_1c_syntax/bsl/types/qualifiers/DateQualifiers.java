@@ -53,6 +53,10 @@ public class DateQualifiers implements Qualifier, Comparable<DateQualifiers> {
     "КвалификаторыДаты (" + getDateFractions().nameRu() + ")"
   );
 
+  private DateQualifiers(byte dateFractions) {
+    this.dateFractions = dateFractions;
+  }
+
   public DateFractions getDateFractions() {
     return switch (dateFractions) {
       case 0 -> DateFractions.TIME;

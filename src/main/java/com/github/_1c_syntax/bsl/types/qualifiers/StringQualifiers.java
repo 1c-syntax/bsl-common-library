@@ -58,6 +58,11 @@ public class StringQualifiers implements Qualifier, Comparable<StringQualifiers>
     "КвалификаторыСтроки (" + length + ", " + getAllowedLength().nameRu() + ")"
   );
 
+  private StringQualifiers(long length, byte allowedLength) {
+    this.length = length;
+    this.allowedLength = allowedLength;
+  }
+
   public AllowedLength getAllowedLength() {
     return allowedLength == 0 ? AllowedLength.VARIABLE : AllowedLength.FIXED;
   }

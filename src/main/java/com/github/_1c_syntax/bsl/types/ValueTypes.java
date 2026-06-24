@@ -67,6 +67,7 @@ public class ValueTypes {
         value = existing;
       } else {
         value = computed;
+        KEYS.putIfAbsent(computed.nameEn().toLowerCase(Locale.ROOT), computed);
         KEYS.putIfAbsent(computed.nameRu().toLowerCase(Locale.ROOT), computed);
       }
     }

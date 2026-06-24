@@ -89,24 +89,33 @@ class ValueTypesTest {
   }
 
   @Test
+  void testBilingualKeyContract() {
+    var fromRu = ValueTypes.getOrCompute("ПеречислениеСсылка.X");
+    var fromEn = ValueTypes.get("EnumRef.X");
+    assertThat(fromEn).isSameAs(fromRu);
+  }
+
+  @Test
   void testConcurrentGetOrComputeSameKeyReturnsSameInstance() throws Exception {
     var threadCount = 16;
     var executor = Executors.newFixedThreadPool(threadCount);
-    var barrier = new CyclicBarrier(threadCount);
+    try {
+      var barrier = new CyclicBarrier(threadCount);
 
-    var futures = IntStream.range(0, threadCount)
-      .mapToObj(i -> (Callable<ValueType>) () -> {
-        barrier.await();
-        return ValueTypes.getOrCompute("CatalogRef.ConcurrentObject");
-      })
-      .map(executor::submit)
-      .toList();
+      var futures = IntStream.range(0, threadCount)
+        .mapToObj(i -> (Callable<ValueType>) () -> {
+          barrier.await();
+          return ValueTypes.getOrCompute("CatalogRef.ConcurrentObject");
+        })
+        .map(executor::submit)
+        .toList();
 
-    var first = futures.getFirst().get();
-    for (var f : futures) {
-      assertThat(f.get()).isSameAs(first);
+      var first = futures.getFirst().get();
+      for (var f : futures) {
+        assertThat(f.get()).isSameAs(first);
+      }
+    } finally {
+      executor.shutdown();
     }
-
-    executor.shutdown();
   }
 }

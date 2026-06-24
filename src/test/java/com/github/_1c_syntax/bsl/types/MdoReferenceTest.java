@@ -206,21 +206,23 @@ class MdoReferenceTest {
   void testConcurrentCreateSameKeyReturnsSameInstance() throws Exception {
     var threadCount = 16;
     var executor = Executors.newFixedThreadPool(threadCount);
-    var barrier = new CyclicBarrier(threadCount);
+    try {
+      var barrier = new CyclicBarrier(threadCount);
 
-    var futures = IntStream.range(0, threadCount)
-      .mapToObj(i -> (Callable<MdoReference>) () -> {
-        barrier.await();
-        return MdoReference.create(MDOType.CATALOG, "ConcurrentObject");
-      })
-      .map(executor::submit)
-      .toList();
+      var futures = IntStream.range(0, threadCount)
+        .mapToObj(i -> (Callable<MdoReference>) () -> {
+          barrier.await();
+          return MdoReference.create(MDOType.CATALOG, "ConcurrentObject");
+        })
+        .map(executor::submit)
+        .toList();
 
-    var first = futures.getFirst().get();
-    for (var f : futures) {
-      assertThat(f.get()).isSameAs(first);
+      var first = futures.getFirst().get();
+      for (var f : futures) {
+        assertThat(f.get()).isSameAs(first);
+      }
+    } finally {
+      executor.shutdown();
     }
-
-    executor.shutdown();
   }
 }
