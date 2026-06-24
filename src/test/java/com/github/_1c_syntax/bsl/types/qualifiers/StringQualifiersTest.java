@@ -39,4 +39,11 @@ class StringQualifiersTest {
 
     assertThat(quaf.compareTo(null)).isEqualTo(1);
   }
+
+  @Test
+  void identity() {
+    assertThat(StringQualifiers.create(1)).isSameAs(StringQualifiers.create(1));
+    assertThat(StringQualifiers.create(100, AllowedLength.FIXED))
+      .isSameAs(StringQualifiers.create(100, AllowedLength.FIXED));
+  }
 }

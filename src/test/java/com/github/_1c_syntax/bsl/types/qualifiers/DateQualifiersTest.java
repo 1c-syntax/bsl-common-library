@@ -42,4 +42,13 @@ class DateQualifiersTest {
 
     assertThat(quaf.compareTo(null)).isEqualTo(1);
   }
+
+  @Test
+  void identity() {
+    assertThat(DateQualifiers.create()).isSameAs(DateQualifiers.create());
+    assertThat(DateQualifiers.create(DateFractions.DATE))
+      .isSameAs(DateQualifiers.create(DateFractions.DATE));
+    assertThat(DateQualifiers.create(DateFractions.TIME))
+      .isSameAs(DateQualifiers.create(DateFractions.TIME));
+  }
 }

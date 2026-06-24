@@ -239,4 +239,17 @@ class ValueTypeDescriptionTest {
     // Проверить, что ключ сформирован корректно как "CatalogRef.Product.Attribute.Price"
     assertThat(type.fullName().getEn()).contains("Ref.Product").contains("Attribute.Price");
   }
+
+  @Test
+  void identity() {
+    assertThat(ValueTypeDescription.create(PrimitiveValueType.STRING))
+      .isSameAs(ValueTypeDescription.create(PrimitiveValueType.STRING));
+    assertThat(ValueTypeDescription.createNumber(10))
+      .isSameAs(ValueTypeDescription.createNumber(10));
+    assertThat(
+      ValueTypeDescription.create(List.of(PrimitiveValueType.STRING, PrimitiveValueType.NUMBER))
+    ).isSameAs(
+      ValueTypeDescription.create(List.of(PrimitiveValueType.STRING, PrimitiveValueType.NUMBER))
+    );
+  }
 }

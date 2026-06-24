@@ -53,4 +53,11 @@ class BinaryDataQualifiersTest {
     assertThat(quaf2.compareTo(quaf3)).isLessThan(1);
     assertThat(quaf2.compareTo(quaf2)).isZero();
   }
+
+  @Test
+  void identity() {
+    assertThat(BinaryDataQualifiers.create(1)).isSameAs(BinaryDataQualifiers.create(1));
+    assertThat(BinaryDataQualifiers.create(100, AllowedLength.FIXED))
+      .isSameAs(BinaryDataQualifiers.create(100, AllowedLength.FIXED));
+  }
 }

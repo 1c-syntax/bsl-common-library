@@ -27,9 +27,10 @@ import lombok.ToString;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -52,8 +53,7 @@ public class MdoReference implements Comparable<MdoReference> {
   /**
    * Кэш всех ссылок
    */
-  private static final Map<String, MdoReference> REFERENCES =
-    new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+  private static final Map<String, MdoReference> REFERENCES = new ConcurrentHashMap<>();
 
   /**
    * Тип объекта метаданных
@@ -205,11 +205,7 @@ public class MdoReference implements Comparable<MdoReference> {
    * @return Optional-контейнер для ссылки
    */
   public static Optional<MdoReference> find(String mdoRef) {
-    Optional<MdoReference> result = Optional.empty();
-    if (REFERENCES.containsKey(mdoRef)) {
-      result = Optional.of(REFERENCES.get(mdoRef));
-    }
-    return result;
+    return Optional.ofNullable(REFERENCES.get(mdoRef.toLowerCase(Locale.ROOT)));
   }
 
   @Override
@@ -236,12 +232,10 @@ public class MdoReference implements Comparable<MdoReference> {
   }
 
   private static MdoReference getOrCompute(MDOType mdoType, String mdoRef, String mdoRefRu) {
-    if (REFERENCES.containsKey(mdoRef)) {
-      return REFERENCES.get(mdoRef);
-    }
-    var newMdoReference = new MdoReference(mdoType, mdoRef, mdoRefRu);
-    REFERENCES.put(newMdoReference.getMdoRef(), newMdoReference);
-    REFERENCES.put(newMdoReference.getMdoRefRu(), newMdoReference);
-    return newMdoReference;
+    var enKey = mdoRef.toLowerCase(Locale.ROOT);
+    var ruKey = mdoRefRu.toLowerCase(Locale.ROOT);
+    var result = REFERENCES.computeIfAbsent(enKey, key -> new MdoReference(mdoType, mdoRef, mdoRefRu));
+    REFERENCES.putIfAbsent(ruKey, result);
+    return result;
   }
 }

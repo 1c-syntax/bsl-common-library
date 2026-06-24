@@ -54,6 +54,13 @@ class NumberQualifiersTest {
   }
 
   @Test
+  void identity() {
+    assertThat(NumberQualifiers.create(10)).isSameAs(NumberQualifiers.create(10));
+    assertThat(NumberQualifiers.create(10, 5)).isSameAs(NumberQualifiers.create(10, 5));
+    assertThat(NumberQualifiers.create(10, 5, true)).isSameAs(NumberQualifiers.create(10, 5, true));
+  }
+
+  @Test
   void compare() {
     var quaf = NumberQualifiers.create(10);
     var quaf2 = NumberQualifiers.create(10, 5);
