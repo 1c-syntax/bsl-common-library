@@ -130,6 +130,8 @@ public enum MDOType implements EnumWithName {
   PREDEFINED_VALUE("Predefined", "Predefined", "Предопределенный", "Предопределенные"),
 
   RECALCULATION("Recalculation", "Recalculations", "Перерасчет", "Перерасчеты"),
+  RECALCULATION_DIMENSION("RecalculationDimension", "RecalculationDimensions",
+    "ИзмерениеПерерасчета", "ИзмеренияПерерасчета"),
   REPORT("Report", "Reports", "Отчет", "Отчеты"),
   RESOURCE("Resource", "Resources", "Ресурс", "Ресурсы"),
   ROLE("Role", "Roles", "Роль", "Роли"),
@@ -254,6 +256,7 @@ public enum MDOType implements EnumWithName {
       TASK_ADDRESSING_ATTRIBUTE, DIMENSION, RESOURCE, ENUM_VALUE, COLUMN,
       ACCOUNTING_FLAG, EXT_DIMENSION_ACCOUNTING_FLAG, PREDEFINED_VALUE, STANDARD_ATTRIBUTE, STANDARD_TABULAR_SECTION,
       EXTERNAL_DATA_SOURCE_TABLE, EXTERNAL_DATA_SOURCE_CUBE_DIMENSION_TABLE,
-      EXTERNAL_DATA_SOURCE_TABLE_FIELD, EXTERNAL_DATA_SOURCE_CUBE, EXTERNAL_DATA_SOURCE_FUNCTION);
+      EXTERNAL_DATA_SOURCE_TABLE_FIELD, EXTERNAL_DATA_SOURCE_CUBE, EXTERNAL_DATA_SOURCE_FUNCTION,
+      RECALCULATION_DIMENSION);
   }
 }
