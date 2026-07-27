@@ -222,6 +222,16 @@ public class MdoReference implements Comparable<MdoReference> {
     return Optional.ofNullable(REFERENCES.get(mdoRef.toLowerCase(Locale.ROOT)));
   }
 
+  /**
+   * Возвращает найденную в кеше ссылку. Если ее нет, то вернет пустую
+   *
+   * @param mdoRef Строковое представление ссылки
+   * @return Найденная сслыка либо пустая, если ее нет
+   */
+  public static MdoReference get(String mdoRef) {
+    return REFERENCES.getOrDefault(mdoRef.toLowerCase(Locale.ROOT), MdoReference.EMPTY);
+  }
+
   @Override
   public int compareTo(@Nullable MdoReference mdoReference) {
     if (mdoReference == null) {

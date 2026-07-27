@@ -231,6 +231,39 @@ class MdoReferenceTest {
   }
 
   @Test
+  void testGetMdoRefByScriptVariantForStandardAttribute() {
+    var owner = MdoReference.create(MDOType.CATALOG, "MyCatalog");
+    var attr = MdoReference.create(owner, MDOType.STANDARD_ATTRIBUTE, "Code");
+    assertThat(attr.getMdoRef(ScriptVariant.ENGLISH))
+      .isEqualTo("Catalog.MyCatalog.StandardAttribute.Code");
+    assertThat(attr.getMdoRef(ScriptVariant.RUSSIAN))
+      .isEqualTo("Справочник.MyCatalog.СтандартныйРеквизит.Код");
+  }
+
+  @Test
+  void testGetReturnsCachedReference() {
+    var created = MdoReference.create(MDOType.CATALOG, "GetTestObj");
+    var found = MdoReference.get("Catalog.GetTestObj");
+    assertThat(found).isSameAs(created);
+
+    var foundRu = MdoReference.get("Справочник.GetTestObj");
+    assertThat(foundRu).isSameAs(created);
+  }
+
+  @Test
+  void testGetReturnsEmptyForUnknown() {
+    var found = MdoReference.get("Catalog.DoesNotExist");
+    assertThat(found).isSameAs(MdoReference.EMPTY);
+    assertThat(found.isEmpty()).isTrue();
+  }
+
+  @Test
+  void testGetIsCaseInsensitive() {
+    MdoReference.create(MDOType.CATALOG, "CaseGetTest");
+    assertThat(MdoReference.get("catalog.casegettest")).isSameAs(MdoReference.get("CATALOG.CASEGETTEST"));
+  }
+
+  @Test
   void testConcurrentCreateSameKeyReturnsSameInstance() throws Exception {
     var threadCount = 16;
     var executor = Executors.newFixedThreadPool(threadCount);
