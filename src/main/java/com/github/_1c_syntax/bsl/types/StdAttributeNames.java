@@ -21,12 +21,15 @@
  */
 package com.github._1c_syntax.bsl.types;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Locale;
 import java.util.Map;
 
 /**
  * Вспомогательный класс для хранения стандартных реквизитов
  */
+@Slf4j
 public class StdAttributeNames {
   public static final MultiName PREDEFINED_DATA_NAME = MultiName.create("PredefinedDataName",
     "ИмяПредопределенныхДанных");
@@ -83,7 +86,12 @@ public class StdAttributeNames {
    * @return Мультиимя
    */
   public static MultiName get(String name) {
-    return KEYS.get(name.toLowerCase(Locale.ROOT));
+    var result = KEYS.get(name.toLowerCase(Locale.ROOT));
+    if (result == null) {
+      LOGGER.info("Unknown std. attribute {}", name);
+      return MultiName.EMPTY;
+    }
+    return result;
   }
 
   private static Map<String, MultiName> computeKeys() {

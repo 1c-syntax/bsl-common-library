@@ -60,7 +60,7 @@ class StdAttributeNamesTest {
 
   @Test
   void shouldReturnNullForUnknownName() {
-    assertThat(StdAttributeNames.get("NonExistentAttribute")).isNull();
-    assertThat(StdAttributeNames.get("")).isNull();
+    assertThat(StdAttributeNames.get("NonExistentAttribute")).isEqualTo(MultiName.EMPTY);
+    assertThat(StdAttributeNames.get("")).isEqualTo(MultiName.EMPTY);
   }
 }
