@@ -49,7 +49,7 @@ gitVersioning.apply {
 dependencies {
 
     implementation("org.apache.commons:commons-collections4:4.5.0")
-    implementation("io.github.1c-syntax:utils:0.7.2")
+    implementation("io.github.1c-syntax:utils:0.9.0")
 
     // логирование
     implementation("org.slf4j:slf4j-api:2.0.18")
@@ -60,7 +60,7 @@ dependencies {
     testImplementation("org.slf4j:slf4j-reload4j:2.0.18")
 
     // тестирование
-    testImplementation(platform("org.junit:junit-bom:6.1.1"))
+    testImplementation(platform("org.junit:junit-bom:6.1.2"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.assertj:assertj-core:3.27.7")

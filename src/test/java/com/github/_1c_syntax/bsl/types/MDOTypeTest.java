@@ -60,5 +60,13 @@ class MDOTypeTest {
     assertThat(MDOType.fromValue("Predefined")).isPresent().contains(MDOType.PREDEFINED_VALUE);
     assertThat(MDOType.fromValue("Предопределенный")).isPresent().contains(MDOType.PREDEFINED_VALUE);
     assertThat(MDOType.fromValue("string")).isNotPresent();
+    assertThat(MDOType.fromValue("RecalculationDimension")).isPresent().contains(MDOType.RECALCULATION_DIMENSION);
+    assertThat(MDOType.fromValue("ИзмерениеПерерасчета")).isPresent().contains(MDOType.RECALCULATION_DIMENSION);
+  }
+
+  @Test
+  void recalculationDimensionIsChildType() {
+    var valuesWithoutChildren = MDOType.valuesWithoutChildren();
+    assertThat(valuesWithoutChildren).doesNotContain(MDOType.RECALCULATION_DIMENSION);
   }
 }
