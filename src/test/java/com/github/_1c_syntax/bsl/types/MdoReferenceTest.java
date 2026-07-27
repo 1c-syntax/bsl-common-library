@@ -203,6 +203,34 @@ class MdoReferenceTest {
   }
 
   @Test
+  void testCreateStandardAttributeTranslatesToRussian() {
+    var mdoRef = MdoReference.create(MDOType.STANDARD_ATTRIBUTE, "Ref");
+    assertThat(mdoRef).isNotNull();
+    assertThat(mdoRef.getMdoRef()).isEqualTo("StandardAttribute.Ref");
+    assertThat(mdoRef.getMdoRefRu()).isEqualTo("СтандартныйРеквизит.Ссылка");
+    assertThat(mdoRef.getType()).isEqualTo(MDOType.STANDARD_ATTRIBUTE);
+  }
+
+  @Test
+  void testCreateChildStandardAttributeTranslatesToRussian() {
+    var owner = MdoReference.create(MDOType.CATALOG, "MyCatalog");
+    var attr = MdoReference.create(owner, MDOType.STANDARD_ATTRIBUTE, "Code");
+    assertThat(attr).isNotNull();
+    assertThat(attr.getMdoRef()).isEqualTo("Catalog.MyCatalog.StandardAttribute.Code");
+    assertThat(attr.getMdoRefRu()).isEqualTo("Справочник.MyCatalog.СтандартныйРеквизит.Код");
+    assertThat(attr.getType()).isEqualTo(MDOType.STANDARD_ATTRIBUTE);
+  }
+
+  @Test
+  void testCreateFromStringWithStandardAttribute() {
+    var mdoRef = MdoReference.create("Catalog.MyCatalog.StandardAttribute.DeletionMark");
+    assertThat(mdoRef).isNotNull();
+    assertThat(mdoRef.getMdoRef()).isEqualTo("Catalog.MyCatalog.StandardAttribute.DeletionMark");
+    assertThat(mdoRef.getMdoRefRu()).isEqualTo("Справочник.MyCatalog.СтандартныйРеквизит.ПометкаУдаления");
+    assertThat(mdoRef.getType()).isEqualTo(MDOType.STANDARD_ATTRIBUTE);
+  }
+
+  @Test
   void testConcurrentCreateSameKeyReturnsSameInstance() throws Exception {
     var threadCount = 16;
     var executor = Executors.newFixedThreadPool(threadCount);

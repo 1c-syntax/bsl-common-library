@@ -121,7 +121,11 @@ public class MdoReference implements Comparable<MdoReference> {
    */
   public static MdoReference create(MDOType mdoType, String name) {
     var mdoRef = stringInterner.intern(mdoType.nameEn() + "." + name);
-    var mdoRefRu = stringInterner.intern(mdoType.nameRu() + "." + name);
+    var nameRu = name;
+    if (mdoType == MDOType.STANDARD_ATTRIBUTE) {
+      nameRu = StdAttributeNames.get(name).getRu();
+    }
+    var mdoRefRu = stringInterner.intern(mdoType.nameRu() + "." + nameRu);
 
     return getOrCompute(mdoType, mdoRef, mdoRefRu);
   }
@@ -137,7 +141,11 @@ public class MdoReference implements Comparable<MdoReference> {
   public static MdoReference create(@Nullable MdoReference mdoReferenceOwner,
                                     MDOType mdoType,
                                     String name) {
-    return create(mdoReferenceOwner, mdoType, name, name);
+    var nameRu = name;
+    if (mdoType == MDOType.STANDARD_ATTRIBUTE) {
+      nameRu = StdAttributeNames.get(name).getRu();
+    }
+    return create(mdoReferenceOwner, mdoType, name, nameRu);
   }
 
   /**
@@ -187,7 +195,13 @@ public class MdoReference implements Comparable<MdoReference> {
       if (ref == null) {
         ref = create(mdoType.get(), mdoName);
       } else {
-        ref = create(ref, mdoType.get(), mdoName);
+        var nameRu = mdoName;
+        if (mdoType.get() == MDOType.STANDARD_ATTRIBUTE) {
+          nameRu = StdAttributeNames.get(mdoName).getRu();
+          ref = create(ref, mdoType.get(), mdoName, nameRu);
+        } else {
+          ref = create(ref, mdoType.get(), mdoName);
+        }
       }
     }
 
