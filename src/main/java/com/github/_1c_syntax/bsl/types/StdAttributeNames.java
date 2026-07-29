@@ -23,8 +23,11 @@ package com.github._1c_syntax.bsl.types;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Вспомогательный класс для хранения стандартных реквизитов
@@ -77,12 +80,25 @@ public class StdAttributeNames {
   public static final MultiName EXCHANGE_DATE = MultiName.create("ExchangeDate", "ДатаОбмена");
   public static final MultiName PERIOD_ADJUSTMENT = MultiName.create("PeriodAdjustment", "УточнениеПериода");
 
+  public static final MultiName TURNOVERS_ONLY = MultiName.create("TurnoversOnly", "ТолькоОбороты");
+  public static final MultiName EXT_DIMENSION_TYPE = MultiName.create("ExtDimensionType", "ВидСубконто");
+  public static final MultiName EXT_DIMENSION_1 = MultiName.create("ExtDimension1", "Субконто1");
+  public static final MultiName EXT_DIMENSION_TYPE_1 = MultiName.create("ExtDimensionType1", "ВидСубконто1");
+  public static final MultiName EXT_DIMENSION_2 = MultiName.create("ExtDimension2", "Субконто2");
+  public static final MultiName EXT_DIMENSION_TYPE_2 = MultiName.create("ExtDimensionType2", "ВидСубконто2");
+  public static final MultiName EXT_DIMENSION_3 = MultiName.create("ExtDimension3", "Субконто3");
+  public static final MultiName EXT_DIMENSION_TYPE_3 = MultiName.create("ExtDimensionType3", "ВидСубконто3");
+  public static final MultiName EXT_DIMENSION_4 = MultiName.create("ExtDimension4", "Субконто4");
+  public static final MultiName EXT_DIMENSION_TYPE_4 = MultiName.create("ExtDimensionType4", "ВидСубконто4");
+  public static final MultiName EXT_DIMENSION_5 = MultiName.create("ExtDimension5", "Субконто5");
+  public static final MultiName EXT_DIMENSION_TYPE_5 = MultiName.create("ExtDimensionType5", "ВидСубконто5");
+
   private static final Map<String, MultiName> KEYS = computeKeys();
 
   /**
-   * Возвращает мультиимя стандартного реквизита по английскому имени
+   * Возвращает мультиимя стандартного реквизита по имени (русскому или английскому)
    *
-   * @param name Английское имя
+   * @param name Имя (русское или английское)
    * @return Мультиимя
    */
   public static MultiName get(String name) {
@@ -95,47 +111,28 @@ public class StdAttributeNames {
   }
 
   private static Map<String, MultiName> computeKeys() {
-    return Map.ofEntries(Map.entry(PREDEFINED_DATA_NAME.getEn().toLowerCase(Locale.ROOT), PREDEFINED_DATA_NAME),
-      Map.entry(PREDEFINED.getEn().toLowerCase(Locale.ROOT), PREDEFINED),
-      Map.entry(REF.getEn().toLowerCase(Locale.ROOT), REF),
-      Map.entry(DELETION_MARK.getEn().toLowerCase(Locale.ROOT), DELETION_MARK),
-      Map.entry(IS_FOLDER.getEn().toLowerCase(Locale.ROOT), IS_FOLDER),
-      Map.entry(PARENT.getEn().toLowerCase(Locale.ROOT), PARENT),
-      Map.entry(DESCRIPTION.getEn().toLowerCase(Locale.ROOT), DESCRIPTION),
-      Map.entry(CODE.getEn().toLowerCase(Locale.ROOT), CODE),
-      Map.entry(OWNER.getEn().toLowerCase(Locale.ROOT), OWNER),
-      Map.entry(LINE_NUMBER.getEn().toLowerCase(Locale.ROOT), LINE_NUMBER),
-      Map.entry(ACTIVE.getEn().toLowerCase(Locale.ROOT), ACTIVE),
-      Map.entry(ORDER.getEn().toLowerCase(Locale.ROOT), ORDER),
-      Map.entry(PERIOD.getEn().toLowerCase(Locale.ROOT), PERIOD),
-      Map.entry(THIS_NODE.getEn().toLowerCase(Locale.ROOT), THIS_NODE),
-      Map.entry(RECEIVED_NO.getEn().toLowerCase(Locale.ROOT), RECEIVED_NO),
-      Map.entry(SENT_NO.getEn().toLowerCase(Locale.ROOT), SENT_NO),
-      Map.entry(NUMBER.getEn().toLowerCase(Locale.ROOT), NUMBER),
-      Map.entry(END_OF_BASE_PERIOD.getEn().toLowerCase(Locale.ROOT), END_OF_BASE_PERIOD),
-      Map.entry(BEG_OF_BASE_PERIOD.getEn().toLowerCase(Locale.ROOT), BEG_OF_BASE_PERIOD),
-      Map.entry(END_OF_ACTION_PERIOD.getEn().toLowerCase(Locale.ROOT), END_OF_ACTION_PERIOD),
-      Map.entry(BEG_OF_ACTION_PERIOD.getEn().toLowerCase(Locale.ROOT), BEG_OF_ACTION_PERIOD),
-      Map.entry(ACTION_PERIOD.getEn().toLowerCase(Locale.ROOT), ACTION_PERIOD),
-      Map.entry(POSTED.getEn().toLowerCase(Locale.ROOT), POSTED),
-      Map.entry(DATE.getEn().toLowerCase(Locale.ROOT), DATE),
-      Map.entry(ACTION_PERIOD_IS_BASIC.getEn().toLowerCase(Locale.ROOT), ACTION_PERIOD_IS_BASIC),
-      Map.entry(STARTED.getEn().toLowerCase(Locale.ROOT), STARTED),
-      Map.entry(COMPLETED.getEn().toLowerCase(Locale.ROOT), COMPLETED),
-      Map.entry(EXECUTED.getEn().toLowerCase(Locale.ROOT), EXECUTED),
-      Map.entry(OFF_BALANCE.getEn().toLowerCase(Locale.ROOT), OFF_BALANCE),
-      Map.entry(REGISTRATION_PERIOD.getEn().toLowerCase(Locale.ROOT), REGISTRATION_PERIOD),
-      Map.entry(RECORD_TYPE.getEn().toLowerCase(Locale.ROOT), RECORD_TYPE),
-      Map.entry(RECORDER.getEn().toLowerCase(Locale.ROOT), RECORDER),
-      Map.entry(ACCOUNT.getEn().toLowerCase(Locale.ROOT), ACCOUNT),
-      Map.entry(VALUE_TYPE.getEn().toLowerCase(Locale.ROOT), VALUE_TYPE),
-      Map.entry(REVERSING_ENTRY.getEn().toLowerCase(Locale.ROOT), REVERSING_ENTRY),
-      Map.entry(HEAD_TASK.getEn().toLowerCase(Locale.ROOT), HEAD_TASK),
-      Map.entry(ROUTE_POINT.getEn().toLowerCase(Locale.ROOT), ROUTE_POINT),
-      Map.entry(BUSINESS_PROCESS.getEn().toLowerCase(Locale.ROOT), BUSINESS_PROCESS),
-      Map.entry(TYPE.getEn().toLowerCase(Locale.ROOT), TYPE),
-      Map.entry(CALCULATION_TYPE.getEn().toLowerCase(Locale.ROOT), CALCULATION_TYPE),
-      Map.entry(EXCHANGE_DATE.getEn().toLowerCase(Locale.ROOT), EXCHANGE_DATE),
-      Map.entry(PERIOD_ADJUSTMENT.getEn().toLowerCase(Locale.ROOT), PERIOD_ADJUSTMENT));
+    return Collections.unmodifiableMap(Stream.of(
+      PREDEFINED_DATA_NAME, PREDEFINED, REF, DELETION_MARK, IS_FOLDER, PARENT,
+      DESCRIPTION, CODE, OWNER, LINE_NUMBER, ACTIVE, ORDER, PERIOD, THIS_NODE,
+      RECEIVED_NO, SENT_NO, NUMBER, END_OF_BASE_PERIOD, BEG_OF_BASE_PERIOD,
+      END_OF_ACTION_PERIOD, BEG_OF_ACTION_PERIOD, ACTION_PERIOD, POSTED, DATE,
+      ACTION_PERIOD_IS_BASIC, STARTED, COMPLETED, EXECUTED, OFF_BALANCE,
+      REGISTRATION_PERIOD, RECORD_TYPE, RECORDER, ACCOUNT, VALUE_TYPE,
+      REVERSING_ENTRY, HEAD_TASK, ROUTE_POINT, BUSINESS_PROCESS, TYPE,
+      CALCULATION_TYPE, EXCHANGE_DATE, PERIOD_ADJUSTMENT,
+      TURNOVERS_ONLY, EXT_DIMENSION_TYPE,
+      EXT_DIMENSION_1, EXT_DIMENSION_TYPE_1,
+      EXT_DIMENSION_2, EXT_DIMENSION_TYPE_2,
+      EXT_DIMENSION_3, EXT_DIMENSION_TYPE_3,
+      EXT_DIMENSION_4, EXT_DIMENSION_TYPE_4,
+      EXT_DIMENSION_5, EXT_DIMENSION_TYPE_5
+    ).collect(
+      HashMap::new,
+      (map, mn) -> {
+        map.put(mn.getEn().toLowerCase(Locale.ROOT), mn);
+        map.put(mn.getRu().toLowerCase(Locale.ROOT), mn);
+      },
+      HashMap::putAll
+    ));
   }
 }

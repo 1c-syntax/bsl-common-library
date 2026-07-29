@@ -11,7 +11,7 @@ plugins {
     id("io.freefair.javadoc-links") version "9.5.0"
     id("io.freefair.javadoc-utf-8") version "9.5.0"
 //    id("io.freefair.maven-central.validate-poms") version "9.2.0"
-    id("com.github.ben-manes.versions") version "0.54.0"
+    id("com.github.ben-manes.versions") version "0.56.0"
     id("ru.vyarus.pom") version "3.0.0"
     id("org.jreleaser") version "1.25.0"
     id("org.sonarqube") version "7.3.1.8318"
@@ -49,7 +49,7 @@ gitVersioning.apply {
 dependencies {
 
     implementation("org.apache.commons:commons-collections4:4.5.0")
-    implementation("io.github.1c-syntax:utils:0.9.0")
+    implementation("io.github.1c-syntax:utils:0.10.1")
 
     // логирование
     implementation("org.slf4j:slf4j-api:2.0.18")
