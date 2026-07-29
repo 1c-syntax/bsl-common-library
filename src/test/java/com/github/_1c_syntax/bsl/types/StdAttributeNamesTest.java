@@ -63,4 +63,72 @@ class StdAttributeNamesTest {
     assertThat(StdAttributeNames.get("NonExistentAttribute")).isEqualTo(MultiName.EMPTY);
     assertThat(StdAttributeNames.get("")).isEqualTo(MultiName.EMPTY);
   }
+
+  @Test
+  void shouldLookupByRussianName() {
+    var ref = StdAttributeNames.get("Ссылка");
+    assertThat(ref).isNotNull();
+    assertThat(ref.getEn()).isEqualTo("Ref");
+    assertThat(ref.getRu()).isEqualTo("Ссылка");
+
+    var deletionMark = StdAttributeNames.get("ПометкаУдаления");
+    assertThat(deletionMark).isNotNull();
+    assertThat(deletionMark.getEn()).isEqualTo("DeletionMark");
+    assertThat(deletionMark.getRu()).isEqualTo("ПометкаУдаления");
+
+    var description = StdAttributeNames.get("Наименование");
+    assertThat(description).isNotNull();
+    assertThat(description.getEn()).isEqualTo("Description");
+    assertThat(description.getRu()).isEqualTo("Наименование");
+  }
+
+  @Test
+  void shouldReturnSameInstanceForEnAndRu() {
+    var byEn = StdAttributeNames.get("Ref");
+    var byRu = StdAttributeNames.get("Ссылка");
+    assertThat(byEn).isSameAs(byRu);
+  }
+
+  @Test
+  void shouldReturnSubcontoAttributes() {
+    var turnoversOnly = StdAttributeNames.get("TurnoversOnly");
+    assertThat(turnoversOnly).isNotNull();
+    assertThat(turnoversOnly.getEn()).isEqualTo("TurnoversOnly");
+    assertThat(turnoversOnly.getRu()).isEqualTo("ТолькоОбороты");
+
+    var extDimensionType = StdAttributeNames.get("ExtDimensionType");
+    assertThat(extDimensionType).isNotNull();
+    assertThat(extDimensionType.getEn()).isEqualTo("ExtDimensionType");
+    assertThat(extDimensionType.getRu()).isEqualTo("ВидСубконто");
+
+    var extDimension1 = StdAttributeNames.get("ExtDimension1");
+    assertThat(extDimension1).isNotNull();
+    assertThat(extDimension1.getEn()).isEqualTo("ExtDimension1");
+    assertThat(extDimension1.getRu()).isEqualTo("Субконто1");
+
+    var extDimensionType1 = StdAttributeNames.get("ExtDimensionType1");
+    assertThat(extDimensionType1).isNotNull();
+    assertThat(extDimensionType1.getEn()).isEqualTo("ExtDimensionType1");
+    assertThat(extDimensionType1.getRu()).isEqualTo("ВидСубконто1");
+
+    var extDimension5 = StdAttributeNames.get("ExtDimension5");
+    assertThat(extDimension5).isNotNull();
+    assertThat(extDimension5.getEn()).isEqualTo("ExtDimension5");
+    assertThat(extDimension5.getRu()).isEqualTo("Субконто5");
+
+    var extDimensionType5 = StdAttributeNames.get("ExtDimensionType5");
+    assertThat(extDimensionType5).isNotNull();
+    assertThat(extDimensionType5.getEn()).isEqualTo("ExtDimensionType5");
+    assertThat(extDimensionType5.getRu()).isEqualTo("ВидСубконто5");
+
+    var extDimension2 = StdAttributeNames.get("Субконто2");
+    assertThat(extDimension2).isNotNull();
+    assertThat(extDimension2.getEn()).isEqualTo("ExtDimension2");
+    assertThat(extDimension2.getRu()).isEqualTo("Субконто2");
+
+    var extDimensionType4 = StdAttributeNames.get("ВидСубконто4");
+    assertThat(extDimensionType4).isNotNull();
+    assertThat(extDimensionType4.getEn()).isEqualTo("ExtDimensionType4");
+    assertThat(extDimensionType4.getRu()).isEqualTo("ВидСубконто4");
+  }
 }
