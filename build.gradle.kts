@@ -54,7 +54,7 @@ dependencies {
     // логирование
     implementation("org.slf4j:slf4j-api:2.0.18")
 
-    api("org.jspecify:jspecify:1.0.0")
+    api("org.jspecify:jspecify:1.0.1")
 
     // логирование
     testImplementation("org.slf4j:slf4j-reload4j:2.0.18")
