@@ -65,6 +65,22 @@ class MDOTypeTest {
   }
 
   @Test
+  void dimensionTableIsNamedAsTheQueryLanguageWritesIt() {
+    // given
+    // Таблицу измерения куба внешнего источника данных язык запросов пишет
+    // в единственном числе: ВнешнийИсточникДанных.<>.Куб.<>.ТаблицаИзмерения.<>
+
+    // when
+    var byRussianName = MDOType.fromValue("ТаблицаИзмерения");
+
+    // then
+    assertThat(byRussianName).isPresent().contains(MDOType.EXTERNAL_DATA_SOURCE_CUBE_DIMENSION_TABLE);
+    assertThat(MDOType.EXTERNAL_DATA_SOURCE_CUBE_DIMENSION_TABLE.groupNameRu())
+      .as("а коллекция таких таблиц названа во множественном")
+      .isEqualTo("ТаблицыИзмерений");
+  }
+
+  @Test
   void recalculationDimensionIsChildType() {
     var valuesWithoutChildren = MDOType.valuesWithoutChildren();
     assertThat(valuesWithoutChildren).doesNotContain(MDOType.RECALCULATION_DIMENSION);

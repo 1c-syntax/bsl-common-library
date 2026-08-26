@@ -31,7 +31,7 @@ class V8ValueTypeTest {
   @Test
   void test() {
     assertThat(V8ValueType.values())
-      .hasSize(38)
+      .hasSize(50)
       .allMatch(valueType -> valueType.variant() == ValueTypeVariant.V8);
   }
 
