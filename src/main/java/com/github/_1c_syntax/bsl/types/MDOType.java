@@ -93,7 +93,7 @@ public enum MDOType implements EnumWithName {
     "ВнешнийИсточникДанных", "ВнешниеИсточникиДанных"),
   EXTERNAL_DATA_SOURCE_CUBE("Cube", "Cubes", "Куб", "Кубы"),
   EXTERNAL_DATA_SOURCE_CUBE_DIMENSION_TABLE("DimensionTable", "DimensionTables",
-    "ТаблицаИзмерений", "ТаблицыИзмерений"),
+    "ТаблицаИзмерения", "ТаблицыИзмерений"),
   EXTERNAL_DATA_SOURCE_FUNCTION("Function", "Functions", "Функция", "Функции"),
   EXTERNAL_DATA_SOURCE_TABLE("Table", "Tables", "Таблица", "Таблицы"),
   EXTERNAL_DATA_SOURCE_TABLE_FIELD("Field", "Fields", "Поле", "Поля"),
