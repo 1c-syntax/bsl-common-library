@@ -48,6 +48,20 @@ class MDOValueTypeTest {
   }
 
   @Test
+  void cubeDimensionTableIsNamedAsThePlatformWritesIt() {
+    // given
+    // Ссылку на запись таблицы измерения куба платформа называет в
+    // единственном числе: ВнешнийИсточникДанныхКубТаблицаИзмеренияСсылка
+
+    // when
+    var type = MDOValueType.valueByName("ExternalDataSourceCubeDimensionTableRef");
+
+    // then
+    assertThat(type).isNotNull();
+    assertThat(type.fullName().getRu()).isEqualTo("ВнешнийИсточникДанныхКубТаблицаИзмеренияСсылка");
+  }
+
+  @Test
   void test() {
     assertThat(MDOValueType.values())
       .hasSize(58)
