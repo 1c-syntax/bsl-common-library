@@ -27,7 +27,6 @@ import lombok.ToString;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,9 +50,9 @@ public class MdoReference implements Comparable<MdoReference> {
   private static final StringInterner stringInterner = new StringInterner();
 
   /**
-   * Кэш всех ссылок
+   * Кэш всех ссылок: по английскому и русскому представлению, без учёта регистра
    */
-  private static final Map<String, MdoReference> REFERENCES = new ConcurrentHashMap<>();
+  private static final Map<RefKey, MdoReference> REFERENCES = new ConcurrentHashMap<>();
 
   /**
    * Тип объекта метаданных
@@ -219,7 +218,7 @@ public class MdoReference implements Comparable<MdoReference> {
    * @return Optional-контейнер для ссылки
    */
   public static Optional<MdoReference> find(String mdoRef) {
-    return Optional.ofNullable(REFERENCES.get(mdoRef.toLowerCase(Locale.ROOT)));
+    return Optional.ofNullable(REFERENCES.get(new RefKey(mdoRef)));
   }
 
   /**
@@ -229,7 +228,7 @@ public class MdoReference implements Comparable<MdoReference> {
    * @return Найденная сслыка либо пустая, если ее нет
    */
   public static MdoReference get(String mdoRef) {
-    return REFERENCES.getOrDefault(mdoRef.toLowerCase(Locale.ROOT), MdoReference.EMPTY);
+    return REFERENCES.getOrDefault(new RefKey(mdoRef), MdoReference.EMPTY);
   }
 
   @Override
@@ -256,10 +255,32 @@ public class MdoReference implements Comparable<MdoReference> {
   }
 
   private static MdoReference getOrCompute(MDOType mdoType, String mdoRef, String mdoRefRu) {
-    var enKey = mdoRef.toLowerCase(Locale.ROOT);
-    var ruKey = mdoRefRu.toLowerCase(Locale.ROOT);
-    var result = REFERENCES.computeIfAbsent(enKey, key -> new MdoReference(mdoType, mdoRef, mdoRefRu));
-    REFERENCES.putIfAbsent(ruKey, result);
+    var result = REFERENCES.computeIfAbsent(new RefKey(mdoRef), key -> new MdoReference(mdoType, mdoRef, mdoRefRu));
+    REFERENCES.putIfAbsent(new RefKey(mdoRefRu), result);
     return result;
+  }
+
+  /**
+   * Ключ кэша ссылок: строковое представление без учёта регистра. Держит саму строку ссылки,
+   * а не её копию в нижнем регистре: ссылок на большой конфигурации сотни тысяч, по два ключа
+   * на каждую, и копии стоили десятки мегабайт.
+   *
+   * @param value строковое представление ссылки в исходном написании
+   */
+  private record RefKey(String value) {
+
+    @Override
+    public boolean equals(Object other) {
+      return other instanceof RefKey key && value.equalsIgnoreCase(key.value);
+    }
+
+    @Override
+    public int hashCode() {
+      var hash = 0;
+      for (var i = 0; i < value.length(); i++) {
+        hash = 31 * hash + Character.toLowerCase(Character.toUpperCase(value.charAt(i)));
+      }
+      return hash;
+    }
   }
 }
