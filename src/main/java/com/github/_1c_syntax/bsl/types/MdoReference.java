@@ -231,6 +231,15 @@ public class MdoReference implements Comparable<MdoReference> {
     return REFERENCES.getOrDefault(new RefKey(mdoRef), MdoReference.EMPTY);
   }
 
+  /**
+   * Сравнивает ссылки по типу и строковому представлению, возвращая ноль для равных по equals ссылок.
+   * <p>
+   * Неравные ссылки упорядочиваются по типу объекта, затем по английскому и русскому представлениям.
+   * Значение null предшествует любой ссылке.
+   *
+   * @param mdoReference сравниваемая ссылка, допускается null
+   * @return отрицательное число, ноль или положительное число в зависимости от порядка ссылок
+   */
   @Override
   public int compareTo(@Nullable MdoReference mdoReference) {
     if (mdoReference == null) {
@@ -254,6 +263,17 @@ public class MdoReference implements Comparable<MdoReference> {
     return this.mdoRefRu.compareTo(mdoReference.getMdoRefRu());
   }
 
+  /**
+   * Возвращает каноническую ссылку по английскому представлению и регистрирует её русский ключ.
+   * <p>
+   * Оба ключа сравниваются без учёта регистра; существующая привязка русского ключа не заменяется.
+   * Уже сохранённая ссылка сохраняет исходное написание своих представлений.
+   *
+   * @param mdoType тип создаваемой ссылки
+   * @param mdoRef английское представление ссылки
+   * @param mdoRefRu русское представление ссылки
+   * @return существующая или созданная каноническая ссылка
+   */
   private static MdoReference getOrCompute(MDOType mdoType, String mdoRef, String mdoRefRu) {
     var result = REFERENCES.computeIfAbsent(new RefKey(mdoRef), key -> new MdoReference(mdoType, mdoRef, mdoRefRu));
     REFERENCES.putIfAbsent(new RefKey(mdoRefRu), result);
@@ -269,16 +289,32 @@ public class MdoReference implements Comparable<MdoReference> {
    */
   private record RefKey(String value) {
 
+    /**
+     * Сравнивает ключи по правилам String.equalsIgnoreCase без изменения сохранённых строк.
+     *
+     * @param other сравниваемый объект
+     * @return признак равенства регистронезависимых строковых ключей
+     */
     @Override
     public boolean equals(Object other) {
       return other instanceof RefKey key && value.equalsIgnoreCase(key.value);
     }
 
+    /**
+     * Вычисляет согласованный с equalsIgnoreCase хеш по кодовым точкам Unicode.
+     * <p>
+     * К каждой кодовой точке применяется преобразование в верхний, затем в нижний регистр.
+     * Дополнительная строка с изменённым регистром не создаётся.
+     *
+     * @return регистронезависимый хеш ключа
+     */
     @Override
     public int hashCode() {
       var hash = 0;
-      for (var i = 0; i < value.length(); i++) {
-        hash = 31 * hash + Character.toLowerCase(Character.toUpperCase(value.charAt(i)));
+      for (var offset = 0; offset < value.length();) {
+        var codePoint = value.codePointAt(offset);
+        hash = 31 * hash + Character.toLowerCase(Character.toUpperCase(codePoint));
+        offset += Character.charCount(codePoint);
       }
       return hash;
     }
