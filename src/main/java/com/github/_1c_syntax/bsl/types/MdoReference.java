@@ -21,7 +21,6 @@
  */
 package com.github._1c_syntax.bsl.types;
 
-import com.github._1c_syntax.utils.StringInterner;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
@@ -46,8 +45,6 @@ public class MdoReference implements Comparable<MdoReference> {
 
   private static final String REF_SPLIT_REGEX = "\\.";
   private static final Pattern REF_SPLIT_PATTERN = Pattern.compile(REF_SPLIT_REGEX);
-
-  private static final StringInterner stringInterner = new StringInterner();
 
   /**
    * Кэш всех ссылок: по английскому и русскому представлению, без учёта регистра
@@ -119,12 +116,12 @@ public class MdoReference implements Comparable<MdoReference> {
    * @return Ссылка на объект
    */
   public static MdoReference create(MDOType mdoType, String name) {
-    var mdoRef = stringInterner.intern(mdoType.nameEn() + "." + name);
+    var mdoRef = mdoType.nameEn() + "." + name;
     var nameRu = name;
     if (mdoType == MDOType.STANDARD_ATTRIBUTE) {
       nameRu = StdAttributeNames.get(name).getRu();
     }
-    var mdoRefRu = stringInterner.intern(mdoType.nameRu() + "." + nameRu);
+    var mdoRefRu = mdoType.nameRu() + "." + nameRu;
 
     return getOrCompute(mdoType, mdoRef, mdoRefRu);
   }
@@ -164,8 +161,8 @@ public class MdoReference implements Comparable<MdoReference> {
     if (mdoReferenceOwner == null || mdoReferenceOwner.isEmpty()) {
       return create(mdoType, name);
     } else {
-      var mdoRef = stringInterner.intern(mdoReferenceOwner.getMdoRef() + "." + mdoType.nameEn() + "." + name);
-      var mdoRefRu = stringInterner.intern(mdoReferenceOwner.getMdoRefRu() + "." + mdoType.nameRu() + "." + nameRu);
+      var mdoRef = mdoReferenceOwner.getMdoRef() + "." + mdoType.nameEn() + "." + name;
+      var mdoRefRu = mdoReferenceOwner.getMdoRefRu() + "." + mdoType.nameRu() + "." + nameRu;
 
       return getOrCompute(mdoType, mdoRef, mdoRefRu);
     }
