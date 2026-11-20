@@ -48,7 +48,7 @@ gitVersioning.apply {
 
 dependencies {
 
-    implementation("org.apache.commons:commons-collections4:4.5.0")
+    implementation("org.apache.commons:commons-collections4:4.6.0")
     implementation("io.github.1c-syntax:utils:0.10.1")
 
     // логирование
