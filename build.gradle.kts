@@ -6,11 +6,11 @@ plugins {
     `maven-publish`
     jacoco
     id("cloud.rio.license") version "0.18.0"
-    id("me.qoomon.git-versioning") version "7.0.0"
+    id("me.qoomon.git-versioning") version "6.4.4"
     id("io.freefair.lombok") version "9.8.3"
     id("io.freefair.javadoc-links") version "9.8.3"
     id("io.freefair.javadoc-utf-8") version "9.8.3"
-    id("com.github.ben-manes.versions") version "0.67.0"
+    id("io.github.ben-manes.versions") version "0.67.0"
     id("ru.vyarus.pom") version "3.0.0"
     id("org.jreleaser") version "1.27.0"
     id("org.sonarqube") version "7.6.0.18749"
@@ -210,7 +210,9 @@ tasks.withType<Javadoc> {
 jreleaser {
     signing {
         active = ALWAYS
-        armored = true
+        pgp {
+            armored = true
+        }
     }
     deploy {
         maven {
