@@ -42,6 +42,7 @@ public class StdAttributeNames {
   public static final MultiName IS_FOLDER = MultiName.create("IsFolder", "ЭтоГруппа");
   public static final MultiName PARENT = MultiName.create("Parent", "Родитель");
   public static final MultiName DESCRIPTION = MultiName.create("Description", "Наименование");
+  public static final MultiName NAME = MultiName.create("Name", "Имя");
   public static final MultiName CODE = MultiName.create("Code", "Код");
   public static final MultiName OWNER = MultiName.create("Owner", "Владелец");
   public static final MultiName LINE_NUMBER = MultiName.create("LineNumber", "НомерСтроки");
@@ -60,7 +61,8 @@ public class StdAttributeNames {
 
   public static final MultiName POSTED = MultiName.create("Posted", "Проведен");
   public static final MultiName DATE = MultiName.create("Date", "Дата");
-  public static final MultiName ACTION_PERIOD_IS_BASIC = MultiName.create("ActionPeriodIsBasic", "ПериодДействияБазовый");
+  public static final MultiName ACTION_PERIOD_IS_BASIC = MultiName.create("ActionPeriodIsBasic",
+    "ПериодДействияБазовый");
   public static final MultiName STARTED = MultiName.create("Started", "Стартован");
   public static final MultiName COMPLETED = MultiName.create("Completed", "Завершен");
   public static final MultiName EXECUTED = MultiName.create("Executed", "Выполнена");
@@ -71,6 +73,7 @@ public class StdAttributeNames {
   public static final MultiName RECORDER = MultiName.create("Recorder", "Регистратор");
   public static final MultiName ACCOUNT = MultiName.create("Account", "Счет");
   public static final MultiName VALUE_TYPE = MultiName.create("ValueType", "ТипЗначения");
+  public static final MultiName FILL_CHECKING = MultiName.create("FillChecking", "ПроверкаЗаполнения");
   public static final MultiName REVERSING_ENTRY = MultiName.create("ReversingEntry", "Сторно");
   public static final MultiName HEAD_TASK = MultiName.create("HeadTask", "ВедущаяЗадача");
   public static final MultiName ROUTE_POINT = MultiName.create("RoutePoint", "ТочкаМаршрута");
@@ -104,7 +107,7 @@ public class StdAttributeNames {
   public static MultiName get(String name) {
     var result = KEYS.get(name.toLowerCase(Locale.ROOT));
     if (result == null) {
-      LOGGER.info("Unknown std. attribute {}", name);
+      LOGGER.debug("Unknown std. attribute {}", name);
       return MultiName.EMPTY;
     }
     return result;
@@ -113,11 +116,11 @@ public class StdAttributeNames {
   private static Map<String, MultiName> computeKeys() {
     return Collections.unmodifiableMap(Stream.of(
       PREDEFINED_DATA_NAME, PREDEFINED, REF, DELETION_MARK, IS_FOLDER, PARENT,
-      DESCRIPTION, CODE, OWNER, LINE_NUMBER, ACTIVE, ORDER, PERIOD, THIS_NODE,
+      DESCRIPTION, NAME, CODE, OWNER, LINE_NUMBER, ACTIVE, ORDER, PERIOD, THIS_NODE,
       RECEIVED_NO, SENT_NO, NUMBER, END_OF_BASE_PERIOD, BEG_OF_BASE_PERIOD,
       END_OF_ACTION_PERIOD, BEG_OF_ACTION_PERIOD, ACTION_PERIOD, POSTED, DATE,
       ACTION_PERIOD_IS_BASIC, STARTED, COMPLETED, EXECUTED, OFF_BALANCE,
-      REGISTRATION_PERIOD, RECORD_TYPE, RECORDER, ACCOUNT, VALUE_TYPE,
+      REGISTRATION_PERIOD, RECORD_TYPE, RECORDER, ACCOUNT, VALUE_TYPE, FILL_CHECKING,
       REVERSING_ENTRY, HEAD_TASK, ROUTE_POINT, BUSINESS_PROCESS, TYPE,
       CALCULATION_TYPE, EXCHANGE_DATE, PERIOD_ADJUSTMENT,
       TURNOVERS_ONLY, EXT_DIMENSION_TYPE,

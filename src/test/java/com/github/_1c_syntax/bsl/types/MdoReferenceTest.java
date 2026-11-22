@@ -264,6 +264,19 @@ class MdoReferenceTest {
   }
 
   @Test
+  void testSupplementaryLettersUseCaseInsensitiveCacheKeys() {
+    var upperName = "SupplementaryCase_\uD801\uDC00";
+    var lowerName = "supplementarycase_\uD801\uDC28";
+    assertThat(upperName.equalsIgnoreCase(lowerName)).isTrue();
+
+    var reference = MdoReference.create(MDOType.CATALOG, upperName);
+
+    assertThat(MdoReference.find("catalog." + lowerName)).containsSame(reference);
+    assertThat(MdoReference.get(MDOType.CATALOG.nameRu() + "." + lowerName)).isSameAs(reference);
+    assertThat(MdoReference.create(MDOType.CATALOG, lowerName)).isSameAs(reference);
+  }
+
+  @Test
   void testConcurrentCreateSameKeyReturnsSameInstance() throws Exception {
     var threadCount = 16;
     var executor = Executors.newFixedThreadPool(threadCount);

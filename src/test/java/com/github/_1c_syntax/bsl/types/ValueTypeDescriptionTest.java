@@ -150,9 +150,9 @@ class ValueTypeDescriptionTest {
       .contains(PrimitiveValueType.STRING);
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers()).hasSize(1);
-    assertThat(vtd.getQualifiers().get(0).description().getRu())
+    assertThat(vtd.getQualifiers().getFirst().description().getRu())
       .isEqualTo("КвалификаторыСтроки (1, Переменная)");
-    assertThat(vtd.getQualifiers().get(0).description().getEn())
+    assertThat(vtd.getQualifiers().getFirst().description().getEn())
       .isEqualTo("StringQualifiers (1, Variable)");
 
     vtd = ValueTypeDescription.createString(1, AllowedLength.FIXED);
@@ -162,9 +162,9 @@ class ValueTypeDescriptionTest {
       .contains(PrimitiveValueType.STRING);
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers()).hasSize(1);
-    assertThat(vtd.getQualifiers().get(0).description().getRu())
+    assertThat(vtd.getQualifiers().getFirst().description().getRu())
       .isEqualTo("КвалификаторыСтроки (1, Фиксированная)");
-    assertThat(vtd.getQualifiers().get(0).description().getEn())
+    assertThat(vtd.getQualifiers().getFirst().description().getEn())
       .isEqualTo("StringQualifiers (1, Fixed)");
   }
 
@@ -177,9 +177,9 @@ class ValueTypeDescriptionTest {
       .contains(PrimitiveValueType.NUMBER);
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers()).hasSize(1);
-    assertThat(vtd.getQualifiers().get(0).description().getRu())
+    assertThat(vtd.getQualifiers().getFirst().description().getRu())
       .isEqualTo("КвалификаторыЧисла (1.0)");
-    assertThat(vtd.getQualifiers().get(0).description().getEn())
+    assertThat(vtd.getQualifiers().getFirst().description().getEn())
       .isEqualTo("NumberQualifiers (1.0)");
   }
 
@@ -191,7 +191,7 @@ class ValueTypeDescriptionTest {
     assertThat(vtd.isComposite()).isFalse();
     assertThat(vtd.getQualifiers()).isEmpty();
 
-    var type = vtd.getTypes().get(0);
+    var type = vtd.getTypes().getFirst();
     assertThat(type.variant()).isEqualTo(ValueTypeVariant.METADATA);
     assertThat(type.fullName()).isEqualTo(MultiName.create("EnumRef.Enum1", "ПеречислениеСсылка.Enum1"));
     assertThat(type).isInstanceOf(CustomValueType.class);
@@ -235,7 +235,7 @@ class ValueTypeDescriptionTest {
     assertThat(vtd.isEmpty()).isFalse();
     assertThat(vtd.getTypes()).hasSize(1);
 
-    var type = vtd.getTypes().get(0);
+    var type = vtd.getTypes().getFirst();
     // Проверить, что ключ сформирован корректно как "CatalogRef.Product.Attribute.Price"
     assertThat(type.fullName().getEn()).contains("Ref.Product").contains("Attribute.Price");
   }

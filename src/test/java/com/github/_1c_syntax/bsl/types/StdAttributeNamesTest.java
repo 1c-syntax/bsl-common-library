@@ -21,7 +21,13 @@
  */
 package com.github._1c_syntax.bsl.types;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.WriterAppender;
 import org.junit.jupiter.api.Test;
+
+import java.io.StringWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,6 +62,48 @@ class StdAttributeNamesTest {
     assertThat(mixed).isNotNull();
     assertThat(lower).isSameAs(upper);
     assertThat(upper).isSameAs(mixed);
+  }
+
+  @Test
+  void shouldResolveNameAttribute() {
+    var byEn = StdAttributeNames.get("Name");
+    var byRu = StdAttributeNames.get("Имя");
+
+    assertThat(byEn.getEn()).isEqualTo("Name");
+    assertThat(byEn.getRu()).isEqualTo("Имя");
+    assertThat(byEn).isSameAs(byRu);
+  }
+
+  @Test
+  void shouldResolveFillCheckingAttribute() {
+    var byEn = StdAttributeNames.get("FillChecking");
+    var byRu = StdAttributeNames.get("ПроверкаЗаполнения");
+
+    assertThat(byEn.getEn()).isEqualTo("FillChecking");
+    assertThat(byEn.getRu()).isEqualTo("ПроверкаЗаполнения");
+    assertThat(byEn).isSameAs(byRu);
+  }
+
+  @Test
+  void shouldLogUnknownAttributeAtDebugLevel() {
+    var logger = Logger.getLogger(StdAttributeNames.class);
+    var oldLevel = logger.getLevel();
+    var output = new StringWriter();
+    var appender = new WriterAppender(new PatternLayout("%p %m%n"), output);
+    logger.addAppender(appender);
+
+    try {
+      logger.setLevel(Level.INFO);
+      StdAttributeNames.get("НеизвестныйРеквизит");
+      assertThat(output.toString()).isEmpty();
+
+      logger.setLevel(Level.DEBUG);
+      StdAttributeNames.get("НеизвестныйРеквизит");
+      assertThat(output.toString()).contains("Unknown std. attribute НеизвестныйРеквизит");
+    } finally {
+      logger.removeAppender(appender);
+      logger.setLevel(oldLevel);
+    }
   }
 
   @Test

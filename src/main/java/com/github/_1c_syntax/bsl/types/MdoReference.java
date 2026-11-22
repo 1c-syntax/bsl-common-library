@@ -21,13 +21,11 @@
  */
 package com.github._1c_syntax.bsl.types;
 
-import com.github._1c_syntax.utils.StringInterner;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,12 +46,10 @@ public class MdoReference implements Comparable<MdoReference> {
   private static final String REF_SPLIT_REGEX = "\\.";
   private static final Pattern REF_SPLIT_PATTERN = Pattern.compile(REF_SPLIT_REGEX);
 
-  private static final StringInterner stringInterner = new StringInterner();
-
   /**
-   * Кэш всех ссылок
+   * Кэш всех ссылок: по английскому и русскому представлению, без учёта регистра
    */
-  private static final Map<String, MdoReference> REFERENCES = new ConcurrentHashMap<>();
+  private static final Map<RefKey, MdoReference> REFERENCES = new ConcurrentHashMap<>();
 
   /**
    * Тип объекта метаданных
@@ -120,12 +116,12 @@ public class MdoReference implements Comparable<MdoReference> {
    * @return Ссылка на объект
    */
   public static MdoReference create(MDOType mdoType, String name) {
-    var mdoRef = stringInterner.intern(mdoType.nameEn() + "." + name);
+    var mdoRef = mdoType.nameEn() + "." + name;
     var nameRu = name;
     if (mdoType == MDOType.STANDARD_ATTRIBUTE) {
       nameRu = StdAttributeNames.get(name).getRu();
     }
-    var mdoRefRu = stringInterner.intern(mdoType.nameRu() + "." + nameRu);
+    var mdoRefRu = mdoType.nameRu() + "." + nameRu;
 
     return getOrCompute(mdoType, mdoRef, mdoRefRu);
   }
@@ -165,8 +161,8 @@ public class MdoReference implements Comparable<MdoReference> {
     if (mdoReferenceOwner == null || mdoReferenceOwner.isEmpty()) {
       return create(mdoType, name);
     } else {
-      var mdoRef = stringInterner.intern(mdoReferenceOwner.getMdoRef() + "." + mdoType.nameEn() + "." + name);
-      var mdoRefRu = stringInterner.intern(mdoReferenceOwner.getMdoRefRu() + "." + mdoType.nameRu() + "." + nameRu);
+      var mdoRef = mdoReferenceOwner.getMdoRef() + "." + mdoType.nameEn() + "." + name;
+      var mdoRefRu = mdoReferenceOwner.getMdoRefRu() + "." + mdoType.nameRu() + "." + nameRu;
 
       return getOrCompute(mdoType, mdoRef, mdoRefRu);
     }
@@ -219,7 +215,7 @@ public class MdoReference implements Comparable<MdoReference> {
    * @return Optional-контейнер для ссылки
    */
   public static Optional<MdoReference> find(String mdoRef) {
-    return Optional.ofNullable(REFERENCES.get(mdoRef.toLowerCase(Locale.ROOT)));
+    return Optional.ofNullable(REFERENCES.get(new RefKey(mdoRef)));
   }
 
   /**
@@ -229,9 +225,18 @@ public class MdoReference implements Comparable<MdoReference> {
    * @return Найденная сслыка либо пустая, если ее нет
    */
   public static MdoReference get(String mdoRef) {
-    return REFERENCES.getOrDefault(mdoRef.toLowerCase(Locale.ROOT), MdoReference.EMPTY);
+    return REFERENCES.getOrDefault(new RefKey(mdoRef), MdoReference.EMPTY);
   }
 
+  /**
+   * Сравнивает ссылки по типу и строковому представлению, возвращая ноль для равных по equals ссылок.
+   * <p>
+   * Неравные ссылки упорядочиваются по типу объекта, затем по английскому и русскому представлениям.
+   * Значение null предшествует любой ссылке.
+   *
+   * @param mdoReference сравниваемая ссылка, допускается null
+   * @return отрицательное число, ноль или положительное число в зависимости от порядка ссылок
+   */
   @Override
   public int compareTo(@Nullable MdoReference mdoReference) {
     if (mdoReference == null) {
@@ -255,11 +260,60 @@ public class MdoReference implements Comparable<MdoReference> {
     return this.mdoRefRu.compareTo(mdoReference.getMdoRefRu());
   }
 
+  /**
+   * Возвращает каноническую ссылку по английскому представлению и регистрирует её русский ключ.
+   * <p>
+   * Оба ключа сравниваются без учёта регистра; существующая привязка русского ключа не заменяется.
+   * Уже сохранённая ссылка сохраняет исходное написание своих представлений.
+   *
+   * @param mdoType тип создаваемой ссылки
+   * @param mdoRef английское представление ссылки
+   * @param mdoRefRu русское представление ссылки
+   * @return существующая или созданная каноническая ссылка
+   */
   private static MdoReference getOrCompute(MDOType mdoType, String mdoRef, String mdoRefRu) {
-    var enKey = mdoRef.toLowerCase(Locale.ROOT);
-    var ruKey = mdoRefRu.toLowerCase(Locale.ROOT);
-    var result = REFERENCES.computeIfAbsent(enKey, key -> new MdoReference(mdoType, mdoRef, mdoRefRu));
-    REFERENCES.putIfAbsent(ruKey, result);
+    var result = REFERENCES.computeIfAbsent(new RefKey(mdoRef), key -> new MdoReference(mdoType, mdoRef, mdoRefRu));
+    REFERENCES.putIfAbsent(new RefKey(mdoRefRu), result);
     return result;
+  }
+
+  /**
+   * Ключ кэша ссылок: строковое представление без учёта регистра. Держит саму строку ссылки,
+   * а не её копию в нижнем регистре: ссылок на большой конфигурации сотни тысяч, по два ключа
+   * на каждую, и копии стоили десятки мегабайт.
+   *
+   * @param value строковое представление ссылки в исходном написании
+   */
+  private record RefKey(String value) {
+
+    /**
+     * Сравнивает ключи по правилам String.equalsIgnoreCase без изменения сохранённых строк.
+     *
+     * @param other сравниваемый объект
+     * @return признак равенства регистронезависимых строковых ключей
+     */
+    @Override
+    public boolean equals(Object other) {
+      return other instanceof RefKey(String value1) && value.equalsIgnoreCase(value1);
+    }
+
+    /**
+     * Вычисляет согласованный с equalsIgnoreCase хеш по кодовым точкам Unicode.
+     * <p>
+     * К каждой кодовой точке применяется преобразование в верхний, затем в нижний регистр.
+     * Дополнительная строка с изменённым регистром не создаётся.
+     *
+     * @return регистронезависимый хеш ключа
+     */
+    @Override
+    public int hashCode() {
+      var hash = 0;
+      for (var offset = 0; offset < value.length();) {
+        var codePoint = value.codePointAt(offset);
+        hash = 31 * hash + Character.toLowerCase(Character.toUpperCase(codePoint));
+        offset += Character.charCount(codePoint);
+      }
+      return hash;
+    }
   }
 }

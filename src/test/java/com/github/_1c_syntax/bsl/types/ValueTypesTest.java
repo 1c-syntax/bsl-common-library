@@ -89,6 +89,22 @@ class ValueTypesTest {
   }
 
   @Test
+  void getOrComputeExternalDataSourceTableRecordManagerIsMetadata() {
+    var type = ValueTypes.getOrCompute(
+      "ExternalDataSourceTableRecordManager.ВнешнийРегистрСверкиВзаиморасчетов.ВнешняяСверкаВзаиморасчетов");
+
+    assertThat(type.variant()).isEqualTo(ValueTypeVariant.METADATA);
+    assertThat(type).isInstanceOf(CustomValueType.class);
+    assertThat(((CustomValueType) type).kind()).isEqualTo(MDOType.EXTERNAL_DATA_SOURCE);
+    assertThat(type.fullName().getEn())
+      .isEqualTo(
+        "ExternalDataSourceTableRecordManager.ВнешнийРегистрСверкиВзаиморасчетов.ВнешняяСверкаВзаиморасчетов");
+    assertThat(type.fullName().getRu())
+      .isEqualTo(
+        "ВнешнийИсточникДанныхТаблицаМенеджерЗаписи.ВнешнийРегистрСверкиВзаиморасчетов.ВнешняяСверкаВзаиморасчетов");
+  }
+
+  @Test
   void testBilingualKeyContract() {
     var fromRu = ValueTypes.getOrCompute("ПеречислениеСсылка.X");
     var fromEn = ValueTypes.get("EnumRef.X");
