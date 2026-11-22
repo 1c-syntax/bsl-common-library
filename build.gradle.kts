@@ -10,7 +10,7 @@ plugins {
     id("io.freefair.lombok") version "9.8.3"
     id("io.freefair.javadoc-links") version "9.8.3"
     id("io.freefair.javadoc-utf-8") version "9.8.3"
-    id("io.github.ben-manes.versions") version "0.67.0"
+    id("com.github.ben-manes.versions") version "0.67.0"
     id("ru.vyarus.pom") version "3.0.0"
     id("org.jreleaser") version "1.27.0"
     id("org.sonarqube") version "7.6.0.18749"
