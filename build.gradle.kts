@@ -210,9 +210,7 @@ tasks.withType<Javadoc> {
 jreleaser {
     signing {
         active = ALWAYS
-        pgp {
-            armored = true
-        }
+        armored = true
     }
     deploy {
         maven {
