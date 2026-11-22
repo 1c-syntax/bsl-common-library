@@ -61,7 +61,8 @@ public class StdAttributeNames {
 
   public static final MultiName POSTED = MultiName.create("Posted", "Проведен");
   public static final MultiName DATE = MultiName.create("Date", "Дата");
-  public static final MultiName ACTION_PERIOD_IS_BASIC = MultiName.create("ActionPeriodIsBasic", "ПериодДействияБазовый");
+  public static final MultiName ACTION_PERIOD_IS_BASIC = MultiName.create("ActionPeriodIsBasic",
+    "ПериодДействияБазовый");
   public static final MultiName STARTED = MultiName.create("Started", "Стартован");
   public static final MultiName COMPLETED = MultiName.create("Completed", "Завершен");
   public static final MultiName EXECUTED = MultiName.create("Executed", "Выполнена");
