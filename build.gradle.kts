@@ -10,8 +10,7 @@ plugins {
     id("io.freefair.lombok") version "9.8.3"
     id("io.freefair.javadoc-links") version "9.8.3"
     id("io.freefair.javadoc-utf-8") version "9.8.3"
-//    id("io.freefair.maven-central.validate-poms") version "9.2.0"
-    id("com.github.ben-manes.versions") version "0.67.0"
+    id("io.github.ben-manes.versions") version "0.67.0"
     id("ru.vyarus.pom") version "3.0.0"
     id("org.jreleaser") version "1.27.0"
     id("org.sonarqube") version "7.6.0.18749"
@@ -27,29 +26,29 @@ gitVersioning.apply {
     refs {
         describeTagFirstParent = false
         tag("v(?<tagVersion>[0-9].*)") {
-            version = "\${ref.tagVersion}\${dirty}"
+            version = $$"${ref.tagVersion}${dirty}"
         }
 
         branch("develop") {
-            version = "\${describe.tag.version.major}." +
-                    "\${describe.tag.version.minor.next}.0." +
-                    "\${describe.distance}-SNAPSHOT\${dirty}"
+            version = $$"${describe.tag.version.major}." +
+                    $$"${describe.tag.version.minor.next}.0." +
+                    $$"${describe.distance}-SNAPSHOT${dirty}"
         }
 
         branch(".+") {
-            version = "\${ref}-\${commit.short}\${dirty}"
+            version = $$"${ref}-${commit.short}${dirty}"
         }
     }
 
     rev {
-        version = "\${commit.short}\${dirty}"
+        version = $$"${commit.short}${dirty}"
     }
 }
 
 dependencies {
 
     implementation("org.apache.commons:commons-collections4:4.6.0")
-    implementation("io.github.1c-syntax:utils:0.10.1")
+    implementation("io.github.1c-syntax:utils:0.10.2")
 
     // логирование
     implementation("org.slf4j:slf4j-api:2.0.18")
@@ -211,7 +210,9 @@ tasks.withType<Javadoc> {
 jreleaser {
     signing {
         active = ALWAYS
-        armored = true
+        pgp {
+            armored = true
+        }
     }
     deploy {
         maven {

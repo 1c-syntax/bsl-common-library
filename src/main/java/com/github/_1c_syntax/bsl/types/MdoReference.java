@@ -294,7 +294,7 @@ public class MdoReference implements Comparable<MdoReference> {
      */
     @Override
     public boolean equals(Object other) {
-      return other instanceof RefKey key && value.equalsIgnoreCase(key.value);
+      return other instanceof RefKey(String value1) && value.equalsIgnoreCase(value1);
     }
 
     /**

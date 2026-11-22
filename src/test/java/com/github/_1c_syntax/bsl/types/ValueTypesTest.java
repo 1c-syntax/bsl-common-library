@@ -97,9 +97,11 @@ class ValueTypesTest {
     assertThat(type).isInstanceOf(CustomValueType.class);
     assertThat(((CustomValueType) type).kind()).isEqualTo(MDOType.EXTERNAL_DATA_SOURCE);
     assertThat(type.fullName().getEn())
-      .isEqualTo("ExternalDataSourceTableRecordManager.ВнешнийРегистрСверкиВзаиморасчетов.ВнешняяСверкаВзаиморасчетов");
+      .isEqualTo(
+        "ExternalDataSourceTableRecordManager.ВнешнийРегистрСверкиВзаиморасчетов.ВнешняяСверкаВзаиморасчетов");
     assertThat(type.fullName().getRu())
-      .isEqualTo("ВнешнийИсточникДанныхТаблицаМенеджерЗаписи.ВнешнийРегистрСверкиВзаиморасчетов.ВнешняяСверкаВзаиморасчетов");
+      .isEqualTo(
+        "ВнешнийИсточникДанныхТаблицаМенеджерЗаписи.ВнешнийРегистрСверкиВзаиморасчетов.ВнешняяСверкаВзаиморасчетов");
   }
 
   @Test
