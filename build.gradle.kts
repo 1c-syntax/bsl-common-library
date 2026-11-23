@@ -51,7 +51,7 @@ dependencies {
     implementation("io.github.1c-syntax:utils:0.10.2")
 
     // логирование
-    implementation("org.slf4j:slf4j-api:2.0.18")
+    implementation("org.slf4j:slf4j-api:2.0.20")
 
     api("org.jspecify:jspecify:1.0.1")
 
