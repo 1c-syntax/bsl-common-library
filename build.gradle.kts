@@ -56,7 +56,7 @@ dependencies {
     api("org.jspecify:jspecify:1.0.1")
 
     // логирование
-    testImplementation("org.slf4j:slf4j-reload4j:2.0.18")
+    testImplementation("org.slf4j:slf4j-reload4j:2.0.20")
 
     // тестирование
     testImplementation(platform("org.junit:junit-bom:6.1.3"))
